@@ -1,0 +1,10 @@
+name: MoodleBaseQuestions
+title:
+username:
+account: verbam01
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 5155218
+bundleId: 5266363
+url: https://verbam01.shinyapps.io/MoodleBaseQuestions/
+when: 1637243182.52767
