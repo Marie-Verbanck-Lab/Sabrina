@@ -1,4 +1,3 @@
-
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
 # Création d'une base de fichiers de questions avec différents niveaux de difficultés
@@ -30,42 +29,10 @@ Il serait nécessaire de prendre en main l'interface Shiny déjà réalisée et 
 
 **TO-DO**
 
-- Convertir les scripts ui.R et serveur.R en app.R si c'est plus commode
+- Convertir les scripts ui.R et serveur.R en app.R si c'est plus commode pour vous
 - Pour chaque bloc de code, ajouter un commentaire pour expliquer ce que fait le bloc de code
 
 ---
-
-
-
-<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-# Script de conversion
-
-
-
-
-<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-
-# Validation à la fin
-
-Travailler sur la validation par l'utilisateur des questions converties et créées par SARP.moodle. 
-SARP.moodle renvoie beaucoup d'informations dans la console (via la fonction cat), reste à trouver un moyen de les récupérer.
-
----
-
-**TO-DO**
-
-- Explorer les possibilités du package shinyjs
-https://deanattali.com/shinyjs/overview
-- Exemples d'options qui peuvent être utiles lors du développement
-
-```r
-options(shiny.trace=TRUE)
-options(shiny.fullstacktrace=TRUE)
-```
----
-
 
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
@@ -79,14 +46,69 @@ Si l'utilisateur met en forme ses questions dans Excel, y-a-t-il un moyen de ré
 **TO-DO**
 
 - Etudier si une solution est envisageable avec le package openxlsx
-
-
-```r
+```{r, echo=TRUE, eval = FALSE}
 library(openxlsx)
 wb <- loadWorkbook("Questions.xlsx")
 ```
 
+
 ---
 
 
+<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+
+# Renvoyer les erreurs/warnings
+
+Pour que l'utilisateur puisse modifier de façon autonome son fichier s'il est mal formaté.
+
+---
+**TO-DO**
+
+- Explorer les possibilités du package shinyjs
+https://deanattali.com/shinyjs/overview
+- Exemples d'options qui peuvent être utiles lors du développement
+```{r, echo=TRUE, eval = FALSE}
+options(shiny.trace=TRUE)
+options(shiny.fullstacktrace=TRUE)
+```
+- Idée à partir d'un excel/ods, convertir en xml à partir du tableau et à partir du csv obtenu à partir du tableau pour faire apparaitre des différences/erreurs potentielles.
+
+---
+
+<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+
+
+# Validation à la fin
+
+Travailler sur la validation par l'utilisateur des questions converties et créées par SARP.moodle. 
+SARP.moodle renvoie beaucoup d'informations dans la console (via la fonction cat), reste à trouver un moyen de les récupérer.
+
+---
+
+**TO-DO**
+
+- Récupérer suite à la conversion, les sorties consoles dans lesquelles SARP.moodle donne des indications
+- Renvoyer un tableau synthétique avec une synthèse des questions converties (nombre de questions par type de question et nombre de choix)
+- Visualiser les questions en convertissant le xml en html
+
+---
+
+
+<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+
+
+# Mise en forme de l'interface
+
+Il faut compléter l'interface pour qu'elle rendre l'utilisateur le plus autonome possible.
+
+---
+
+**TO-DO**
+
+- Modifier la page d'accueil de l'interface pour ajouter des informations.
+  - Fenêtre avec les informations de contact
+  - Fenêtre avec des explications du principe etc
+- Fournir des gabarits à télécharger / à préremplir en fonction des types de questions dont l'utilisateur a besoin
+
+---
 
