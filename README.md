@@ -45,6 +45,7 @@ Si l'utilisateur met en forme ses questions dans Excel, y-a-t-il un moyen de ré
 
 **TO-DO**
 
+- Ajouter une boîte de dialogue pour demander à l'utilisateur quelle feuille de calcul il veut importer (si ods ou xlsx)
 - Etudier si une solution est envisageable avec le package openxlsx
 ```{r, echo=TRUE, eval = FALSE}
 library(openxlsx)
