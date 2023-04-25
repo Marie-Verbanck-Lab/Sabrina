@@ -112,3 +112,18 @@ Il faut compléter l'interface pour qu'elle rendre l'utilisateur le plus autonom
 
 ---
 
+
+<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+
+
+# Shiny Serveur
+
+Pour pouvoir diffuser l'interface, il faut la déployer sur shiny serveur
+
+---
+
+**TO-DO**
+- Installation de shiny serveur
+https://shiny.rstudio.com/articles/shiny-server.html
+
+---
