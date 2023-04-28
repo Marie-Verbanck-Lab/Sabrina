@@ -1,3 +1,5 @@
+#Librairies
+
 library(shiny)
 library(shinydashboard)
 #library(xlsx)
@@ -6,8 +8,7 @@ library(SARP.moodle)
 library(data.table)
 library(readxl)
 library(readODS)
-
-# ;dld
+library(SARP.moodle, lib.loc = "/usr/lib64/R/library")
 
 ############################################################################################################
 
@@ -24,7 +25,7 @@ shinyServer(function(input, output, session){
 		input$file$datapath
 	})
 
-	# reaction au bouton commencer, changement de tab
+	# Ce code utilise la fonction `observeEvent()` pour détecter le déclenchement de l'événement "Start" et mettre à jour l'onglet "Conversion" en utilisant la fonction `updateTabItems()`.
 	observeEvent(input$Start, {
 		updateTabItems(session, "tabs", "Conversion")
 	})
@@ -39,7 +40,10 @@ shinyServer(function(input, output, session){
 			getXML(file)
 		}
 	)
+	
+#Cette fonction "getXML" prend un nom de fichier en entrée et effectue des opérations en fonction de la valeur des options "ImagesQuestion" et "conversion" de l'entrée utilisateur, avant de renvoyer le nom du fichier en sortie. La fonction convertit les fichiers CSV, XLSX et ODS en fichier XML en utilisant les fonctions csv.moodle(), xlsx.moodle() et ods.moodle() respectivement. Si l'option "ImagesQuestion" est activée, la fonction copie les fichiers d'images spécifiés dans le répertoire de destination avant de convertir le fichier en XML.
 
+	
 	getXML <- function(file){
 	  extension <- tools::file_ext(input$file$datapath)
 	  
@@ -95,10 +99,13 @@ shinyServer(function(input, output, session){
 	  
 	  return(file)
 	}
+	
 
 	output$WARNINGS <- renderPrint({
 		# getXML(as.character(paste0("BaseQuestionsMoodle_", Sys.Date(), ".xml")))
 	})
+	
+#Ce code crée une boîte d'informations "infoBox" contenant un élément d'entrée de fichier "fileInput" avec un bouton de parcours permettant aux utilisateurs de sélectionner un fichier CSV, XLSX ou ODS. La boîte d'informations n'est rendue que si l'option "ImagesQuestion" est activée et si l'utilisateur a déjà téléchargé les images requises. La boîte d'informations est stylisée avec une icône Excel, une couleur de fond bleue et une largeur de 12.
 
 	output$FileBox <- renderUI({
 		if(input$ImagesQuestion == TRUE & is.null(input$Images))
@@ -118,6 +125,10 @@ shinyServer(function(input, output, session){
 			width = 12
   		)
 	})
+	
+#Ce code crée une boîte contenant un élément d'entrée de fichier "fileInput" permettant aux utilisateurs de sélectionner des images en format PNG, JPEG ou JPG, qui seront utilisées pour créer une base de questions. La boîte n'est rendue que si l'option "ImagesQuestion" est activée et elle est stylisée avec un titre, un fond solide de couleur primaire et une largeur de 12.
+	
+	
 	output$ImageBox <- renderUI({
 		if(input$ImagesQuestion == FALSE)
 			return(NULL)
@@ -134,6 +145,9 @@ shinyServer(function(input, output, session){
   			width = 12
   		)
 	})
+	
+# Ce code génère une boîte de dialogue qui permet à l'utilisateur de sélectionner les conversions automatiques qu'il souhaite activer pour les images, les formules mathématiques et les codes SMILES, si l'option "ImagesQuestion" est activée dans l'application R Shiny.
+	
 	output$ImageInfo <- renderUI({
 		if(input$ImagesQuestion == FALSE)
 			return(NULL)
@@ -155,6 +169,16 @@ shinyServer(function(input, output, session){
   		)
 	})
   
+###Ce code génère une boîte d'information qui contient les avertissements éventuels liés au traitement d'un fichier de base de questions.
+	
+###La fonction renderUI() est utilisée pour créer un objet HTML dynamique basé sur les valeurs des entrées de l'utilisateur. Dans ce cas, le contenu de la boîte d'information dépend de la valeur renvoyée par la fonction FilePath().
+	
+###Si la fonction renvoie une valeur nulle (c'est-à-dire que l'utilisateur n'a pas encore sélectionné de fichier), la fonction return(NULL) est appelée pour ne rien afficher. Si une valeur non nulle est renvoyée, une boîte d'information est créée à l'aide de la fonction box().
+
+###Le titre de la boîte d'information est "Détail du traitement de votre fichier de base de questions." et le contenu de la boîte est défini par verbatimTextOutput("WARNINGS"). Cela signifie que la sortie de la fonction renderPrint() qui est associée à l'ID "WARNINGS" sera affichée dans la boîte.
+
+###La boîte d'information est ensuite personnalisée avec les paramètres solidHeader = TRUE pour avoir une en-tête pleine et status = "warning" pour avoir une couleur de fond jaune qui attire l'attention de l'utilisateur. Le paramètre width = 12 spécifie la largeur de la boîte en nombre de colonnes sur la page.
+	
 	output$WARNINGSbox <- renderUI({
 		if(is.null(FilePath()))
 			return(NULL)
@@ -167,13 +191,16 @@ shinyServer(function(input, output, session){
   			)
 	})
 
+### Ce code utilise une fonction observeEvent pour détecter le changement de l'élément d'entrée input$FileBox. Lorsque cela se produit, il utilise une fonction tryCatch pour capturer les avertissements éventuels générés par le code qui traite le fichier téléchargé. Si un avertissement est capturé, la variable mess contient le message d'avertissement, qui est ensuite affiché à l'utilisateur à l'aide de la fonction showNotification. En résumé, ce code affiche une notification à l'utilisateur en cas d'avertissement lors du traitement du fichier téléchargé.
+	
  observeEvent(input$FileBox, {
  	a <- tryCatch(warning(Sys.time()), warning=function(w) { w })
     mess <- a$message
     showNotification(mess)
   })
 
-
+### Ce code crée un bouton de téléchargement qui permet à l'utilisateur de télécharger un fichier résultat si un chemin de fichier est fourni. Le bouton est affiché dans une boîte d'information avec une icône de téléchargement et une couleur maroon. Si aucun chemin de fichier n'est fourni, rien ne sera affiché.
+ 
 	output$downloadButton <- renderUI({
 		if(is.null(FilePath()))
 			return(NULL)
