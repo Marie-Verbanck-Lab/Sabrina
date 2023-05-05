@@ -65,8 +65,6 @@ Pour que l'utilisateur puisse modifier de façon autonome son fichier s'il est m
 ---
 **TO-DO**
 
-- Explorer les possibilités du package shinyjs
-https://deanattali.com/shinyjs/overview
 - Exemples d'options qui peuvent être utiles lors du développement
 ```{r, echo=TRUE, eval = FALSE}
 options(shiny.trace=TRUE)
@@ -88,6 +86,8 @@ SARP.moodle renvoie beaucoup d'informations dans la console (via la fonction cat
 
 **TO-DO**
 
+- Explorer les possibilités du package shinyjs
+https://deanattali.com/shinyjs/overview
 - Récupérer suite à la conversion, les sorties consoles dans lesquelles SARP.moodle donne des indications
 - Renvoyer un tableau synthétique avec une synthèse des questions converties (nombre de questions par type de question et nombre de choix)
 - Visualiser les questions en convertissant le xml en html
