@@ -45,6 +45,7 @@ shinyServer(function(input, output, session){
 
 	
 	getXML <- function(file){
+	  
 	  extension <- tools::file_ext(input$file$datapath)
 	  
 	  if(input$ImagesQuestion == TRUE){
@@ -52,7 +53,7 @@ shinyServer(function(input, output, session){
 	    system(paste0("cp ", input$Images[, 4], " ", FileRep, input$Images[, 1], collapse = ";"))
 	    
 	    if(extension == "csv"){
-	      csv.moodle(
+	      csv.moodle(                                                                                                                                            
 	        fichier.csv = input$file$datapath, 
 	        fichier.xml = file,
 	        sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
