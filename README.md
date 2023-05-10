@@ -93,7 +93,7 @@ https://deanattali.com/shinyjs/overview
 - Récupérer suite à la conversion, les sorties consoles dans lesquelles SARP.moodle donne des indications
 - Renvoyer un tableau synthétique avec une synthèse des questions converties (nombre de questions par type de question et nombre de choix)
 - Visualiser les questions en convertissant le xml en html
-
+- Voir si la fonction sink() permet de récupérer les sorties affichage console
 ---
 
 
