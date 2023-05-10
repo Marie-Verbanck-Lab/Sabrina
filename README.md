@@ -72,6 +72,8 @@ options(shiny.fullstacktrace=TRUE)
 ```
 - Idée à partir d'un excel/ods, convertir en xml à partir du tableau et à partir du csv obtenu à partir du tableau pour faire apparaitre des différences/erreurs potentielles.
 - Créer une table de conversion des erreurs/warnings SARP.moodle et faire des phrases à renvoyer à l'utilisateur. Il faut au préalable récupérer les stop() et warnings() dans le code de SARP.moodle.
+- Pour Emmanuel : numéroter les erreurs pour les parser dans le fichier de conversion.
+ 
 ---
 
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
