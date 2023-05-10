@@ -128,5 +128,7 @@ Pour pouvoir diffuser l'interface, il faut la déployer sur shiny serveur
 **TO-DO**
 - Installation de shiny serveur
 https://shiny.rstudio.com/articles/shiny-server.html
+- Identité de l'utilisateur au préalable
+- Suppression des fichiers pour garantir a confidentialité de l'utilisateur
 
 ---
