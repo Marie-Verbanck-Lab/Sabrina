@@ -131,5 +131,5 @@ https://shiny.rstudio.com/articles/shiny-server.html
 - Identité de l'utilisateur au préalable
 - Dossier utilisateur pour stocker et protéger les fichiers propres à l'utilisateur 
 - Suppression des fichiers pour garantir a confidentialité de l'utilisateur ou conservation pour faire des statistiques
-
+- Emmanuel : écrire résumé & Viginie : Contacter Luc Tamisier pour identification moodle -> shiny et dossier personnel utilisateur 
 ---
