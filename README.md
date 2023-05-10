@@ -128,7 +128,8 @@ Pour pouvoir diffuser l'interface, il faut la déployer sur shiny serveur
 **TO-DO**
 - Installation de shiny serveur
 https://shiny.rstudio.com/articles/shiny-server.html
-- Identité de l'utilisateur au préalable
+- Fichier de log incrémental pour stocker les bilans de toutes les conversions effectuées
+- Identité de l'utilisateur au préalable + discipline (pour les stats)
 - Dossier utilisateur pour stocker et protéger les fichiers propres à l'utilisateur 
 - Suppression des fichiers pour garantir a confidentialité de l'utilisateur ou conservation pour faire des statistiques
 - Emmanuel : écrire résumé & Viginie : Contacter Luc Tamisier pour identification moodle -> shiny et dossier personnel utilisateur 
