@@ -129,6 +129,7 @@ Pour pouvoir diffuser l'interface, il faut la déployer sur shiny serveur
 - Installation de shiny serveur
 https://shiny.rstudio.com/articles/shiny-server.html
 - Identité de l'utilisateur au préalable
-- Suppression des fichiers pour garantir a confidentialité de l'utilisateur
+- Dossier utilisateur pour stocker et protéger les fichiers propres à l'utilisateur 
+- Suppression des fichiers pour garantir a confidentialité de l'utilisateur ou conservation pour faire des statistiques
 
 ---
