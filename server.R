@@ -8,28 +8,21 @@ library(SARP.moodle)
 library(data.table)
 library(readxl)
 library(readODS)
-library(SARP.moodle, lib.loc = "/usr/lib64/R/library")
+# library(SARP.moodle, lib.loc = "/usr/lib64/R/library")
+library(SARP.moodle) #, lib.loc = "/home/sabrina/R/x86_64-mageia-linux-gnu-library/4.0/")
 
 ############################################################################################################
 
-#insérer logo
-image_directory <- "/home/sabrina/Documents/ShinyMoodle/MoodleBaseQuestions"
-column(width = 6, align = "center",
-       tags$img(src = paste0(image_directory, "UniversiteParisCite_Pharmacie.jpeg"), width = "100%", height = "auto")
-)
-column(width = 6, align = "center",
-       tags$img(src = paste0(image_directory, "UniversiteParisCite_idex.jpeg"), width = "100%", height = "auto")
-)
-column(width = 6, align = "center",
-       tags$img(src = paste0(image_directory, "logo-BioSTM.png"), width = "100%", height = "auto")
-)
-column(width = 6, align = "center",
-       tags$img(src = paste0(image_directory, "Logo_investir_lavenir.png"), width = "100%", height = "auto")
-)
-###########
+FichierErreurs <- read.table("www/codes_erreur.2023-05-18_EC.txt", header = TRUE, sep = "\t")
 
 shinyServer(function(input, output, session){
-	
+
+    output$picture <- renderImage({
+      return(list(src = "www/UniversiteParisCite_Pharmacie.jpeg",contentType = "image/jpeg"))
+    }, deleteFile = FALSE)
+
+    values <- reactiveValues()
+  
 	# getCSV <- function(){
 	# 	#res <- read.xlsx(FilePath(), 1) 
 	#   #fwrite(res, paste0("BaseQuestionsMoodle_", Sys.Date(), ".csv"), sep = ";")
@@ -37,7 +30,7 @@ shinyServer(function(input, output, session){
 	#   return(paste0("BaseQuestionsMoodle_", Sys.Date(), ".csv"))
 	# }
 
-	FilePath <- reactive({
+  FilePath <- reactive({
 		input$file$datapath
 	})
 
@@ -46,14 +39,27 @@ shinyServer(function(input, output, session){
 		updateTabItems(session, "tabs", "Conversion")
 	})
 
+	# observeEvent(values[["xml"]], {
+	#   cat(! is.null(values[["xml"]]))
+	#   if (! is.null(values[["xml"]])) {
+	#     enable("downloadSolution")
+	#   } else {
+	#     disable("downloadSolution")
+	#   }
+	# })
+	
 	output$downloadSolution <- downloadHandler(
 		filename = function() {
 			as.character(paste0("BaseQuestionsMoodle_", Sys.Date(), ".xml"))
 		},
 		content = function(file) {
-			cat(input$file$datapath)
-			cat("##################################\n")
-			getXML(file)
+			# return(getXML(file))
+		  values[["log"]] <- capture.output(xml <- getXML(file))
+		  # values[["xml"]] <- xml
+		  if(! is.null(xml))
+  		  return(xml)
+		  else
+		    return(NULL)
 		}
 	)
 	
@@ -69,7 +75,7 @@ shinyServer(function(input, output, session){
 	    system(paste0("cp ", input$Images[, 4], " ", FileRep, input$Images[, 1], collapse = ";"))
 	    
 	    if(extension == "csv"){
-	      csv.moodle(                                                                                                                                            
+	       csv.moodle(
 	        fichier.csv = input$file$datapath, 
 	        fichier.xml = file,
 	        sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
@@ -94,31 +100,37 @@ shinyServer(function(input, output, session){
 	    cat(paste("########################", extension, "######################\n\n\n"))
 	    
 	    if(extension == "csv"){
+	    msgErr <- try(conv <-
 	      csv.moodle(
 	        fichier.csv = input$file$datapath, 
 	        fichier.xml = file
+	        )
 	      )
 	    } else if(extension == "xlsx"){
-	      xlsx.moodle(
-	        fichier.xlsx = input$file$datapath, 
-	        fichier.xml = file
+	      msgErr <- try(conv <-
+	        xlsx.moodle(
+	          fichier.xlsx = input$file$datapath, 
+	          fichier.xml = file
+	        )
 	      )
-	      
-	     
 	    } else if(extension == "ods"){
+	      msgErr <- try(conv <-
 	      ods.moodle(
 	        fichier.ods = input$file$datapath, 
 	        fichier.xml = file
+	        )
 	      )
-	      
 	    }
 	  }
-	  
-	  return(file)
+	  if (class(msgErr) %in% "try-error") {
+	    return(NULL)
+	  } else {
+	    return(conv)
+	  }
 	}
 	
-
 	output$WARNINGS <- renderPrint({
+	  textOutput("text")
 		# getXML(as.character(paste0("BaseQuestionsMoodle_", Sys.Date(), ".xml")))
 	})
 	
@@ -201,7 +213,9 @@ shinyServer(function(input, output, session){
 			return(NULL)
 		else
 			box(title = "Détail du traitement de votre fichier de base de questions.", 
-				verbatimTextOutput("WARNINGS"),
+				# verbatimTextOutput("WARNINGS"),
+				#verbatimTextOutput(getXML()),
+				verbatimTextOutput("console"),
 				solidHeader = TRUE,
   				status = "warning",
   				width = 12
@@ -220,7 +234,7 @@ shinyServer(function(input, output, session){
  
 	output$downloadButton <- renderUI({
 		if(is.null(FilePath()))
-			return(NULL)
+	   	return(NULL)
 		else
 			infoBox("", "Vous pouvez télécharger le fichier résultat.", 
 				downloadButton("downloadSolution", "Cliquez ici pour télécharger le fichier résultat"),
@@ -231,6 +245,9 @@ shinyServer(function(input, output, session){
   			)
 	})
 
-
+	output$console <- renderPrint({
+	  return(print(values[["log"]]))
+	  # You could also use grep("Warning", values[["log"]]) to get warning messages and use shinyBS package
+	  # to create alert message
+	})
 })
-
