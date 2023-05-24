@@ -113,12 +113,13 @@ Il faut compléter l'interface pour qu'elle rendre l'utilisateur le plus autonom
   - Fenêtre avec des explications du principe etc
 - Fournir des gabarits à télécharger / à préremplir en fonction des types de questions dont l'utilisateur a besoin
 - https://github.com/dreamRs/fresh
-- Couleurs en Hexadécimal: Rouge/Bordeau : 138/21/56 = #8A1538
-                           Corail : 255/92/57 = #FF5C39
-                           Bleu-Gris : 221/229/237 = #DDE5ED
-                           Bleu : 91/194/231 = #5BC2E7
-                           Beige : 241/241/222 = #F1DEDE
-                           Gris : 85/72/72 = #554848
+- Couleurs en Hexadécimal: 
+- Rouge/Bordeau : 138/21/56 = #8A1538
+- Corail : 255/92/57 = #FF5C39
+- Bleu-Gris : 221/229/237 = #DDE5ED
+- Bleu : 91/194/231 = #5BC2E7
+- Beige : 241/241/222 = #F1DEDE
+- Gris : 85/72/72 = #554848
                            
 
 ---
