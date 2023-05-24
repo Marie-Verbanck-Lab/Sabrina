@@ -3,7 +3,7 @@ library(shinydashboard)
 #library(xlsx)
 library(openxlsx)
 library(SARP.moodle)
-
+library(fresh)
 #####################################################################################
 
 # library(rsconnect) ; rsconnect::setAccountInfo(name='verbam01', token='06416503D2F55082582397B5BDE79501', secret='bYpuEPHs35y+ChC6ajQoui2XV9rxJTpSowPFmDan')
@@ -12,12 +12,31 @@ library(SARP.moodle)
 #####################################
 linebreaks <- function(n){HTML(strrep(br(), n))}
 
+mytheme <- create_theme(
+  adminlte_color(
+    purple = "#8A1538"
+  ),
+  adminlte_sidebar(
+    width = "400px",
+    dark_bg = "#8A1538",
+    dark_hover_bg = "#939597",
+    dark_color = "#2E3440"
+  ),
+  adminlte_global(
+    content_bg = "#FFF",
+    box_bg = "#FFFFFF", 
+    info_box_bg = "#F3F1F1"
+  )
+)
+
+
+
 shinyUI(
   
   #####################################################################################
   
-  #insérer logo
-  dashboardPage(skin = "black",
+
+  dashboardPage(skin = "purple",
 	dashboardHeader(
 		title = "SARP moodle",
 		dropdownMenuOutput("messageMenu")
@@ -38,6 +57,7 @@ shinyUI(
 				tabName = "Conversion", 
 				icon = icon("gears")
 			)
+			
 		)
 	),
 
@@ -45,6 +65,7 @@ shinyUI(
 ############################# Body ##############################
 
 	dashboardBody(
+	  use_theme(mytheme),
 		tabItems(
 			tabItem(tabName = "Base",
 
@@ -84,7 +105,7 @@ shinyUI(
   				  ),
   					valueBox("",
 						actionButton("Start", "Commencer"),
-						color = "navy",
+						color = "black",
 						width = 3
   					),
   					align = "center"
@@ -122,3 +143,4 @@ shinyUI(
 		)
 	)
 ))
+
