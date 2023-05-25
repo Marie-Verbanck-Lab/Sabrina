@@ -19,7 +19,7 @@ mytheme <- create_theme(
   adminlte_sidebar(
     width = "400px",
     dark_bg = "#8A1538",
-    dark_hover_bg = "#939597",
+    dark_hover_bg = "#CC6666",
     dark_color = "#2E3440"
   ),
   adminlte_global(
@@ -30,8 +30,8 @@ mytheme <- create_theme(
 )
 
 
-
 shinyUI(
+  
   
   #####################################################################################
   
@@ -52,6 +52,7 @@ shinyUI(
 			menuItem("Informations générales",
 				tabName = "Base", 
 				icon = icon("info")
+				
 			),
 			menuItem("Conversion",
 				tabName = "Conversion", 
@@ -65,6 +66,7 @@ shinyUI(
 ############################# Body ##############################
 
 	dashboardBody(
+  
 	  use_theme(mytheme),
 		tabItems(
 			tabItem(tabName = "Base",
@@ -118,7 +120,7 @@ shinyUI(
 						radioButtons("ImagesQuestion", label = "", choices = list("Non" = FALSE, "Oui" = TRUE), inline = TRUE, selected = TRUE),
 						icon = icon("images"), 
 						fill = TRUE, 
-						color = "maroon", 
+						color = "purple", 
 						width = 12
   					)
 				),
@@ -143,4 +145,6 @@ shinyUI(
 		)
 	)
 ))
+
+
 

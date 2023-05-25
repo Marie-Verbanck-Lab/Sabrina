@@ -16,12 +16,25 @@ library(SARP.moodle) #, lib.loc = "/home/sabrina/R/x86_64-mageia-linux-gnu-libra
 FichierErreurs <- read.table("www/codes_erreur.2023-05-18_EC.txt", header = TRUE, sep = "\t")
 
 shinyServer(function(input, output, session){
-
-    output$picture <- renderImage({
-      return(list(src = "www/UniversiteParisCite_Pharmacie.jpeg",contentType = "image/jpeg"))
-    }, deleteFile = FALSE)
-
-    values <- reactiveValues()
+  
+# !!!!!!!!!!!!!!!!!!!!!!   Insérer Logos mais fonctionne pas pour le moment
+  
+  output$picture <- renderImage({
+    image_list <- c("www/UniversiteParisCite_Pharmacie.jpeg",contentType = "image/jpeg",
+                    "www/UniversiteParisCite_idex.jpeg",contentType = "image/jpeg",
+                    "www/logo-BioSTM.png",contentType = "image/png",
+                    "www/Logo_investir_lavenir.png",contentType = "image/png")
+    images <- lapply(image_list, function(image_path) {
+      renderImage({
+        list(src = image_path, contentType = "image/jpeg", "image/png")
+      }, deleteFile = FALSE)
+    })
+    
+    tagList(images)
+  })
+  
+  values <- reactiveValues()
+  
   
 	# getCSV <- function(){
 	# 	#res <- read.xlsx(FilePath(), 1) 
