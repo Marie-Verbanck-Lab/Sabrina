@@ -1,7 +1,12 @@
+#Librairies
 library(shiny)
 library(shinydashboard)
-#library(xlsx)
+library(base64enc)
 library(openxlsx)
+library(SARP.moodle)
+library(data.table)
+library(readxl)
+library(readODS)
 library(SARP.moodle)
 library(fresh)
 #####################################################################################
@@ -37,11 +42,10 @@ shinyUI(
   dashboardPage(skin = "purple",
 	dashboardHeader(
 		title = "SARP moodle",
-		tags$li(class = "dropdown",
-		        tags$a(href = "#", class = "dropdown-toggle", `data-toggle` = "dropdown",
-		               tags$img(src = "Logo-BioSTM.png", height = "80px", width = "80px"))
-		       
-		),
+		tags$li(a(href = 'https://biostm.u-paris.fr/',
+		          img(src = 'Logo-BioSTM.png', height = "60px", width = "60px"),
+		          style = "padding-top:10px; padding-bottom:10px;"),
+		        class = "dropdown"),
 		dropdownMenuOutput("messageMenu")
 	),
 
@@ -126,7 +130,7 @@ shinyUI(
 				################ Importation des Images
   				fluidRow(
 					infoBox("", "Votre base de questions utilise-t-elle des images ?", 
-						radioButtons("ImagesQuestion", label = "", choices = list("Non" = FALSE, "Oui" = TRUE), inline = TRUE, selected = TRUE),
+						radioButtons("ImagesQuestion", label = "", choices = list("Non" = FALSE, "Oui" = TRUE), inline = TRUE, selected = FALSE),
 						icon = icon("images"), 
 						fill = TRUE, 
 						color = "purple", 
