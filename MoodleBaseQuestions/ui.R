@@ -42,7 +42,7 @@ shinyUI(
 		title = "SARP moodle",
 		tags$li(class = "dropdown",
 		        tags$a(href = "#", class = "dropdown-toggle", `data-toggle` = "dropdown",
-		               tags$img(src = "logo-BioSTM.png", height = "60px", width = "80px"))
+		               tags$img(src = "Logo BioSTM.png", height = "60px", width = "80px"))
 		       
 		),
 		dropdownMenuOutput("messageMenu")
@@ -81,7 +81,7 @@ shinyUI(
 	dashboardBody(
 	  fluidRow(
 	    column(width = 3,
-	           img(src = "UniversiteParisCite_Pharmacie.jpeg", height = "200px", width = "500px")
+	           img(src = "UniversiteParisCite_Pharmacie.jpeg", height = "157px", width = "500px")
 	    )
 	  ),
   
