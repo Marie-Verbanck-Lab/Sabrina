@@ -65,9 +65,10 @@ shinyServer(function(input, output, session){
 #Cette fonction "getXML" prend un nom de fichier en entrée et effectue des opérations en fonction de la valeur des options "ImagesQuestion" et "conversion" de l'entrée utilisateur, avant de renvoyer le nom du fichier en sortie. La fonction convertit les fichiers CSV, XLSX et ODS en fichier XML en utilisant les fonctions csv.moodle(), xlsx.moodle() et ods.moodle() respectivement. Si l'option "ImagesQuestion" est activée, la fonction copie les fichiers d'images spécifiés dans le répertoire de destination avant de convertir le fichier en XML.
 
 	
-	getXML <- function(file){
+	getXML <- function(){
 	  
 	  extension <- tools::file_ext(input$file$datapath)
+	  file <- "temp.xml"
 	  
 	  if(input$ImagesQuestion == TRUE){
 	    FileRep <- gsub("0\\.[a-zA-Z]+$", "", input$file$datapath)
@@ -231,18 +232,39 @@ shinyServer(function(input, output, session){
 
 ### Ce code crée un bouton de téléchargement qui permet à l'utilisateur de télécharger un fichier résultat si un chemin de fichier est fourni. Le bouton est affiché dans une boîte d'information avec une icône de téléchargement et une couleur maroon. Si aucun chemin de fichier n'est fourni, rien ne sera affiché.
  
-	output$downloadButton <- renderUI({
-		if(is.null(FilePath()))
-	   	return(NULL)
-		else
-			infoBox("", "Vous pouvez télécharger le fichier résultat.", 
-				downloadButton("downloadSolution", "Cliquez ici pour télécharger le fichier résultat"),
-  			icon = icon("download"), 
-			fill = TRUE, 
-			color = "maroon", 
-			width = 12
-  			)
-	})
+ output$downloadButton <- renderUI({
+   if(is.null(FilePath())){
+     return(NULL)
+   } else {
+     values[["log"]] <- capture.output(xml <- getXML())
+     if(is.null(xml)) {
+       infoBox("", "La conversion n'a pas abouti car il y a une erreur dans votre fichier d'entrée.",
+               icon = icon("triangle-exclamation"),
+               fill = TRUE,
+               color = "maroon",
+               width = 12
+       )
+     } else {
+       infoBox("", "Vous pouvez télécharger le fichier résultat.",
+               downloadButton("downloadSolution", "Cliquez ici pour télécharger le fichier résultat"),
+               icon = icon("download"),
+               fill = TRUE,
+               color = "maroon",
+               width = 12
+       )
+     }
+   } 
+ })
+ 
+ output$downloadSolution <- downloadHandler(
+   filename = function() {
+     as.character(paste0("BaseQuestionsMoodle_", Sys.Date(), ".xml"))
+   },
+   content = function(file) {
+     if(file.exists("temp.xml"))
+       file.copy("temp.xml", file)
+   }
+ )
 
 	output$console <- renderPrint({
 	  return(print(values[["log"]]))
