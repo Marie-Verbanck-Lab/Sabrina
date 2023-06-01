@@ -24,8 +24,8 @@ mytheme <- create_theme(
   adminlte_sidebar(
     width = "400px",
     dark_bg = "#8A1538",
-    dark_hover_bg = "#CC6666",
-    dark_color = "#2E3440"
+    dark_hover_bg = "#CC3333",
+    dark_color = "#FFFFFF"
   ),
   adminlte_global(
     content_bg = "#FFF",
@@ -37,13 +37,14 @@ mytheme <- create_theme(
 
 shinyUI(
 
+
   #####################################################################################
   
   dashboardPage(skin = "purple",
 	dashboardHeader(
 		title = "SARP moodle",
 		tags$li(a(href = 'https://biostm.u-paris.fr/',
-		          img(src = 'Logo-BioSTM.png', height = "60px", width = "60px"),
+		          img(src = 'Logo BioSTM.png', height = "60px", width = "60px"),
 		          style = "padding-top:10px; padding-bottom:10px;"),
 		        class = "dropdown"),
 		dropdownMenuOutput("messageMenu")
@@ -64,13 +65,17 @@ shinyUI(
 			menuItem("Conversion",
 				tabName = "Conversion", 
 				icon = icon("gears")
+			),
+			menuItem("Aide",
+			         tabName = "Aide", 
+			         icon = icon("circle-info")
 			)
 			
 		),
 		tags$div(
 		  style = "padding: 100px;",
-		  tags$img(src = "UniversiteParisCite_idex.jpeg", height = "150px", width = "150px"),
-		  tags$img(src = "Logo_investir_lavenir.png", height = "150px", width = "150px")
+		  tags$img(src = "Logo_investir_lavenir.png", height = "150px", width = "150px"),
+		  tags$img(src = "UniversiteParisCite_idex.jpeg", height = "150px", width = "150px")
 		)
 		
 		
@@ -85,6 +90,7 @@ shinyUI(
 			tabItem(tabName = "Base",
 
 				################ Premiere partie introductive
+				
 				fluidRow(
 				  img(src = "UniversiteParisCite_Pharmacie.jpeg", height = "157px", width = "500px")
 				),
@@ -152,7 +158,39 @@ shinyUI(
   				),
   				fluidRow(
   					uiOutput("WARNINGSbox")
-  				)
+  				),
+				
+				#Boite mess err
+				fluidRow(
+				  column(width = 12,
+				         box(
+				           title = "Messages",
+				           width = NULL,
+				           solidHeader = TRUE,
+				           status = "info",
+				           verbatimTextOutput("messages")
+				         )
+				  )
+				),
+			),
+			tabItem(tabName = "Aide",
+			        
+			        
+			        fluidRow(	
+			          infoBox("Structurer le fichier de questions", "", 
+			                  icon = icon("stapler"),
+			                  color = "purple", 
+			                  width = 12
+			          ),
+			          infoBox("intégrer le xml sur moodle", "", 
+			                  icon = icon("m"),
+			                  color = "purple", 
+			                  width = 12
+			          ),
+			          
+			          align = "center"
+			        )
+			     
 			)
 #################################################################################################################################			
 		)
