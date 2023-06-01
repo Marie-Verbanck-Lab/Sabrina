@@ -77,25 +77,31 @@ shinyServer(function(input, output, session){
 	    system(paste0("cp ", input$Images[, 4], " ", FileRep, input$Images[, 1], collapse = ";"))
 	    
 	    if(extension == "csv"){
-	       csv.moodle(
-	        fichier.csv = input$file$datapath, 
-	        fichier.xml = file,
-	        sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
-	        dossier.images = FileRep
-	      )
+	      msgErr <- try(conv <-
+	        csv.moodle(
+	          fichier.csv = input$file$datapath, 
+	          fichier.xml = file,
+	          sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
+	          dossier.images = FileRep
+	        )
+        )
 	    } else if(extension == "xlsx"){
-	      xlsx.moodle(
-	        fichier.xlsx = input$file$datapath, 
-	        fichier.xml = file,
-	        sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
-	        dossier.images = FileRep
-	      )
+	      msgErr <- try(conv <-
+	        xlsx.moodle(
+  	        fichier.xlsx = input$file$datapath, 
+  	        fichier.xml = file,
+  	        sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
+  	        dossier.images = FileRep
+  	      )
+        )
 	    } else if(extension == "ods"){
-	      ods.moodle(
-	        fichier.csv = input$file$datapath, 
-	        fichier.xml = file,
-	        sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
-	        dossier.images = FileRep
+	      msgErr <- try(conv <-
+  	      ods.moodle(
+  	        fichier.csv = input$file$datapath, 
+  	        fichier.xml = file,
+  	        sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
+  	        dossier.images = FileRep
+  	      )
 	      )
 	    }
 	  } else {
