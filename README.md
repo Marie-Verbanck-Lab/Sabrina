@@ -111,7 +111,6 @@ Il faut compléter l'interface pour qu'elle rendre l'utilisateur le plus autonom
 - Modifier la page d'accueil de l'interface pour ajouter des informations.
   - Fenêtre avec les informations de contact
   - Fenêtre avec des explications du principe etc
-- Fournir des gabarits à télécharger / à préremplir en fonction des types de questions dont l'utilisateur a besoin
 - https://github.com/dreamRs/fresh
 - Couleurs en Hexadécimal: 
   - Rouge/Bordeau : 138/21/56 = #8A1538
@@ -124,6 +123,24 @@ Il faut compléter l'interface pour qu'elle rendre l'utilisateur le plus autonom
 
 ---
 
+<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+
+
+# Onglet d'expllications
+
+Il faut ajouter un onglet avec des tutos et gabarit à télécharger pour expliquer comment formater le fichier d'entrée.
+
+---
+
+**TO-DO**
+
+- Expliquer comment est structuré le fichier de questions 
+- Fournir des gabarits à télécharger / à préremplir en fonction des types de questions dont l'utilisateur a besoin
+- Expliquer comment intégrer le xml sur moodle
+- Faire une vidéo tuto
+
+
+---
 
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
