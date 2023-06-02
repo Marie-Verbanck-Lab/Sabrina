@@ -44,7 +44,7 @@ shinyUI(
 	dashboardHeader(
 		title = "SARP moodle",
 		tags$li(a(href = 'https://biostm.u-paris.fr/',
-		          img(src = 'Logo BioSTM.png', height = "60px", width = "60px"),
+		          img(src = 'Logo-BioSTM.png', height = "60px", width = "60px"),
 		          style = "padding-top:10px; padding-bottom:10px;"),
 		        class = "dropdown"),
 		dropdownMenuOutput("messageMenu")
@@ -72,10 +72,11 @@ shinyUI(
 			)
 			
 		),
+		linebreaks(25),
 		tags$div(
 		  style = "padding: 100px;",
-		  tags$img(src = "Logo_investir_lavenir.png", height = "150px", width = "150px"),
-		  tags$img(src = "UniversiteParisCite_idex.jpeg", height = "150px", width = "150px")
+		  tags$img(src = "UniversiteParisCite_idex.jpeg", height = "90px", width = "90px"),
+		  tags$img(src = "Logo_investir_lavenir.png", height = "90px", width = "90px")
 		)
 		
 		
@@ -177,12 +178,24 @@ shinyUI(
 			        
 			        
 			        fluidRow(	
-			          infoBox("Structurer le fichier de questions", "", 
+			          infoBox("Structurer le fichier de questions", "......",
 			                  icon = icon("stapler"),
 			                  color = "purple", 
 			                  width = 12
 			          ),
-			          infoBox("intégrer le xml sur moodle", "", 
+			          infoBox("intégrer le xml sur moodle","1.Connectez-vous à votre site Moodle en tant qu'administrateur ou enseignant disposant des droits nécessaires pour créer un cours ou une activité.
+
+    2.Accédez à la section du cours où vous souhaitez intégrer le fichier XML. Si vous créez un nouveau cours, créez d'abord le cours lui-même.
+
+    3.Cliquez sur le bouton 'Ajouter une activité ou une ressource' dans la section où vous souhaitez intégrer le fichier XML. Cela ouvrira la page 'Ajouter une activité ou une ressource'.
+
+    4.Sur la page 'Ajouter une activité ou une ressource', sélectionnez l'option 'URL' ou 'Page externe', selon la version de Moodle que vous utilisez.
+
+    5.Dans la section 'Contenu de la page', recherchez l'option permettant d'insérer du code HTML ou XML. Elle peut être appelée 'Éditeur HTML' ou 'Contenu HTML', ou vous pouvez voir une icône ressemblant à '</>'. Cliquez sur cette option pour ouvrir l'éditeur.
+
+    6.Dans l'éditeur HTML, collez le contenu de votre fichier XML. Vous pouvez également utiliser l'option d'importation de fichier si elle est disponible pour importer directement le fichier XML.
+
+    7.Enregistrez les modifications et prévisualisez la page pour vous assurer que le fichier XML est correctement intégré.", 
 			                  icon = icon("m"),
 			                  color = "purple", 
 			                  width = 12

@@ -9,6 +9,7 @@ library(SARP.moodle)
 library(data.table)
 library(readxl)
 library(readODS)
+library(spsComps)
 # library(SARP.moodle, lib.loc = "/usr/lib64/R/library")
 library(SARP.moodle) #, lib.loc = "/home/sabrina/R/x86_64-mageia-linux-gnu-library/4.0/")
 
@@ -131,7 +132,8 @@ shinyServer(function(input, output, session){
 	    }
 	  }
 	  if (class(msgErr) %in% "try-error") {
-	    return(NULL)
+	    shinyCatch({ stop(msgErr) }, prefix = '')
+	    return(msgErr)
 	  } else {
 	    return(conv)
 	  }
@@ -245,13 +247,18 @@ shinyServer(function(input, output, session){
      return(NULL)
    } else {
      values[["log"]] <- capture.output(xml <- getXML())
-     if(is.null(xml)) {
-       infoBox("", "La conversion n'a pas abouti car il y a une erreur dans votre fichier d'entrée.",
+     if(class(xml) %in% "try-error"){
+       infoBox("ATTENTION", "La conversion n'a pas abouti car il y a une erreur dans votre fichier d'entrée.",
                icon = icon("triangle-exclamation"),
                fill = TRUE,
                color = "red",
                width = 12
        )
+       
+       ##### renvoyer le detail de l'erreur qui est ds xml
+       
+       
+       
      } else {
        infoBox("", "Vous pouvez télécharger le fichier résultat.",
                downloadButton("downloadSolution", "Cliquez ici pour télécharger le fichier résultat"),
@@ -260,6 +267,16 @@ shinyServer(function(input, output, session){
                color = "green",
                width = 12
        )
+       
+       ####### VISUASISATION
+       
+       # creation d'un html à partir du xml
+       # system("imprime_Moodle temp.xml") # creation de temp.html
+       # visualise temp.html
+       
+       
+       
+       
      }
    } 
  })
