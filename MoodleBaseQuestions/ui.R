@@ -93,7 +93,7 @@ shinyUI(
 				################ Premiere partie introductive
 				
 				fluidRow(
-				  img(src = "UniversiteParisCite_Pharmacie.jpeg", height = "157px", width = "500px")
+				  img(src = "UniversiteParisCite_Pharmacie.jpeg", height = "157px", width = "500px"),
 				),
 				linebreaks(1),
 				fluidRow(
@@ -131,7 +131,16 @@ shinyUI(
   				),
   				column(3),
 				  )
-				)
+				),
+				fluidRow(
+				  infoBox(title = "Information",
+				          uiOutput("email"),
+				          icon = icon("envelope"),
+				          fill = TRUE,
+				          color = "purple",
+				          width = 12
+				  )
+				), 
 			),
   			tabItem(tabName = "Conversion",
 				################ Importation des Images
@@ -183,22 +192,19 @@ shinyUI(
 			                  color = "purple", 
 			                  width = 12
 			          ),
-			          infoBox("intégrer le xml sur moodle","1.Connectez-vous à votre site Moodle en tant qu'administrateur ou enseignant disposant des droits nécessaires pour créer un cours ou une activité.
-
-    2.Accédez à la section du cours où vous souhaitez intégrer le fichier XML. Si vous créez un nouveau cours, créez d'abord le cours lui-même.
-
-    3.Cliquez sur le bouton 'Ajouter une activité ou une ressource' dans la section où vous souhaitez intégrer le fichier XML. Cela ouvrira la page 'Ajouter une activité ou une ressource'.
-
-    4.Sur la page 'Ajouter une activité ou une ressource', sélectionnez l'option 'URL' ou 'Page externe', selon la version de Moodle que vous utilisez.
-
-    5.Dans la section 'Contenu de la page', recherchez l'option permettant d'insérer du code HTML ou XML. Elle peut être appelée 'Éditeur HTML' ou 'Contenu HTML', ou vous pouvez voir une icône ressemblant à '</>'. Cliquez sur cette option pour ouvrir l'éditeur.
-
-    6.Dans l'éditeur HTML, collez le contenu de votre fichier XML. Vous pouvez également utiliser l'option d'importation de fichier si elle est disponible pour importer directement le fichier XML.
-
-    7.Enregistrez les modifications et prévisualisez la page pour vous assurer que le fichier XML est correctement intégré.", 
-			                  icon = icon("m"),
-			                  color = "purple", 
-			                  width = 12
+			          infoBox("intégrer le xml sur moodle",
+			            HTML("
+			              1.Connectez-vous à votre site Moodle en tant qu'administrateur ou enseignant disposant des droits nécessaires pour créer un cours ou une activité.<br/><br/>
+                    2.Accédez à la section du cours où vous souhaitez intégrer le fichier XML. Si vous créez un nouveau cours, créez d'abord le cours lui-même.<br/><br/>
+                    3.Cliquez sur le bouton 'Ajouter une activité ou une ressource' dans la section où vous souhaitez intégrer le fichier XML. Cela ouvrira la page 'Ajouter une activité ou une ressource'.<br/><br/>
+                    4.Sur la page 'Ajouter une activité ou une ressource', sélectionnez l'option 'URL' ou 'Page externe', selon la version de Moodle que vous utilisez.<br/><br/>
+                    5.Dans la section 'Contenu de la page', recherchez l'option permettant d'insérer du code HTML ou XML. Elle peut être appelée 'Éditeur HTML' ou 'Contenu HTML', ou vous pouvez voir une icône ressemblant à '</>'. Cliquez sur cette option pour ouvrir l'éditeur.<br/><br/>
+                    6.Dans l'éditeur HTML, collez le contenu de votre fichier XML. Vous pouvez également utiliser l'option d'importation de fichier si elle est disponible pour importer directement le fichier XML.<br/><br/>
+			              7.Enregistrez les modifications et prévisualisez la page pour vous assurer que le fichier XML est correctement intégré."
+			             ), 
+			             icon = icon("m"),
+			             color = "purple", 
+			             width = 12
 			          ),
 			          
 			          align = "center"

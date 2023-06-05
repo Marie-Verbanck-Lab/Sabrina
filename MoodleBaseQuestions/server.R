@@ -19,23 +19,22 @@ FichierErreurs <- read.table("www/codes_erreur.2023-05-18_EC.txt", header = TRUE
 
 shinyServer(function(input, output, session){
   
-  
-  
   values <- reactiveValues()
-  
-  
-	# getCSV <- function(){
-	# 	#res <- read.xlsx(FilePath(), 1) 
-	#   #fwrite(res, paste0("BaseQuestionsMoodle_", Sys.Date(), ".csv"), sep = ";")
-	#   res <- 
-	#   return(paste0("BaseQuestionsMoodle_", Sys.Date(), ".csv"))
-	# }
 
   FilePath <- reactive({
 		input$file$datapath
 	})
 
-	# Ce code utilise la fonction `observeEvent()` pour détecter le déclenchement de l'événement "Start" et mettre à jour l'onglet "Conversion" en utilisant la fonction `updateTabItems()`.
+
+  output$email <- renderUI({
+    tagList(a(
+      h5("Contacter Emmanuel Curis pour vos demandes au sujet de SARP.moodle."), 
+      href = "mailto:emmanuel.curis@u-paris.fr")
+    )
+  })
+  
+  
+  # Ce code utilise la fonction `observeEvent()` pour détecter le déclenchement de l'événement "Start" et mettre à jour l'onglet "Conversion" en utilisant la fonction `updateTabItems()`.
 	observeEvent(input$Start, {
 		updateTabItems(session, "tabs", "Conversion")
 	})
@@ -228,7 +227,9 @@ shinyServer(function(input, output, session){
 				verbatimTextOutput("console"),
 				solidHeader = TRUE,
   				status = "warning",
-  				width = 12
+  				width = 12,
+				  collapsible = TRUE,
+				  collapsed = TRUE
   			)
 	})
 
@@ -257,17 +258,26 @@ shinyServer(function(input, output, session){
        
        ##### renvoyer le detail de l'erreur qui est ds xml
        
-       
+       #https://daattali.com/shiny/shinyalert-demo/
        
      } else {
-       infoBox("", "Vous pouvez télécharger le fichier résultat.",
-               downloadButton("downloadSolution", "Cliquez ici pour télécharger le fichier résultat"),
-               icon = icon("download"),
-               fill = TRUE,
-               color = "green",
-               width = 12
+        list(
+         infoBox("", "Vous pouvez télécharger le fichier résultat.",
+                 downloadButton("downloadSolution", "Cliquez ici pour télécharger le fichier résultat"),
+                 icon = icon("download"),
+                 fill = TRUE,
+                 color = "green",
+                 width = 12
+         ),
+         box(title = "Aperçu des questions importées.",
+             includeHTML("temp.html"),
+             solidHeader = TRUE,
+             status = "warning",
+             width = 12,
+             collapsible = TRUE,
+             collapsed = TRUE
+         )
        )
-       
        ####### VISUASISATION
        
        # creation d'un html à partir du xml
@@ -280,7 +290,7 @@ shinyServer(function(input, output, session){
      }
    } 
  })
- 
+   
  output$downloadSolution <- downloadHandler(
    filename = function() {
      as.character(paste0("BaseQuestionsMoodle_", Sys.Date(), ".xml"))
