@@ -13,9 +13,11 @@ library(spsComps)
 # library(SARP.moodle, lib.loc = "/usr/lib64/R/library")
 library(SARP.moodle) #, lib.loc = "/home/sabrina/R/x86_64-mageia-linux-gnu-library/4.0/")
 
+#input=list(file = list(datapath = "/Users/travail/ResilioSync/Desktop/Sabrina-main/ErreurBaseQuestionsMoodle_2021-11-19 2.csv"))
+
 ############################################################################################################
 
-FichierErreurs <- read.table("www/codes_erreur.2023-05-18_EC.txt", header = TRUE, sep = "\t")
+FichierErreurs <- read.table("www/codes_erreur.2023-05-18_EC.txt", header = TRUE, sep = "\t", fill = TRUE)
 
 shinyServer(function(input, output, session){
   
@@ -166,7 +168,6 @@ shinyServer(function(input, output, session){
 	
 #Ce code crée une boîte contenant un élément d'entrée de fichier "fileInput" permettant aux utilisateurs de sélectionner des images en format PNG, JPEG ou JPG, qui seront utilisées pour créer une base de questions. La boîte n'est rendue que si l'option "ImagesQuestion" est activée et elle est stylisée avec un titre, un fond solide de couleur primaire et une largeur de 12.
 	
-	
 	output$ImageBox <- renderUI({
 		if(input$ImagesQuestion == FALSE)
 			return(NULL)
@@ -189,6 +190,7 @@ shinyServer(function(input, output, session){
 	output$ImageInfo <- renderUI({
 		if(input$ImagesQuestion == FALSE)
 			return(NULL)
+	  
 		box(title = "Autorisez-vous les conversions automatiques ?",
 			checkboxGroupInput(inputId = "conversion",
 				label = "",
@@ -249,13 +251,20 @@ shinyServer(function(input, output, session){
    } else {
      values[["log"]] <- capture.output(xml <- getXML())
      if(class(xml) %in% "try-error"){
-       infoBox("ATTENTION", "La conversion n'a pas abouti car il y a une erreur dans votre fichier d'entrée.",
-               icon = icon("triangle-exclamation"),
-               fill = TRUE,
-               color = "red",
-               width = 12
-       )
        
+       ## Erreurs avec les jolis messages
+       CodeError <- gsub("(Error in erreur\\()([0-9]+)(.*)", "\\2", as.character(xml)) # recuperation du numero d'erreur
+       ErrorMessage <- FichierErreurs$MessageUtilisateur[FichierErreurs$Code == CodeError] # Recuperation du message utilisateur
+       ## Recuperation des erreurs brutes POUR L'INSTANT
+       ErrorMessage <- gsub("(.*)(ERREUR : )(.*)(\\\n)", "\\3", as.character(xml)) # recuperation du numero d'erreur
+       
+       infoBox("ATTENTION La conversion n'a pas abouti car il y a une erreur dans votre fichier d'entrée.",
+        ErrorMessage,
+        icon = icon("triangle-exclamation"),
+        fill = TRUE,
+        color = "red",
+        width = 12
+       )
        ##### renvoyer le detail de l'erreur qui est ds xml
        
        #https://daattali.com/shiny/shinyalert-demo/

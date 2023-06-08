@@ -145,43 +145,30 @@ shinyUI(
   			tabItem(tabName = "Conversion",
 				################ Importation des Images
   				fluidRow(
-					infoBox("", "Votre base de questions utilise-t-elle des images ?", 
-						radioButtons("ImagesQuestion", label = "", choices = list("Non" = FALSE, "Oui" = TRUE), inline = TRUE, selected = FALSE),
-						icon = icon("images"), 
-						fill = TRUE, 
-						color = "purple", 
-						width = 12
-  					)
-				),
-				fluidRow(
-					uiOutput("ImageBox"),
-					uiOutput("ImageInfo")
-				),
+  					infoBox("", "Votre base de questions utilise-t-elle des images ?", 
+  						radioButtons("ImagesQuestion", label = "", choices = list("Non" = FALSE, "Oui" = TRUE), inline = TRUE, selected = FALSE),
+  						icon = icon("images"), 
+  						fill = TRUE, 
+  						color = "purple", 
+  						width = 12
+    					)
+			  	),
+				  fluidRow(
+					  uiOutput("ImageBox"),
+					  uiOutput("ImageInfo")
+				  ),
   				################ Importation des fichiers
   				fluidRow(
-					uiOutput("FileBox"),
-				),
-				linebreaks(3),
+					  uiOutput("FileBox"),
+				  ),
+				  linebreaks(3),
   				################ Telechargement du fichier resultat
   				fluidRow(
   					uiOutput("downloadButton")
   				),
   				fluidRow(
   					uiOutput("WARNINGSbox")
-  				),
-				
-				#Boite mess err
-				fluidRow(
-				  column(width = 12,
-				         box(
-				           title = "Messages",
-				           width = NULL,
-				           solidHeader = TRUE,
-				           status = "info",
-				           verbatimTextOutput("messages")
-				         )
-				  )
-				),
+  				)
 			),
 			tabItem(tabName = "Aide",
 			        
