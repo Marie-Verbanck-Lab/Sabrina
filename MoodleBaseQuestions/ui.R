@@ -44,12 +44,12 @@ shinyUI(
 	dashboardHeader(
 		title = "SARP moodle",
 		tags$li(a(href = 'https://biostm.u-paris.fr/',
+		          img(src = "UniversiteParisCite_Pharmacie.jpeg", height = "50px", width = "150px"),
 		          img(src = 'Logo-BioSTM.png', height = "60px", width = "60px"),
 		          style = "padding-top:10px; padding-bottom:10px;"),
 		        class = "dropdown"),
 		dropdownMenuOutput("messageMenu")
 	),
-
 ####################################################################
 ############################# Sidebar ##############################
  
@@ -97,19 +97,19 @@ shinyUI(
 				),
 				linebreaks(1),
 				fluidRow(
-					valueBox("SARP moodle", "Bienvenue dans l'assistant SARP moodle. Cet assistant vous permet à partir d'un simple fichier Excel, Ods, ou Csv de récupérer un fichier XML que vous pourrez importer sur moodle pour en faire une base de questions.", 
+					valueBox("SARP moodle", "Bienvenue dans l'assistant SARP.Moodle qui, à partir d’un gabarit au format csv, xlsx ou ods, convertit votre base de questions en fichier XML que vous pourrez ensuite importer sur Moodle. Si vous utilisez des images, vous pourrez aussi les intégrer.", 
 						icon = icon("info"),
 						color = "purple", 
 						width = 12
   				)
   			),
   			fluidRow(	
-  				infoBox("En entrée : un fichier excel", "Préparez votre fichier (xlsx, ods, csv) comportant toutes les questions de votre future base selon le modèle.", 
+  				infoBox("En entrée : un fichier excel", "Préparez votre fichier (csv, xlsx, ods) comportant toutes les questions de votre future base selon le modèle.", 
 						icon = icon("file-excel"),
 						color = "purple", 
 						width = 12
   				),
-					infoBox("En entrée : des fichiers d'images", "Préparez tous vos fichiers images (jpeg, jpg, png) utilisées dans votre base de question.", 
+					infoBox("En entrée : des fichiers d'images", "Préparez tous vos fichiers images utilisées dans votre base de question.", 
 						icon = icon("images"),
 						color = "purple", 
 						width = 12
@@ -174,10 +174,15 @@ shinyUI(
 			        
 			        
 			        fluidRow(	
-			          infoBox("Structurer le fichier de questions", "......",
+			          infoBox("Structurer le fichier de questions", "Vous pouvez télécharger le fichier ci-joint, qui est un fichier de base. Je vous demande de le compléter avec vos propres questions, et de l'utiliser pour la conversion en XML.",
 			                  icon = icon("stapler"),
 			                  color = "purple", 
 			                  width = 12
+			          ),
+			          #Pas tt à fait fonctionnel
+			          mainPanel(
+			            # Votre contenu principal ici
+			            downloadButton("downloadCSV", "Télécharger le fichier CSV")
 			          ),
 			          infoBox("intégrer le xml sur moodle",
 			            HTML("

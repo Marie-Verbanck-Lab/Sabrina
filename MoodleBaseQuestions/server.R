@@ -256,7 +256,7 @@ shinyServer(function(input, output, session){
        CodeError <- gsub("(Error in erreur\\()([0-9]+)(.*)", "\\2", as.character(xml)) # recuperation du numero d'erreur
        ErrorMessage <- FichierErreurs$MessageUtilisateur[FichierErreurs$Code == CodeError] # Recuperation du message utilisateur
        ## Recuperation des erreurs brutes POUR L'INSTANT
-       ErrorMessage <- gsub("(.*)(ERREUR : )(.*)(\\\n)", "\\3", as.character(xml)) # recuperation du numero d'erreur
+       #ErrorMessage <- gsub("(.*)(ERREUR : )(.*)(\\\n)", "\\3", as.character(xml)) # recuperation du numero d'erreur
        
        infoBox("ATTENTION La conversion n'a pas abouti car il y a une erreur dans votre fichier d'entrée.",
         ErrorMessage,
@@ -317,5 +317,23 @@ shinyServer(function(input, output, session){
 	  return(print(values[["log"]]))
 	  # You could also use grep("Warning", values[["log"]]) to get warning messages and use shinyBS package
 	  # to create alert message
+	})
+	
+	#Pas tt à fait fonctionnel
+	observeEvent(input$downloadCSV, {
+	  # Chemin vers le fichier CSV existant
+	  filepath <- "/home/sabrina/Documents/ShinyMoodle/MoodleBaseQuestions/www/types_questions_Moodle.csv"
+	  
+	  # Vérifiez si le fichier existe
+	  if (file.exists(filepath)) {
+	    output$downloadButton <- downloadHandler(
+	      filename = function() {
+	        "types_questions_Moodle.csv"
+	      },
+	      content = function(file) {
+	        file.copy(filepath, file)
+	      }
+	    )
+	  }
 	})
 })
