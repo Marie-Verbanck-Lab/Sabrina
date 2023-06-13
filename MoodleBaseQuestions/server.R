@@ -231,7 +231,7 @@ shinyServer(function(input, output, session){
   				status = "warning",
   				width = 12,
 				  collapsible = TRUE,
-				  collapsed = TRUE
+				  collapsed = FALSE
   			)
 	})
 
@@ -270,6 +270,9 @@ shinyServer(function(input, output, session){
        #https://daattali.com/shiny/shinyalert-demo/
        
      } else {
+        # creation d'un html à partir du xml
+        system("imprime_Moodle temp.xml") # creation de temp.html
+        # visualise temp.html
         list(
          infoBox("", "Vous pouvez télécharger le fichier résultat.",
                  downloadButton("downloadSolution", "Cliquez ici pour télécharger le fichier résultat"),
@@ -284,7 +287,7 @@ shinyServer(function(input, output, session){
              status = "warning",
              width = 12,
              collapsible = TRUE,
-             collapsed = TRUE
+             collapsed = FALSE
          )
        )
        ####### VISUASISATION
