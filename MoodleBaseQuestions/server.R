@@ -319,21 +319,14 @@ shinyServer(function(input, output, session){
 	  # to create alert message
 	})
 	
-	#Pas tt à fait fonctionnel
-	observeEvent(input$downloadCSV, {
-	  # Chemin vers le fichier CSV existant
-	  filepath <- "/home/sabrina/Documents/ShinyMoodle/MoodleBaseQuestions/www/types_questions_Moodle.csv"
-	  
-	  # Vérifiez si le fichier existe
-	  if (file.exists(filepath)) {
-	    output$downloadButton <- downloadHandler(
+
+	    output$downloadTemplate <- downloadHandler(
 	      filename = function() {
 	        "types_questions_Moodle.csv"
 	      },
 	      content = function(file) {
-	        file.copy(filepath, file)
+	        file.copy("www/types_questions_Moodle.csv", file)
 	      }
 	    )
-	  }
-	})
+
 })

@@ -180,19 +180,20 @@ shinyUI(
 			                  width = 12
 			          ),
 			          #Pas tt à fait fonctionnel
-			          mainPanel(
+			          #mainPanel(
 			            # Votre contenu principal ici
-			            downloadButton("downloadCSV", "Télécharger le fichier CSV")
+			          infoBox("Gabarit", 
+			             downloadButton("downloadTemplate", "Télécharger le fichier CSV"),
+			             icon = icon("stapler"),
+			             color = "purple", 
+			             width = 12
 			          ),
+			          #),
 			          infoBox("intégrer le xml sur moodle",
 			            HTML("
 			              1.Connectez-vous à votre site Moodle en tant qu'administrateur ou enseignant disposant des droits nécessaires pour créer un cours ou une activité.<br/><br/>
                     2.Accédez à la section du cours où vous souhaitez intégrer le fichier XML. Si vous créez un nouveau cours, créez d'abord le cours lui-même.<br/><br/>
-                    3.Cliquez sur le bouton 'Ajouter une activité ou une ressource' dans la section où vous souhaitez intégrer le fichier XML. Cela ouvrira la page 'Ajouter une activité ou une ressource'.<br/><br/>
-                    4.Sur la page 'Ajouter une activité ou une ressource', sélectionnez l'option 'URL' ou 'Page externe', selon la version de Moodle que vous utilisez.<br/><br/>
-                    5.Dans la section 'Contenu de la page', recherchez l'option permettant d'insérer du code HTML ou XML. Elle peut être appelée 'Éditeur HTML' ou 'Contenu HTML', ou vous pouvez voir une icône ressemblant à '</>'. Cliquez sur cette option pour ouvrir l'éditeur.<br/><br/>
-                    6.Dans l'éditeur HTML, collez le contenu de votre fichier XML. Vous pouvez également utiliser l'option d'importation de fichier si elle est disponible pour importer directement le fichier XML.<br/><br/>
-			              7.Enregistrez les modifications et prévisualisez la page pour vous assurer que le fichier XML est correctement intégré."
+                    3.Cliquez sur le bouton 'ajouter une bande de questions' dans la section où vous souhaitez intégrer le fichier XML. Cela ouvrira la page 'importer le fichier sur moodle'."
 			             ), 
 			             icon = icon("m"),
 			             color = "purple", 
