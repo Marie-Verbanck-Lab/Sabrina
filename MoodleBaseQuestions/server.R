@@ -164,14 +164,38 @@ shinyServer(function(input, output, session){
 			color = "blue", 
 			width = 12
   		)
+		
 	})
+	#################  Code pour afficher un apercu du gabarit mais ne fonctionne pas  ############################
+	output$preview <- DT::renderDataTable({
+	  req(input$file)  # S'assurer qu'un fichier est sélectionné
+	  
+	  # Chemin vers le fichier téléchargé
+	  filepath <- input$file$datapath
+	  
+	  # Vérification du type de fichier
+	  if (grepl("\\.csv$", input$file$name, ignore.case = TRUE)) {
+	    data <- read.csv(filepath)
+	  } else if (grepl("\\.xlsx$|\\.xls$", input$file$name, ignore.case = TRUE)) {
+	    data <- readxl::read_excel(filepath)
+	  } else if (grepl("\\.ods$", input$file$name, ignore.case = TRUE)) {
+	    data <- readxl::read_ods(filepath)
+	  } else {
+	    return(NULL)  # Fichier non pris en charge
+	  }
+	  
+	  # Afficher l'aperçu des données
+	  DT::datatable(head(data, 10))
+	})
+	
+	######################################################################################################################
 	
 #Ce code crée une boîte contenant un élément d'entrée de fichier "fileInput" permettant aux utilisateurs de sélectionner des images en format PNG, JPEG ou JPG, qui seront utilisées pour créer une base de questions. La boîte n'est rendue que si l'option "ImagesQuestion" est activée et elle est stylisée avec un titre, un fond solide de couleur primaire et une largeur de 12.
 	
 	output$ImageBox <- renderUI({
 		if(input$ImagesQuestion == FALSE)
 			return(NULL)
-		box(title = "Choisissez les images utilisées dans la base de questions (png ou jpeg).",
+		box(title = "Choisissez les images utilisées dans la base de questions.",
 			fileInput("Images", 
 				label = "", 
 				buttonLabel = HTML(paste(icon("upload"), "Cliquez ici pour sélectionner toutes les images")),
@@ -183,7 +207,10 @@ shinyServer(function(input, output, session){
   			status = "primary",
   			width = 12
   		)
+		
 	})
+	
+	
 	
 # Ce code génère une boîte de dialogue qui permet à l'utilisateur de sélectionner les conversions automatiques qu'il souhaite activer pour les images, les formules mathématiques et les codes SMILES, si l'option "ImagesQuestion" est activée dans l'application R Shiny.
 	

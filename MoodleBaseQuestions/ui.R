@@ -16,7 +16,7 @@ library(fresh)
 
 #####################################
 linebreaks <- function(n){HTML(strrep(br(), n))}
-
+#Permet de changer les couleurs 
 mytheme <- create_theme(
   adminlte_color(
     purple = "#8A1538"
@@ -53,6 +53,7 @@ shinyUI(
 ####################################################################
 ############################# Sidebar ##############################
  
+# Créer les onglets
 	dashboardSidebar(
 		collapsed = FALSE,
 		sidebarMenu(
@@ -70,7 +71,7 @@ shinyUI(
 			         tabName = "Aide", 
 			         icon = icon("circle-info")
 			)
-			
+# Insérer les logos
 		),
 		linebreaks(25),
 		tags$div(
