@@ -1,5 +1,19 @@
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
+# Liste de fonctionnalités à ajouter (voir Virginie)
+
+- Page d'acceuil + conversion
+- Bouton soumettre une fois pour tout importer
+- Images
+  - Bouton image reclickable 
+  - Afficher le nom des images importees
+  - cases à ticker pour valider
+- en entree un fichier excel 
+  (Voir texte modifie de Virginie)
+- Bien utiliser charte partout 
+
+<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+
 # Création d'une base de fichiers de questions avec différents niveaux de difficultés
 
 Il serait pratique avoir une base de fichiers de questions "test" pour pouvoir faire des essais sur des fichiers simples avec différents types de questions.
