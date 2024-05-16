@@ -162,10 +162,6 @@ shinyUI(
   				fluidRow(
 					  uiOutput("FileBox"),
 				  ),
-  				linebreaks(3),
-				  fluidRow(
-				    dataTableOutput("preview"),
-				  ),
 				  linebreaks(3),
   				################ Telechargement du fichier resultat
   				fluidRow(
