@@ -2,6 +2,14 @@
 
 # Images
 
+- Faire Tableau de sortie avec 2 colonnes
+    - Colonne de gauche case à cocher pour selectionner l'image
+    - Colonne de droite Nom de l'image
+    - Objectif recuperer les cases cochees
+- Bouton pour valider les images
+  
+
+Problemes
 - Si on supprime une image on peut plus reimporter
 - Attention doublons
 
