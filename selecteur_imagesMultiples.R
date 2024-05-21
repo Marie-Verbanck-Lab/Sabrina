@@ -16,22 +16,30 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
+    
   selected_images <- reactiveVal(list())
   
   observeEvent(input$images, {
-    images <- selected_images()
-    new_images <- lapply(seq_along(input$images$name), function(i) {
-      list(name = input$images$name[i], datapath = input$images$datapath[i])
+    # Si on observe un nouvel usage de "fileInput"
+    images <- selected_images() # Recuperation des images importees jusque la
+    new_images <- lapply(seq_along(input$images$name), function(i) { # lapply: permet de faire une boucle for
+      list(name = input$images$name[i], datapath = input$images$datapath[i]) # input$images$datapath: chemin de l'image ds l'application
     })
-    names(new_images) <- input$images$name
-    images <- c(images, new_images)
-    selected_images(images)
+    # for (i in seq_along(input$images$name)){ # seq_along(input$images$name) un vecteur avec les indices des images selectionnees 1:nbImages. Autre facon de le faire 1:length(input$images$name)
+    #    list( # on cree une liste avec 2 elements 
+    #        name = input$images$name[i], # 1er element nom de l'image i
+    #        datapath = input$images$datapath[i] # 2eme element chemin de l'image i
+    #   )
+    # }
+    names(new_images) <- input$images$name # renommer les elements de la liste avec les noms des images
+    images <- c(images, new_images) # concatene anciennes images et nouvelles. images est une liste de taille egale aux nombres d'images importees depuis le debut (anciennes + nouvelles) et avec chaque element qui est une liste de 2 elements name et datapath.
+    selected_images(images) # Mise a jour de la liste d'images
   })
   
-  output$selected_images <- renderUI({
-    img_list <- selected_images()
+  output$selected_images <- renderUI({ # Renvoit un element du UI (user interface)
+    img_list <- selected_images() # Recuperation des images importees jusque la 
     tagList(
-      lapply(names(img_list), function(name) {
+      lapply(names(img_list), function(name) { # Une boucle for pour chaque element de names(img_list), donc pour chaque nom d'image
         tags$div(
           h5(name),
           tags$button(
@@ -45,11 +53,23 @@ server <- function(input, output, session) {
     )
   })
   
+  # Tableau de sortie avec 2 colonnes
+    # Colonne de gauche case à cocher pour selectionner l'image
+    # Colonne de droite Nom de l'image
+    # Objectif recuperer les cases cochees
+  # Bouton pour valider les images
+  
+  
+  
+  
   observe({
-    lapply(names(selected_images()), function(name) {
+    img_list <- selected_images() # Recuperation des images importees jusque la 
+    lapply(names(img_list), function(name) { # Boucle for pour chaque image
       observeEvent(input[[paste0("delete_", name, "_btn")]], {
         images <- selected_images()
         images[[name]] <- NULL
+        # imagesUpdated <- images[names(images) != name]
+        # Probleme pour reimporter une image deja supprimee ds input[[paste0("delete_", name, "_btn")]]
         selected_images(images)
       })
     })
