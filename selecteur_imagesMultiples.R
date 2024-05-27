@@ -1,7 +1,16 @@
 library(shiny)
+library(base64enc)
 
 ui <- fluidPage(
   titlePanel("Sélection multiple d'images"),
+  tags$head(tags$style(HTML("
+    .image-preview {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      margin-right: 10px;
+    }
+  "))),
   sidebarLayout(
     sidebarPanel(
       fileInput("images", label = "Sélectionnez des images", multiple = TRUE, accept = c('image/png', 'image/jpeg', 'image/jpg')),
@@ -25,9 +34,13 @@ server <- function(input, output, session) {
   
   observeEvent(input$images, {
     # Si on observe un nouvel usage de "fileInput"
-    images <- selected_images() # Recuperation des images importees jusque la
-    new_images <- lapply(seq_along(input$images$name), function(i) { # lapply: permet de faire une boucle for
-      list(name = input$images$name[i], datapath = input$images$datapath[i]) # input$images$datapath: chemin de l'image dans l'application
+    images <- selected_images()# Recuperation des images importees jusque la
+    new_images <- lapply(seq_along(input$images$name), function(i) {# lapply: permet de faire une boucle for
+      list(
+        name = input$images$name[i], 
+        datapath = input$images$datapath[i], 
+        data = base64enc::dataURI(file = input$images$datapath[i], mime = input$images$type[i])
+      )
     })
     # for (i in seq_along(input$images$name)){ # seq_along(input$images$name) un vecteur avec les indices des images selectionnees 1:nbImages. Autre facon de le faire 1:length(input$images$name)
     #    list( # on cree une liste avec 2 elements 
@@ -35,7 +48,7 @@ server <- function(input, output, session) {
     #        datapath = input$images$datapath[i] # 2eme element chemin de l'image i
     #   )
     # }
-    names(new_images) <- input$images$name  # renommer les elements de la liste avec les noms des images
+    names(new_images) <- input$images$name # renommer les elements de la liste avec les noms des images
     # Vérification des doublons
     duplicate_names <- names(selected_images())[names(selected_images()) %in% input$images$name]
     if (length(duplicate_names) > 0) {
@@ -45,18 +58,19 @@ server <- function(input, output, session) {
         footer = tagList(modalButton("Fermer"))
       ))
     } else {
-    images <- c(images, new_images) # concatene anciennes images et nouvelles. images est une liste de taille egale aux nombres d'images importees depuis le debut (anciennes + nouvelles) et avec chaque element qui est une liste de 2 elements name et datapath.
-    selected_images(images) # Mise a jour de la liste d'images
+      images <- c(images, new_images)# concatene anciennes images et nouvelles. images est une liste de taille egale aux nombres d'images importees depuis le debut (anciennes + nouvelles) et avec chaque element qui est une liste de 2 elements name et datapath.
+      selected_images(images)# Mise a jour de la liste d'images
     }
   })
   
-  output$selected_images <- renderUI({ # Renvoit un element du UI (user interface)
-    img_list <- selected_images() # Recuperation des images importees jusque la
+  output$selected_images <- renderUI({# Renvoit un element du UI (user interface)
+    img_list <- selected_images()# Recuperation des images importees jusque la
     tagList(
       lapply(names(img_list), function(name) {# Une boucle for pour chaque element de names(img_list), donc pour chaque nom d'image
         tags$div(
           style = "display: flex; align-items: center;",
           checkboxInput(inputId = paste0("select_", name), label = NULL, value = TRUE),
+          tags$img(src = img_list[[name]]$data, class = "image-preview"),
           tags$span(h5(name), style = "margin-left: 10px;")
         )
       })
@@ -64,7 +78,7 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$validate_images, {
-    selected <- reactiveVal(NULL) # Crée une reactiveVal pour stocker les images sélectionnées
+    selected <- reactiveVal(NULL)# Crée une reactiveVal pour stocker les images sélectionnées
     observe({
       # Liste des valeurs de toutes les cases à cocher correspondant à chaque image sélectionnée
       input_list <- lapply(names(selected_images()), function(name) input[[paste0("select_", name)]])
@@ -88,8 +102,8 @@ server <- function(input, output, session) {
   })
   
   observe({
-    img_list <- selected_images() # Recuperation des images importees jusque la 
-    lapply(names(img_list), function(name) { # Boucle for pour chaque image
+    img_list <- selected_images()# Recuperation des images importees jusque la 
+    lapply(names(img_list), function(name) {# Boucle for pour chaque image
       observeEvent(input[[paste0("delete_", name, "_btn")]], {
         images <- selected_images()
         images[[name]] <- NULL
