@@ -77,6 +77,9 @@ Box verte 1 pour telecharger le fichier
 
 Box verte 2 pour faire le bilan de la conversion.
 
+Bouton bleu de retour vers l'onglet principal de conversion
+
+- Titre: "Retour"
 
 ---
 
