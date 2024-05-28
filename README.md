@@ -1,5 +1,89 @@
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
+# Interface et charte graphique - A respecter partout!
+
+Presenter toujours de la même façon : 
+
+1. Texte introductif d'abord 
+2. Bouton d'action ensuite 
+
+Charte couleur : 
+
+- **Couleur d'information** : actuellement designée par "purple" et pointant vers "#8A1538" = couleur UPC 
+- **Couleur action de l’utilisateur** : actuellement designée par "blue" / status "primary" 
+- **Couleur retour de l’application** : actuellement designée par "green"  
+
+Ajouter une boite sur l'onglet numero 1 de conversion pour expliquer la charte de couleur, voici le texte :
+
+> Voici la charte Graphique des couleurs pour vous guider 
+
+>   - bordeau : fournit une information 
+>   - bleu : nécessite une action de votre part 
+>   - vert : fournit un retour de l’application 
+>   - rouge : prévient d’une erreur 
+
+
+*NB: Voir si on introduit une couleur supplementaire pour les pb, actuellement "red"*
+
+
+## Onglet numero 1 : "Convertir son fichier de questions"
+
+Box bleue 1 
+
+- Question : "Importez votre fichier de questions preparé en suivant le gabarit (xlsx, csv, ods). Vous pouvez trouver des exemples de gabarits pour créer vos questions dans l’aide *(bouton qui va vers l'onglet 3 d'aide)*"
+
+Box bleue 2 
+
+- Question : "Utilisez-vous des images ?"
+- Reponse : "oui" "non"
+
+Box bleu 3 qui s'ouvre si oui aux images
+
+- Question : "Selectionnez les images utilisées dans votre fichier de questions."
+
+Box vert 4 qui s'ouvre pour synthetiser l'importation
+
+- Texte : "Vous avez importer les X images suivantes: ..."
+
+*NB: A ajouter une box de verification qui compare les images selectionnees et les noms de fichiers utilisés dans le fichier de questions (images non importer, images importees et pas dans le fichier de questions)*
+
+
+Box bleu 5 qui propose d'afficher les parametres avancées avec des cases cochées par défault (peut-etre juste un collapse = TRUE).
+
+- Titre : "Paramètres avancés"
+- Texte : "Sélectionnez les paramètres pour la conversion de votre fichier de questions"
+- Cases a cocher/remplir
+    - [ ] Afficher le temps conseillé.
+    - [bleu] Couleur des messages de temps conseillé sur moodle.
+    - [chiffre] Tolérance des arrondis.
+    - [fichier_date] Catégorie par défaut des questions sur moodle si la catégorie n'est pas renseignée dans le fichier de questions. 
+    - [X] Conversion automatique des images.
+    - [X] Conversion automatique des formules mathématiques (LaTeX).
+    - [X] Conversion automatique des codes SMILES.
+ 
+Bouton bleu de conversion
+
+- Titre: "Convertir"
+
+Appuyer sur convertir fait basculer l'application sur l'onglet 2 "Récupérer son fichier de questions".
+
+## Onglet numero 2 : "Récupérer son fichier de questions"
+
+Box verte 1 pour telecharger le fichier
+
+- Texte : "Vous pouvez télécharger votre fichier de questions prêt à l’importation sous Moodle."
+- Bouton pour telecharger
+- Lien aide "Plus d’informations sur l’importation sous Moodle" qui renvoit vers l'onglet d'aide
+
+
+
+---
+
+
+<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+
+---
+
 # Images
 
 - Faire Tableau de sortie avec 2 colonnes
