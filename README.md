@@ -26,7 +26,7 @@ Charte couleur :
 
 Ajouter une boite bordeau sur l'onglet numero 1 de conversion pour expliquer la charte de couleur, voici le texte :
 
-> Voici la charte Graphique des couleurs pour vous guider 
+> Voici la charte graphique des couleurs pour vous guider 
 
 >   - bordeau : fournit une information 
 >   - bleu : nécessite une action de votre part 
