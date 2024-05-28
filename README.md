@@ -75,6 +75,7 @@ Box verte 1 pour telecharger le fichier
 - Bouton pour telecharger
 - Lien aide "Plus d’informations sur l’importation sous Moodle" qui renvoit vers l'onglet d'aide
 
+Box verte 2 pour faire le bilan de la conversion.
 
 
 ---
