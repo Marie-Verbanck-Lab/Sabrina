@@ -13,7 +13,7 @@ Charte couleur :
 - **Couleur action de l’utilisateur** : actuellement designée par "blue" / status "primary" 
 - **Couleur retour de l’application** : actuellement designée par "green"  
 
-Ajouter une boite sur l'onglet numero 1 de conversion pour expliquer la charte de couleur, voici le texte :
+Ajouter une boite bordeau sur l'onglet numero 1 de conversion pour expliquer la charte de couleur, voici le texte :
 
 > Voici la charte Graphique des couleurs pour vous guider 
 
