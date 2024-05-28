@@ -2,6 +2,8 @@
 
 # Interface et charte graphique - A respecter partout!
 
+![](Charte.png) 
+
 ## Structure de l'interface
 
 3 onglets differents :
