@@ -2,6 +2,15 @@
 
 # Interface et charte graphique - A respecter partout!
 
+## Structure de l'interface
+
+3 onglets differents :
+- onglet 1: Convertir son fichier de questions
+- onglet 2: Récupérer son fichier de questions
+- onglet 3: Aide et ressources
+
+## Charte graphique
+
 Presenter toujours de la même façon : 
 
 1. Texte introductif d'abord 
