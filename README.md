@@ -94,6 +94,12 @@ Bouton bleu de retour vers l'onglet principal de conversion
 
 ---
 
+# Choses a explorer 
+
+## Autres elements à prendre en compte dans l'interface
+
+- Verification entre extension du fichier et la nature du fichier --> Voir df_moodle : pr vérifier les extensions.
+
 
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
