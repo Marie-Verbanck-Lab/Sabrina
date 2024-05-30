@@ -10,6 +10,7 @@ library(data.table)
 library(readxl)
 library(readODS)
 library(spsComps)
+library(shinyalert)
 # library(SARP.moodle, lib.loc = "/usr/lib64/R/library")
 library(SARP.moodle) #, lib.loc = "/home/sabrina/R/x86_64-mageia-linux-gnu-library/4.0/")
 
@@ -37,9 +38,11 @@ shinyServer(function(input, output, session){
   
   
   # Ce code utilise la fonction `observeEvent()` pour détecter le déclenchement de l'événement "Start" et mettre à jour l'onglet "Conversion" en utilisant la fonction `updateTabItems()`.
-	observeEvent(input$Start, {
-		updateTabItems(session, "tabs", "Conversion")
-	})
+  observeEvent(input$convertButton, {
+    if (!is.null(FilePath())) {
+      updateTabItems(session, "tabs", "Base")
+    }
+  })
 
 	# observeEvent(values[["xml"]], {
 	#   cat(! is.null(values[["xml"]]))
@@ -153,7 +156,7 @@ shinyServer(function(input, output, session){
 
 		infoBox(title = "",
 			fileInput("file", 
-			label = "Sélectionnez le fichier contenant les questions.", 
+			label = "Importez votre fichier de questions preparé en suivant le gabarit (xlsx, csv, ods). Vous pouvez trouver des exemples de gabarits pour créer vos questions dans l’aide", 
 			buttonLabel = HTML(paste(icon("upload"), "Parcourir")),
 							placeholder = "Aucun fichier importé pour l'instant ..."
 			, width = "100%",
@@ -164,8 +167,8 @@ shinyServer(function(input, output, session){
 			color = "blue", 
 			width = 12
   		)
-		
 	})
+	
 	#################  Code pour afficher un apercu du gabarit mais ne fonctionne pas  ############################
 	output$preview <- DT::renderDataTable({
 	  req(input$file)  # S'assurer qu'un fichier est sélectionné
@@ -207,7 +210,6 @@ shinyServer(function(input, output, session){
   			status = "primary",
   			width = 12
   		)
-		
 	})
 	
 	
@@ -301,7 +303,7 @@ shinyServer(function(input, output, session){
         system("imprime_Moodle temp.xml") # creation de temp.html
         # visualise temp.html
         list(
-         infoBox("", "Vous pouvez télécharger le fichier résultat.",
+         infoBox("", "Vous pouvez télécharger le fichier XML à importer sur moodle.",
                  downloadButton("downloadSolution", "Cliquez ici pour télécharger le fichier résultat"),
                  icon = icon("download"),
                  fill = TRUE,
@@ -317,7 +319,7 @@ shinyServer(function(input, output, session){
              collapsed = FALSE
          )
        )
-       ####### VISUASISATION
+       ####### VISUALISATION
        
        # creation d'un html à partir du xml
        # system("imprime_Moodle temp.xml") # creation de temp.html
@@ -332,7 +334,7 @@ shinyServer(function(input, output, session){
    
  output$downloadSolution <- downloadHandler(
    filename = function() {
-     as.character(paste0("BaseQuestionsMoodle_", Sys.Date(), ".xml"))
+     as.character(paste0("BaseQuestionsMoodle_", format(Sys.Date(), "%d-%m-%Y", locale = "French_France"), ".xml"))
    },
    content = function(file) {
      if(file.exists("temp.xml"))

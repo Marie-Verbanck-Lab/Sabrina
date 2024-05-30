@@ -11,8 +11,8 @@ library(SARP.moodle)
 library(fresh)
 #####################################################################################
 
-# library(rsconnect) ; rsconnect::setAccountInfo(name='verbam01', token='06416503D2F55082582397B5BDE79501', secret='bYpuEPHs35y+ChC6ajQoui2XV9rxJTpSowPFmDan')
-# deployApp(account = "verbam01", appName = "MoodleBaseQuestions", appDir = "MoodleBaseQuestions")
+# library(rsconnect) ; setwd("~/Documents/ShinyMoodle/") ; rsconnect::setAccountInfo(name='verbam01', token='83EE1187C6F7C3597C9DCB26703A8516', secret='3rN95pQ5s3/24ELui7eEeV/yM1zqP2k4X6kLZ9Dc') ; deployApp(account = "verbam01", appName = "MoodleBaseQuestions", appDir = "MoodleBaseQuestions")
+
 
 #####################################
 linebreaks <- function(n){HTML(strrep(br(), n))}
@@ -44,8 +44,8 @@ shinyUI(
 	dashboardHeader(
 		title = "SARP moodle",
 		tags$li(a(href = 'https://biostm.u-paris.fr/',
-		          img(src = "UniversiteParisCite_Pharmacie.jpeg", height = "50px", width = "150px"),
-		          img(src = 'Logo-BioSTM.png', height = "60px", width = "60px"),
+		          img(src = "UniversiteParisCite_Pharmacie.jpeg", height = "70px", width = "200px"),
+		          img(src = 'Logo-BioSTM.png', height = "80px", width = "80px"),
 		          style = "padding-top:10px; padding-bottom:10px;"),
 		        class = "dropdown"),
 		dropdownMenuOutput("messageMenu")
@@ -56,20 +56,21 @@ shinyUI(
 # Créer les onglets
 	dashboardSidebar(
 		collapsed = FALSE,
+		linebreaks(3),
 		sidebarMenu(
 			id = "tabs",
-			menuItem("Informations générales",
-				tabName = "Base", 
-				icon = icon("info")
-				
+			menuItem("Convertir",
+			         tabName = "Convertir", 
+			         icon = icon("gears")
 			),
-			menuItem("Conversion",
-				tabName = "Conversion", 
-				icon = icon("gears")
+			menuItem("Récupérer son fichier de questions",
+				tabName = "Base", 
+				icon = icon("graduation-cap")
+				
 			),
 			menuItem("Aide",
 			         tabName = "Aide", 
-			         icon = icon("circle-info")
+			         icon = icon("info")
 			)
 # Insérer les logos
 		),
@@ -93,46 +94,7 @@ shinyUI(
 
 				################ Premiere partie introductive
 				
-				fluidRow(
-				  img(src = "UniversiteParisCite_Pharmacie.jpeg", height = "157px", width = "500px"),
-				),
-				linebreaks(1),
-				fluidRow(
-					valueBox("SARP moodle", "Bienvenue dans l'assistant SARP.Moodle qui, à partir d’un gabarit au format csv, xlsx ou ods, convertit votre base de questions en fichier XML que vous pourrez ensuite importer sur Moodle. Si vous utilisez des images, vous pourrez aussi les intégrer.", 
-						icon = icon("info"),
-						color = "purple", 
-						width = 12
-  				)
-  			),
-  			fluidRow(	
-  				infoBox("En entrée : un fichier excel", "Préparez votre fichier (csv, xlsx, ods) comportant toutes les questions de votre future base selon le modèle.", 
-						icon = icon("file-excel"),
-						color = "purple", 
-						width = 12
-  				),
-					infoBox("En entrée : des fichiers d'images", "Préparez tous vos fichiers images utilisées dans votre base de question.", 
-						icon = icon("images"),
-						color = "purple", 
-						width = 12
-					),
-  			  infoBox("En sortie", "Vous pourrez ensuite télécharger un fichier XML qui peut être directement importé dans Moodle.", 
-  				  icon = icon("graduation-cap"),
-  				  color = "purple", 
-  				  width = 12
-  			  ),
-  			  align = "center"
-  			),
-				fluidRow(
-				  column(3),
-				  column(6, align = "center",
-  				valueBox("",
-						actionButton("Start", "Commencer"),
-						color = "black",
-						width = 12
-  				),
-  				column(3),
-				  )
-				),
+				
 				fluidRow(
 				  infoBox(title = "Information",
 				          uiOutput("email"),
@@ -141,16 +103,46 @@ shinyUI(
 				          color = "purple",
 				          width = 12
 				  )
+				  ################ Telechargement du fichier resultat
 				), 
+				fluidRow(
+				  uiOutput("downloadButton")
+				),
+				fluidRow(
+				  uiOutput("WARNINGSbox")
+				)
 			),
-  			tabItem(tabName = "Conversion",
+  			tabItem(tabName = "Convertir",
 				################ Importation des Images
+				fluidRow(
+				  box(
+				    title = "Charte Graphique des Couleurs",
+				    status = "info", 
+				    solidHeader = TRUE,
+				    width = 10,
+				    HTML("
+      <p>Voici la charte Graphique des couleurs pour vous guider :</p>
+      <ul>
+        <li><span style='color: #8A1538;'><b>Bordeaux :</b></span> fournit une information</li>
+        <li><span style='color: blue;'><b>Bleu :</b></span> nécessite une action de votre part</li>
+        <li><span style='color: green;'><b>Vert :</b></span> fournit un retour de l’application</li>
+        <li><span style='color: red;'><b>Rouge :</b></span> prévient d’une erreur</li>
+      </ul>
+    ")
+				  )
+				),
+				
+				################ Importation des fichiers
+				fluidRow(
+				  uiOutput("FileBox"),
+				),
+				linebreaks(2),
   				fluidRow(
   					infoBox("", "Votre base de questions utilise-t-elle des images ?", 
   						radioButtons("ImagesQuestion", label = "", choices = list("Non" = FALSE, "Oui" = TRUE), inline = TRUE, selected = FALSE),
   						icon = icon("images"), 
   						fill = TRUE, 
-  						color = "purple", 
+  						color = "blue", 
   						width = 12
     					)
 			  	),
@@ -158,22 +150,18 @@ shinyUI(
 					  uiOutput("ImageBox"),
 					  uiOutput("ImageInfo")
 				  ),
-  				################ Importation des fichiers
-  				fluidRow(
-					  uiOutput("FileBox"),
-				  ),
-  				linebreaks(3),
-				  fluidRow(
-				    dataTableOutput("preview"),
-				  ),
+  				
+				
 				  linebreaks(3),
-  				################ Telechargement du fichier resultat
-  				fluidRow(
-  					uiOutput("downloadButton")
-  				),
-  				fluidRow(
-  					uiOutput("WARNINGSbox")
-  				)
+				fluidRow(
+				  column(12, align = "center", 
+				         div(
+				           style = "margin-top: 20px;",
+				           actionButton("convertButton", "Convertir", icon = icon("refresh"), style = "color: white;", class = "btn-lg btn-primary")
+				         )
+				  )
+				  
+				)
 			),
 			tabItem(tabName = "Aide",
 			        
