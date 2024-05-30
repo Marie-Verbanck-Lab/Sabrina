@@ -19,7 +19,7 @@ ui <- fluidPage(
     ),
     mainPanel(
       h4("Images sélectionnées :"),
-      uiOutput("selected_images"),
+      uiOutput("selected_images_bilan"),
       uiOutput("validate_button_ui")
     )
   )
@@ -31,7 +31,7 @@ server <- function(input, output, session) {
   is_validated <- reactiveVal(FALSE)
   
   observeEvent(input$images, {
-    if (is_validated()) return()
+    # if (is_validated()) return()
     # Si on observe un nouvel usage de "fileInput"
     
     images <- selected_images()# Recuperation des images importees jusque la
@@ -63,33 +63,35 @@ server <- function(input, output, session) {
     }
   })
   
-  output$selected_images <- renderUI({# Renvoit un element du UI (user interface)
+  output$selected_images_bilan <- renderUI({# Renvoit un element du UI (user interface)
     img_list <- selected_images()# Recuperation des images importees jusque la
-    if (is_validated()) {
-      tagList(
-        lapply(names(img_list), function(name) {# Une boucle for pour chaque element de names(img_list), donc pour chaque nom d'image
-          tags$div(
-            style = "display: flex; align-items: center;",
-            tags$img(src = img_list[[name]]$data, class = "image-preview"),
-            tags$span(h5(name), style = "margin-left: 10px;")
-          )
-        })
-      )
-    } else {
-      tagList(
-        lapply(names(img_list), function(name) {
-          tags$div(
-            style = "display: flex; align-items: center;",
-            checkboxInput(inputId = paste0("select_", name), label = NULL, value = TRUE),
-            tags$img(src = img_list[[name]]$data, class = "image-preview"),
-            tags$span(h5(name), style = "margin-left: 10px;")
-          )
-        })
-      )
-    }
+
+      # tagList(
+      #   lapply(names(img_list), function(name) {# Une boucle for pour chaque element de names(img_list), donc pour chaque nom d'image
+      #     tags$div(
+      #       style = "display: flex; align-items: center;",
+      #       tags$img(src = img_list[[name]]$data, class = "image-preview"),
+      #       tags$span(h5(name), style = "margin-left: 10px;")
+      #     )
+      #   })
+      # )
+    tagList(
+      lapply(names(img_list), function(name) {
+        tags$div(
+          style = "display: flex; align-items: center;",
+          checkboxInput(inputId = paste0("select_", name), label = NULL, value = TRUE),
+          tags$img(src = img_list[[name]]$data, class = "image-preview"),
+          tags$span(h5(name), style = "margin-left: 10px;")
+        )
+      })
+    )
+      # if (is_validated()) { # si jamais on veut arreter de pouvoir cocher les boites des images on peut utiliser cette condition
+      #   
+      # }
   })
   
-  observeEvent(input$validate_images, {
+  observeEvent(input$validate_images, { # si on observe un click sur bouton valider les images
+    # Bloc suivant permet de mettre a jour la liste d'images quand on decoche cases
     selected <- reactiveVal(NULL)# Crée une reactiveVal pour stocker les images sélectionnées
     observe({
       # Liste des valeurs de toutes les cases à cocher correspondant à chaque image sélectionnée
@@ -97,6 +99,7 @@ server <- function(input, output, session) {
       # Sélectionne les noms des images pour lesquelles les cases à cocher sont cochées
       selected(names(selected_images())[unlist(input_list)])
     })
+    
     is_validated(TRUE)
     # Affiche une boîte de dialogue modale contenant les images sélectionnées
     showModal(modalDialog(
@@ -116,9 +119,9 @@ server <- function(input, output, session) {
   
   
   output$validate_button_ui <- renderUI({
-    if (!is_validated()) {
+    #if (!is_validated()) { # utiliser ça si on veut enlever le bouton une fois que c'est validé
       actionButton("validate_images", "Valider les images")
-    }
+    #}
   })
   
   observe({
