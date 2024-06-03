@@ -38,9 +38,11 @@ shinyServer(function(input, output, session){
   
   
   # Ce code utilise la fonction `observeEvent()` pour détecter le déclenchement de l'événement "Start" et mettre à jour l'onglet "Conversion" en utilisant la fonction `updateTabItems()`.
-	observeEvent(input$Start, {
-		updateTabItems(session, "tabs", "Conversion")
-	})
+  observeEvent(input$convertButton, {
+    if (!is.null(FilePath())) {
+      updateTabItems(session, "tabs", "Base")
+    }
+  })
 
 	# observeEvent(values[["xml"]], {
 	#   cat(! is.null(values[["xml"]]))
@@ -154,7 +156,7 @@ shinyServer(function(input, output, session){
 
 		infoBox(title = "",
 			fileInput("file", 
-			label = "Sélectionnez le gabarit (que vous avez complété) contenant les questions.", 
+			label = "Importez votre fichier de questions preparé en suivant le gabarit (xlsx, csv, ods). Vous pouvez trouver des exemples de gabarits pour créer vos questions dans l’aide", 
 			buttonLabel = HTML(paste(icon("upload"), "Parcourir")),
 							placeholder = "Aucun fichier importé pour l'instant ..."
 			, width = "100%",
@@ -317,7 +319,7 @@ shinyServer(function(input, output, session){
              collapsed = FALSE
          )
        )
-       ####### VISUASISATION
+       ####### VISUALISATION
        
        # creation d'un html à partir du xml
        # system("imprime_Moodle temp.xml") # creation de temp.html
