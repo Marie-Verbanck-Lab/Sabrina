@@ -11,8 +11,8 @@ library(SARP.moodle)
 library(fresh)
 #####################################################################################
 
-# library(rsconnect) ; rsconnect::setAccountInfo(name='verbam01', token='06416503D2F55082582397B5BDE79501', secret='bYpuEPHs35y+ChC6ajQoui2XV9rxJTpSowPFmDan')
-# deployApp(account = "verbam01", appName = "MoodleBaseQuestions", appDir = "MoodleBaseQuestions")
+# library(rsconnect) ; setwd("~/Documents/ShinyMoodle/") ; rsconnect::setAccountInfo(name='verbam01', token='83EE1187C6F7C3597C9DCB26703A8516', secret='3rN95pQ5s3/24ELui7eEeV/yM1zqP2k4X6kLZ9Dc') ; deployApp(account = "verbam01", appName = "MoodleBaseQuestions", appDir = "MoodleBaseQuestions")
+
 
 #####################################
 linebreaks <- function(n){HTML(strrep(br(), n))}
@@ -44,8 +44,8 @@ shinyUI(
                 dashboardHeader(
                   title = "SARP moodle",
                   tags$li(a(href = 'https://biostm.u-paris.fr/',
-                            img(src = "UniversiteParisCite_Pharmacie.jpeg", height = "70px", width = "170px"),
-                            img(src = 'Logo-BioSTM.png', height = "60px", width = "60px"),
+                            img(src = "UniversiteParisCite_Pharmacie.jpeg", height = "70px", width = "200px"),
+                            img(src = 'Logo-BioSTM.png', height = "80px", width = "80px"),
                             style = "padding-top:10px; padding-bottom:10px;"),
                           class = "dropdown"),
                   dropdownMenuOutput("messageMenu")
@@ -89,21 +89,8 @@ shinyUI(
                 
                 dashboardBody(
                   use_theme(mytheme),
-                  # ajout css bordure box
-                  tags$style(HTML("
-                    .box.box-solid.box-info {
-                      border-color: #8A1538;
-                    }
-                  ")),
                   tabItems(
                     tabItem(tabName = "Base",
-                            fluidRow(
-                              column(
-                                width = 12,
-                                align = "center",
-                                actionButton("retourButton", "Retour", class = "btn-retour")
-                              )
-                            ),
                             
                             ################ Premiere partie introductive
                             
@@ -126,7 +113,7 @@ shinyUI(
                             )
                     ),
                     tabItem(tabName = "Convertir",
-                            ################ charte graphique
+                            ################ Importation des Images
                             fluidRow(
                               box(
                                 title = "Charte Graphique des Couleurs",
@@ -164,7 +151,7 @@ shinyUI(
                               uiOutput("ImageInfo")
                             ),
                             
-                            ################################# bouton conver
+                            
                             linebreaks(3),
                             fluidRow(
                               column(12, align = "center", 
@@ -207,15 +194,7 @@ shinyUI(
                               ),
                               
                               align = "center"
-                            ),
-                            
-                              infoBox(title = "Information",
-                                      uiOutput("email"),
-                                      icon = icon("envelope"),
-                                      fill = TRUE,
-                                      color = "purple",
-                                      width = 12
-                              )
+                            )
                             
                     )
                     #################################################################################################################################			
