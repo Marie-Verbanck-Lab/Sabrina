@@ -10,6 +10,7 @@ library(data.table)
 library(readxl)
 library(readODS)
 library(spsComps)
+library(base64enc)
 library(shinyalert)
 # library(SARP.moodle, lib.loc = "/usr/lib64/R/library")
 library(SARP.moodle) #, lib.loc = "/home/sabrina/R/x86_64-mageia-linux-gnu-library/4.0/")
@@ -190,15 +191,15 @@ shinyServer(function(input, output, session){
 	})
 	
 	######################################################################################################################
-	
+	####IMAGES ANCIEN CODE
 #Ce code crée une boîte contenant un élément d'entrée de fichier "fileInput" permettant aux utilisateurs de sélectionner des images en format PNG, JPEG ou JPG, qui seront utilisées pour créer une base de questions. La boîte n'est rendue que si l'option "ImagesQuestion" est activée et elle est stylisée avec un titre, un fond solide de couleur primaire et une largeur de 12.
-	
+
 	output$ImageBox <- renderUI({
 		if(input$ImagesQuestion == FALSE)
 			return(NULL)
 		box(title = "Selectionnez les images utilisées dans votre fichier de questions.",
-			fileInput("Images", 
-				label = "", 
+			fileInput("Images",
+				label = "",
 				buttonLabel = HTML(paste(icon("upload"), "Cliquez ici pour sélectionner toutes les images")),
 							placeholder = "Aucune image importée pour l'instant ...",
 				multiple = TRUE,
@@ -209,6 +210,7 @@ shinyServer(function(input, output, session){
   			width = 12
   		)
 	})
+
 	
 	
 	
