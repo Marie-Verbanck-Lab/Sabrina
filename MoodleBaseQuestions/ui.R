@@ -32,6 +32,7 @@ mytheme <- create_theme(
     content_bg = "#FFF",
     box_bg = "#FFFFFF", 
     info_box_bg = "#F3F1F1"
+    
   )
 )
 
@@ -39,7 +40,7 @@ mytheme <- create_theme(
 shinyUI(
   
   
-  #####################################################################################
+#####################################################################################
   
   dashboardPage(skin = "purple",
                 dashboardHeader(
@@ -96,6 +97,10 @@ dashboardBody(
       border-color: #8A1538;
     }
   ")),
+  
+#######################################################################################################################
+##########################################  Onglet 2: Récupérer son fichier de qst  ###################################
+    
   tabItems(
     tabItem(tabName = "Base",
             fluidRow(
@@ -108,7 +113,7 @@ dashboardBody(
             ),
             linebreaks(3),
                             
-################ Premiere partie introductive
+########### Boite mail
                             
                             
 fluidRow(
@@ -119,8 +124,13 @@ fluidRow(
           color = "purple",
           width = 12
   ),
+),   
+  
+#######################################################################################################################
+##########################################  Onglet 1: Convertir son fichier de qst  ###################################  
+  
 ################ Telechargement du fichier resultat
-), 
+
 fluidRow(
   uiOutput("downloadButton")
 ),
@@ -129,7 +139,8 @@ fluidRow(
         )
 ),
 tabItem(tabName = "Convertir",
-################ Importation des Images
+        
+################ Charte graphique
         fluidRow(
           box(
             title = "Charte Graphique des Couleurs",
@@ -148,7 +159,7 @@ tabItem(tabName = "Convertir",
             )
                 ),
                             
-################ Importation des fichiers
+################ Importation des images
         fluidRow(
           uiOutput("FileBox"),
                 ),
@@ -167,7 +178,7 @@ tabItem(tabName = "Convertir",
           uiOutput("ImageInfo")
                 ),
                             
-                            
+#### Boutton convertir Tout l'ensemble de ce qu'on a importer                            
         linebreaks(3),
         fluidRow(
           column(12, align = "center", 
@@ -179,6 +190,10 @@ tabItem(tabName = "Convertir",
                               
                 )
                     ),
+
+#######################################################################################################################
+##########################################  Onglet 3: Aide et ressources  #############################################
+
 tabItem(tabName = "Aide",
                             
         fluidRow(	
