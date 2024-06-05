@@ -191,7 +191,7 @@ shinyServer(function(input, output, session){
 	})
 	
 	######################################################################################################################
-	####IMAGES ANCIEN CODE
+	
 #Ce code crée une boîte contenant un élément d'entrée de fichier "fileInput" permettant aux utilisateurs de sélectionner des images en format PNG, JPEG ou JPG, qui seront utilisées pour créer une base de questions. La boîte n'est rendue que si l'option "ImagesQuestion" est activée et elle est stylisée avec un titre, un fond solide de couleur primaire et une largeur de 12.
 
 	output$ImageBox <- renderUI({
@@ -217,8 +217,6 @@ shinyServer(function(input, output, session){
 # Ce code génère une boîte de dialogue qui permet à l'utilisateur de sélectionner les conversions automatiques qu'il souhaite activer pour les images, les formules mathématiques et les codes SMILES, si l'option "ImagesQuestion" est activée dans l'application R Shiny.
 	
 	output$ImageInfo <- renderUI({
-		if(input$ImagesQuestion == FALSE)
-			return(NULL)
 	  
 	  box(
 	    title = "Paramètres avancés.Sélectionnez les paramètres pour la conversion de votre fichier de questions",
