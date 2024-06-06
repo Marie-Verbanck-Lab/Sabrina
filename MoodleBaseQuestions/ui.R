@@ -22,7 +22,7 @@ mytheme <- create_theme(
   adminlte_color(
     purple = "#8A1538",
     aqua = "#8A1538"
-  ),
+    ),
   adminlte_sidebar(
     width = "400px",
     dark_bg = "#8A1538",
@@ -82,7 +82,7 @@ tags$div(
   style = "padding: 100px;",
   tags$img(src = "UniversiteParisCite_idex.jpeg", height = "90px", width = "90px"),
   tags$img(src = "Logo_investir_lavenir.png", height = "90px", width = "90px")
-  )
+)
                   
                   
 ),
@@ -92,13 +92,6 @@ tags$div(
                 
 dashboardBody(
   use_theme(mytheme),
-  # ajout css bordure box
-  tags$style(HTML("
-    .box.box-solid.box-info {
-      border-color: #8A1538;
-    }
-  ")),
-  
 #######################################################################################################################
 ##########################################  Onglet 2: Récupérer son fichier de qst  ###################################
     
@@ -124,8 +117,8 @@ fluidRow(
 ),
 fluidRow(
   uiOutput("WARNINGSbox")
-        )
-),
+)
+    ),
 tabItem(tabName = "Convertir",
         
 ################ Charte graphique
@@ -152,7 +145,7 @@ tabItem(tabName = "Convertir",
 
 fluidRow(
     uiOutput("FileBox"),
-          ),
+),
   linebreaks(2),
   fluidRow(
     infoBox("", "Utilisez-vous des images ?",
@@ -161,7 +154,7 @@ fluidRow(
             fill = TRUE,
             color = "blue",
             width = 12
-            )
+    )
   ),
   fluidRow(
     # titlePanel("Sélecteur d'image(s)"),
@@ -177,7 +170,6 @@ fluidRow(
   #  sidebarPanel(
     fileInput("images", label = "Selectionnez les images utilisées dans votre fichier de questions.", multiple = TRUE, accept = c('image/png', 'image/jpeg', 'image/jpg')),
     hr(),
-    uiOutput("image_selectors"),
     #),
     #mainPanel(
     h4("Images sélectionnées :"),
@@ -185,7 +177,7 @@ fluidRow(
     uiOutput("validate_button_ui")
     #)
   #)
-),
+  ),
 
 
 #### ANCIEN images
@@ -205,7 +197,7 @@ fluidRow(
         fluidRow(
           uiOutput("ImageBox"),
           uiOutput("ImageInfo")
-                ),
+        ),
                             
 #### Boutton convertir Tout l'ensemble de ce qu'on a importer                            
         linebreaks(3),
@@ -214,11 +206,11 @@ fluidRow(
                   div(
                     style = "margin-top: 20px;",
                     actionButton("convertButton", "Convertir", icon = icon("refresh"), style = "color: white;", class = "btn-lg btn-primary")
-                      )
-                )
+                  )
+          )
                               
-                )
-                    ),
+        )
+),
 
 #######################################################################################################################
 ##########################################  Onglet 3: Aide et ressources  #############################################
@@ -246,14 +238,14 @@ tabItem(tabName = "Aide",
 1.Connectez-vous à votre site Moodle en tant qu'administrateur ou enseignant disposant des droits nécessaires pour créer un cours ou une activité.<br/><br/>
 2.Accédez à la section du cours où vous souhaitez intégrer le fichier XML. Si vous créez un nouveau cours, créez d'abord le cours lui-même.<br/><br/>
 3.Cliquez sur le bouton 'ajouter une bande de questions' dans la section où vous souhaitez intégrer le fichier XML. Cela ouvrira la page 'importer le fichier sur moodle'."
-                      ), 
+                  ), 
                   icon = icon("m"),
                   color = "purple", 
                   width = 12
           ),
                               
           align = "center"
-      ),
+        ),
       ########### Boite mail
       
       fluidRow(
@@ -267,8 +259,9 @@ tabItem(tabName = "Aide",
       ),   
       
                             
-  )
+)
                     #################################################################################################################################			
-                  )
-                )
-  ))
+  )
+)
+  )
+)
