@@ -355,20 +355,21 @@ shinyServer(function(input, output, session){
 	    checkboxGroupInput(
 	      inputId = "conversion",
 	      label = "",
-	      selected = c('Image', 'Latex', 'Smiles'),
+	      selected = c('Image', 'Latex', 'Smiles', 'Time'),
 	      choiceNames = list(
 	        "Images", 
 	        "Formules mathématiques",
-	        "Codes SMILES"
+	        "Codes SMILES",
+	        "Afficher le temps conseillé"
 	      ),
 	      choiceValues = list(
 	        "Image",
 	        "Latex",
-	        "Smiles"
+	        "Smiles",
+	        "Time"
 	      ), 
 	      inline = TRUE
 	    ),
-	    checkboxInput("show_time_advice", "Afficher le temps conseillé", value = FALSE),
 	    textInput("color_time_advice", "Couleur des messages de temps conseillé sur Moodle", value = ""),
 	    numericInput("rounding_tolerance", "Tolérance des arrondis", value = 0, min = 0),
 	    textInput("default_category", "Catégorie par défaut des questions sur Moodle si la catégorie n'est pas renseignée dans le fichier de questions", value = ""),
