@@ -10,6 +10,7 @@ library(data.table)
 library(readxl)
 library(readODS)
 library(spsComps)
+library(base64enc)
 library(shinyalert)
 # library(SARP.moodle, lib.loc = "/usr/lib64/R/library")
 library(SARP.moodle) #, lib.loc = "/home/sabrina/R/x86_64-mageia-linux-gnu-library/4.0/")
@@ -151,8 +152,6 @@ shinyServer(function(input, output, session){
 #Ce code crée une boîte d'informations "infoBox" contenant un élément d'entrée de fichier "fileInput" avec un bouton de parcours permettant aux utilisateurs de sélectionner un fichier CSV, XLSX ou ODS. La boîte d'informations n'est rendue que si l'option "ImagesQuestion" est activée et si l'utilisateur a déjà téléchargé les images requises. La boîte d'informations est stylisée avec une icône Excel, une couleur de fond bleue et une largeur de 12.
 
 	output$FileBox <- renderUI({
-		if(input$ImagesQuestion == TRUE & is.null(input$Images))
-			return(NULL)
 
 		infoBox(title = "",
 			fileInput("file", 
@@ -194,50 +193,198 @@ shinyServer(function(input, output, session){
 	######################################################################################################################
 	
 #Ce code crée une boîte contenant un élément d'entrée de fichier "fileInput" permettant aux utilisateurs de sélectionner des images en format PNG, JPEG ou JPG, qui seront utilisées pour créer une base de questions. La boîte n'est rendue que si l'option "ImagesQuestion" est activée et elle est stylisée avec un titre, un fond solide de couleur primaire et une largeur de 12.
-	
+
+#### NV images
 	output$ImageBox <- renderUI({
-		if(input$ImagesQuestion == FALSE)
-			return(NULL)
-		box(title = "Choisissez les images utilisées dans la base de questions.",
-			fileInput("Images", 
-				label = "", 
-				buttonLabel = HTML(paste(icon("upload"), "Cliquez ici pour sélectionner toutes les images")),
-							placeholder = "Aucune image importée pour l'instant ...",
-				multiple = TRUE,
-				accept = c("png", "jpeg", "jpg", "pdf") # les formats d'images favoris !
-			),
-			solidHeader = TRUE,
-  			status = "primary",
-  			width = 12
-  		)
+	  		if(input$ImagesQuestion == FALSE)
+	  			return(NULL)
+	selected_images <- reactiveVal(list())
+	is_validated <- reactiveVal(FALSE)
+	
+	observeEvent(input$images, {
+	  # if (is_validated()) return()
+	  # Si on observe un nouvel usage de "fileInput"
+	  
+	  images <- selected_images()# Recuperation des images importees jusque la
+	  new_images <- lapply(seq_along(input$images$name), function(i) {# lapply: permet de faire une boucle for
+	    list(
+	      name = input$images$name[i], 
+	      datapath = input$images$datapath[i], 
+	      data = base64enc::dataURI(file = input$images$datapath[i], mime = input$images$type[i])
+	    )
+	  })
+	  # for (i in seq_along(input$images$name)){ # seq_along(input$images$name) un vecteur avec les indices des images selectionnees 1:nbImages. Autre facon de le faire 1:length(input$images$name)
+	  #    list( # on cree une liste avec 2 elements 
+	  #        name = input$images$name[i], # 1er element nom de l'image i
+	  #        datapath = input$images$datapath[i] # 2eme element chemin de l'image i
+	  #   )
+	  # }
+	  names(new_images) <- input$images$name # renommer les elements de la liste avec les noms des images
+	  # Vérification des doublons
+	  duplicate_names <- names(selected_images())[names(selected_images()) %in% input$images$name]
+	  if (length(duplicate_names) > 0) {
+	    showModal(modalDialog(
+	      title = "Attention",
+	      paste("Les images suivantes ont été sélectionnées plusieurs fois :", paste(duplicate_names, collapse = ", ")),
+	      footer = tagList(modalButton("Fermer"))
+	    ))
+	  } else {
+	    images <- c(images, new_images)# concatene anciennes images et nouvelles. images est une liste de taille egale aux nombres d'images importees depuis le debut (anciennes + nouvelles) et avec chaque element qui est une liste de 2 elements name et datapath.
+	    selected_images(images)# Mise a jour de la liste d'images
+	  }
 	})
+	
+	output$selected_images_bilan <- renderUI({# Renvoit un element du UI (user interface)
+	  if(input$ImagesQuestion == "FALSE")
+	     return(NULL)
+	  
+	  img_list <- selected_images()# Recuperation des images importees jusque la
+	  
+	  # tagList(
+	  #   lapply(names(img_list), function(name) {# Une boucle for pour chaque element de names(img_list), donc pour chaque nom d'image
+	  #     tags$div(
+	  #       style = "display: flex; align-items: center;",
+	  #       tags$img(src = img_list[[name]]$data, class = "image-preview"),
+	  #       tags$span(h5(name), style = "margin-left: 10px;")
+	  #     )
+	  #   })
+	  # )
+	  tagList(
+	    lapply(names(img_list), function(name) {
+	      tags$div(
+	        style = "display: flex; align-items: center;",
+	        checkboxInput(inputId = paste0("select_", name), label = NULL, value = TRUE),
+	        tags$img(src = img_list[[name]]$data, class = "image-preview"),
+	        tags$span(h5(name), style = "margin-left: 10px;")
+	      )
+	    })
+	  )
+	  # if (is_validated()) { # si jamais on veut arreter de pouvoir cocher les boites des images on peut utiliser cette condition
+	  #   
+	  # }
+	})
+	
+	observeEvent(input$validate_images, { # si on observe un click sur bouton valider les images
+	  # Bloc suivant permet de mettre a jour la liste d'images quand on decoche cases
+	  selected <- reactiveVal(NULL)# Crée une reactiveVal pour stocker les images sélectionnées
+	  observe({
+	    # Liste des valeurs de toutes les cases à cocher correspondant à chaque image sélectionnée
+	    input_list <- lapply(names(selected_images()), function(name) input[[paste0("select_", name)]])
+	    # Sélectionne les noms des images pour lesquelles les cases à cocher sont cochées
+	    selected(names(selected_images())[unlist(input_list)])
+	  })
+	  
+	  is_validated(TRUE)
+	  # Affiche une boîte de dialogue modale contenant les images sélectionnées
+	  showModal(modalDialog(
+	    title = "Images validées",
+	    renderText({
+	      selected_count <- length(selected())
+	      if (selected_count == 1) {
+	        paste("Vous avez importer l'image suivante :", selected())
+	      } else {
+	        paste("Vous avez importer les", selected_count, "images suivantes :", paste(selected(), collapse = ", "))
+	      }
+	    }),
+	    footer = tagList(modalButton("Fermer")),
+	    easyClose = TRUE
+	  ))
+	})
+	
+	
+	output$validate_button_ui <- renderUI({
+	  if(input$ImagesQuestion == "FALSE")
+	    return(NULL)
+	  
+	  #if (!is_validated()) { # utiliser ça si on veut enlever le bouton une fois que c'est validé
+	  actionButton("validate_images", "Valider les images")
+	  #}
+	})
+	
+	
+	observe({
+	  img_list <- selected_images()# Recuperation des images importees jusque la 
+	  lapply(names(img_list), function(name) {# Boucle for pour chaque image
+	    observeEvent(input[[paste0("delete_", name, "_btn")]], {
+	      images <- selected_images()
+	      images[[name]] <- NULL
+	      # imagesUpdated <- images[names(images) != name]
+	      # Probleme pour reimporter une image deja supprimee ds input[[paste0("delete_", name, "_btn")]]
+	      selected_images(images)
+	    })
+	  })
+	})
+	# Fonction pour vérifier s'il y a des images sélectionnées
+	output$has_images <- reactive({
+	  length(selected_images()) > 0
+	})
+	outputOptions(output, "has_images", suspendWhenHidden = FALSE)
+
+	})
+	
+	
+	
+#### ANCIEN images	
+	
+# 	output$ImageBox <- renderUI({
+# 		if(input$ImagesQuestion == FALSE)
+# 			return(NULL)
+# 		box(title = "Selectionnez les images utilisées dans votre fichier de questions.",
+# 			fileInput("Images",
+# 				label = "",
+# 				buttonLabel = HTML(paste(icon("upload"), "Cliquez ici pour sélectionner toutes les images")),
+# 							placeholder = "Aucune image importée pour l'instant ...",
+# 				multiple = TRUE,
+# 				accept = c("png", "jpeg", "jpg", "pdf") # les formats d'images favoris !
+# 			),
+# 			solidHeader = TRUE,
+#   			status = "primary",
+#   			width = 12
+#   		)
+# 	})
+
 	
 	
 	
 # Ce code génère une boîte de dialogue qui permet à l'utilisateur de sélectionner les conversions automatiques qu'il souhaite activer pour les images, les formules mathématiques et les codes SMILES, si l'option "ImagesQuestion" est activée dans l'application R Shiny.
 	
 	output$ImageInfo <- renderUI({
-		if(input$ImagesQuestion == FALSE)
-			return(NULL)
 	  
-		box(title = "Autorisez-vous les conversions automatiques ?",
-			checkboxGroupInput(inputId = "conversion",
-				label = "",
-				selected = c( 'Image', 'Latex', 'Smiles' ),
-				choiceNames = list( "Images", 
-					"Formules mathématiques",
-					"Codes SMILES" ),
-				choiceValues = list("Image",
-					"Latex",
-					"Smiles"
-				), inline = TRUE
-			),
-			solidHeader = TRUE,
-  			status = "primary",
-  			width = 12
-  		)
+	  box(
+	    title = "Paramètres avancés. Sélectionnez les paramètres pour la conversion de votre fichier de questions",
+	    checkboxGroupInput(
+	      inputId = "conversion",
+	      label = "",
+	      selected = c('Image', 'Latex', 'Smiles'),
+	      choiceNames = list(
+	        "Images", 
+	        "Formules mathématiques",
+	        "Codes SMILES"
+	      ),
+	      choiceValues = list(
+	        "Image",
+	        "Latex",
+	        "Smiles"
+	      ), 
+	      inline = TRUE
+	    ),
+	    checkboxInput("show_time_advice", "Afficher le temps conseillé", value = FALSE),
+	    textInput("color_time_advice", "Couleur des messages de temps conseillé sur Moodle", value = ""),
+	    numericInput("rounding_tolerance", "Tolérance des arrondis", value = 0, min = 0),
+	    textInput("default_category", "Catégorie par défaut des questions sur Moodle si la catégorie n'est pas renseignée dans le fichier de questions", value = ""),
+	    solidHeader = TRUE,
+	    status = "primary",
+	    width = 12,
+	    collapsible = T,
+	    collapsed = T
+	  )
 	})
-  
+	observeEvent(input$questionFile, {
+	  req(input$questionFile)
+	  file_name <- tools::file_path_sans_ext(input$questionFile$name) # Extraire le nom du fichier sans l'extension
+	  updateTextInput(session, "default_category", value = file_name)
+	})
+
 ###Ce code génère une boîte d'information qui contient les avertissements éventuels liés au traitement d'un fichier de base de questions.
 	
 ###La fonction renderUI() est utilisée pour créer un objet HTML dynamique basé sur les valeurs des entrées de l'utilisateur. Dans ce cas, le contenu de la boîte d'information dépend de la valeur renvoyée par la fonction FilePath().
@@ -257,11 +404,11 @@ shinyServer(function(input, output, session){
 				#verbatimTextOutput(getXML()),
 				verbatimTextOutput("console"),
 				solidHeader = TRUE,
-  				status = "warning",
-  				width = 12,
-				  collapsible = TRUE,
-				  collapsed = FALSE
-  			)
+  			status = "success",
+  			width = 12,
+				collapsible = TRUE,
+				collapsed = T,
+  		)
 	})
 
 ### Ce code utilise une fonction observeEvent pour détecter le changement de l'élément d'entrée input$FileBox. Lorsque cela se produit, il utilise une fonction tryCatch pour capturer les avertissements éventuels générés par le code qui traite le fichier téléchargé. Si un avertissement est capturé, la variable mess contient le message d'avertissement, qui est ensuite affiché à l'utilisateur à l'aide de la fonction showNotification. En résumé, ce code affiche une notification à l'utilisateur en cas d'avertissement lors du traitement du fichier téléchargé.
@@ -271,8 +418,13 @@ shinyServer(function(input, output, session){
     mess <- a$message
     showNotification(mess)
   })
+ 
+ #bouton retour
+ observeEvent(input$retourButton, {
+   updateTabItems(session, "tabs", "Convertir")
+ })
 
-### Ce code crée un bouton de téléchargement qui permet à l'utilisateur de télécharger un fichier résultat si un chemin de fichier est fourni. Le bouton est affiché dans une boîte d'information avec une icône de téléchargement et une couleur maroon. Si aucun chemin de fichier n'est fourni, rien ne sera affiché.
+#### Ce code crée un bouton de téléchargement qui permet à l'utilisateur de télécharger un fichier résultat si un chemin de fichier est fourni. Le bouton est affiché dans une boîte d'information avec une icône de téléchargement et une couleur maroon. Si aucun chemin de fichier n'est fourni, rien ne sera affiché.
  
  output$downloadButton <- renderUI({
    if(is.null(FilePath())){
@@ -303,8 +455,8 @@ shinyServer(function(input, output, session){
         system("imprime_Moodle temp.xml") # creation de temp.html
         # visualise temp.html
         list(
-         infoBox("", "Vous pouvez télécharger le fichier XML à importer sur moodle.",
-                 downloadButton("downloadSolution", "Cliquez ici pour télécharger le fichier résultat"),
+         infoBox("", "Vous pouvez télécharger votre fichier de questions prêt à l’importation sous Moodle.",
+                 downloadButton("downloadSolution", "Télécharger", style = "color: white;", class = "btn-lg btn-primary"),
                  icon = icon("download"),
                  fill = TRUE,
                  color = "green",
@@ -313,13 +465,14 @@ shinyServer(function(input, output, session){
          box(title = "Aperçu des questions importées.",
              includeHTML("temp.html"),
              solidHeader = TRUE,
-             status = "warning",
+             status = "success",
              width = 12,
              collapsible = TRUE,
-             collapsed = FALSE
+             collapsed = FALSE,
+             
          )
        )
-       ####### VISUASISATION
+       ####### VISUALISATION
        
        # creation d'un html à partir du xml
        # system("imprime_Moodle temp.xml") # creation de temp.html
