@@ -20,7 +20,8 @@ linebreaks <- function(n){HTML(strrep(br(), n))}
 #Permet de changer les couleurs 
 mytheme <- create_theme(
   adminlte_color(
-    purple = "#8A1538"
+    purple = "#8A1538",
+    aqua = "#8A1538"
   ),
   adminlte_sidebar(
     width = "400px",
@@ -36,7 +37,7 @@ mytheme <- create_theme(
   )
 )
 
-
+# Couleurs shiny https://rstudio.github.io/shinydashboard/appearance.html#statuses-and-colors
 shinyUI(
   
   
@@ -107,25 +108,12 @@ dashboardBody(
               column(
                 width = 12,
                 align = "center",
-                actionButton("retourButton", "Retour", icon = icon("refresh"), style = "color: white;", class = "btn-lg btn-primary")
+                actionButton("retourButton", "Retour vers l'onglet de conversion", icon = icon("refresh"), style = "color: white;", class = "btn-lg btn-primary")
               )
                               
             ),
             linebreaks(3),
-                            
-########### Boite mail
-                            
-                            
-fluidRow(
-  infoBox(title = "Information",
-          uiOutput("email"),
-          icon = icon("envelope"),
-          fill = TRUE,
-          color = "purple",
-          width = 12
-  ),
-),   
-  
+
 #######################################################################################################################
 ##########################################  Onglet 1: Convertir son fichier de qst  ###################################  
   
@@ -144,35 +132,76 @@ tabItem(tabName = "Convertir",
         fluidRow(
           box(
             title = "Charte Graphique des Couleurs",
-            status = "info", 
             solidHeader = TRUE,
-            width = 10,
+            status = "info",
+            width = 12,
             HTML("
-<p>Voici la charte Graphique des couleurs pour vous guider :</p>
-<ul>
-<li><span style='color: #8A1538;'><b>Bordeaux :</b></span> fournit une information</li>
-<li><span style='color: blue;'><b>Bleu :</b></span> nécessite une action de votre part</li>
-<li><span style='color: green;'><b>Vert :</b></span> fournit un retour de l’application</li>
-<li><span style='color: red;'><b>Rouge :</b></span> prévient d’une erreur</li>
-</ul>
-                ")
-            )
-                ),
+              <p>Voici la charte Graphique des couleurs pour vous guider :</p>
+              <ul>
+              <li><span style='color: #8A1538;'><b>Bordeaux :</b></span> fournit une information</li>
+              <li><span style='color: blue;'><b>Bleu :</b></span> nécessite une action de votre part</li>
+              <li><span style='color: green;'><b>Vert :</b></span> fournit un retour de l’application</li>
+              <li><span style='color: red;'><b>Rouge :</b></span> prévient d’une erreur</li>
+              </ul>
+            ")
+          )
+        ),
                             
 ################ Importation des images
-        fluidRow(
-          uiOutput("FileBox"),
-                ),
-        linebreaks(2),
-        fluidRow(
-          infoBox("", "Utilisez-vous des images ?", 
-                  radioButtons("ImagesQuestion", label = "", choices = list("Non" = FALSE, "Oui" = TRUE), inline = TRUE, selected = FALSE),
-                  icon = icon("images"), 
-                  fill = TRUE, 
-                  color = "blue", 
-                  width = 12
-                  )
-                ),
+#### NV images
+
+fluidRow(
+    uiOutput("FileBox"),
+          ),
+  linebreaks(2),
+  fluidRow(
+    infoBox("", "Utilisez-vous des images ?",
+            radioButtons("ImagesQuestion", label = "", choices = list("Non" = FALSE, "Oui" = TRUE), inline = TRUE, selected = FALSE),
+            icon = icon("images"),
+            fill = TRUE,
+            color = "blue",
+            width = 12
+            )
+  ),
+  fluidRow(
+    # titlePanel("Sélecteur d'image(s)"),
+    tags$head(tags$style(HTML("
+      .image-preview {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        margin-right: 10px;
+      }
+    "))),
+  #sidebarLayout(
+  #  sidebarPanel(
+    fileInput("images", label = "Selectionnez les images utilisées dans votre fichier de questions.", multiple = TRUE, accept = c('image/png', 'image/jpeg', 'image/jpg')),
+    hr(),
+    uiOutput("image_selectors"),
+    #),
+    #mainPanel(
+    h4("Images sélectionnées :"),
+    uiOutput("selected_images_bilan"),
+    uiOutput("validate_button_ui")
+    #)
+  #)
+),
+
+
+#### ANCIEN images
+        # fluidRow(
+        #   uiOutput("FileBox"),
+        #         ),
+        # linebreaks(2),
+        # fluidRow(
+        #   infoBox("", "Utilisez-vous des images ?", 
+        #           radioButtons("ImagesQuestion", label = "", choices = list("Non" = FALSE, "Oui" = TRUE), inline = TRUE, selected = FALSE),
+        #           icon = icon("images"), 
+        #           fill = TRUE, 
+        #           color = "blue", 
+        #           width = 12
+        #           )
+        #         ),
         fluidRow(
           uiOutput("ImageBox"),
           uiOutput("ImageInfo")
@@ -201,7 +230,7 @@ tabItem(tabName = "Aide",
                   icon = icon("stapler"),
                   color = "purple", 
                   width = 12
-                  ),
+          ),
           #Pas tt à fait fonctionnel
           #mainPanel(
           # Votre contenu principal ici
@@ -210,7 +239,7 @@ tabItem(tabName = "Aide",
                   icon = icon("stapler"),
                   color = "purple", 
                   width = 12
-                  ),
+          ),
                     #),
           infoBox("intégrer le xml sur moodle",
                   HTML("
@@ -221,12 +250,24 @@ tabItem(tabName = "Aide",
                   icon = icon("m"),
                   color = "purple", 
                   width = 12
-                  ),
+          ),
                               
           align = "center"
-                      )
+      ),
+      ########### Boite mail
+      
+      fluidRow(
+        infoBox(title = "Information",
+                uiOutput("email"),
+                icon = icon("envelope"),
+                fill = TRUE,
+                color = "purple",
+                width = 12
+        ),
+      ),   
+      
                             
-                    )
+  )
                     #################################################################################################################################			
                   )
                 )
