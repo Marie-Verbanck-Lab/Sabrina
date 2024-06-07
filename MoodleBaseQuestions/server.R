@@ -161,7 +161,7 @@ shinyServer(function(input, output, session){
 			, width = "100%",
 			accept = c(".csv", ".ods", ".xlsx")
 			),
-			icon = icon("file-excel"), 
+			icon = icon("file-excel"),
 			fill = TRUE, 
 			color = "blue", 
 			width = 12
@@ -200,21 +200,21 @@ shinyServer(function(input, output, session){
 	  			return(NULL)
 	selected_images <- reactiveVal(list())
 	is_validated <- reactiveVal(FALSE)
-	
+
 	observeEvent(input$images, {
 	  # if (is_validated()) return()
 	  # Si on observe un nouvel usage de "fileInput"
-	  
+
 	  images <- selected_images()# Recuperation des images importees jusque la
 	  new_images <- lapply(seq_along(input$images$name), function(i) {# lapply: permet de faire une boucle for
 	    list(
-	      name = input$images$name[i], 
-	      datapath = input$images$datapath[i], 
+	      name = input$images$name[i],
+	      datapath = input$images$datapath[i],
 	      data = base64enc::dataURI(file = input$images$datapath[i], mime = input$images$type[i])
 	    )
 	  })
 	  # for (i in seq_along(input$images$name)){ # seq_along(input$images$name) un vecteur avec les indices des images selectionnees 1:nbImages. Autre facon de le faire 1:length(input$images$name)
-	  #    list( # on cree une liste avec 2 elements 
+	  #    list( # on cree une liste avec 2 elements
 	  #        name = input$images$name[i], # 1er element nom de l'image i
 	  #        datapath = input$images$datapath[i] # 2eme element chemin de l'image i
 	  #   )
@@ -233,13 +233,13 @@ shinyServer(function(input, output, session){
 	    selected_images(images)# Mise a jour de la liste d'images
 	  }
 	})
-	
+
 	output$selected_images_bilan <- renderUI({# Renvoit un element du UI (user interface)
 	  if(input$ImagesQuestion == "FALSE")
 	     return(NULL)
-	  
+
 	  img_list <- selected_images()# Recuperation des images importees jusque la
-	  
+
 	  # tagList(
 	  #   lapply(names(img_list), function(name) {# Une boucle for pour chaque element de names(img_list), donc pour chaque nom d'image
 	  #     tags$div(
@@ -260,10 +260,10 @@ shinyServer(function(input, output, session){
 	    })
 	  )
 	  # if (is_validated()) { # si jamais on veut arreter de pouvoir cocher les boites des images on peut utiliser cette condition
-	  #   
+	  #
 	  # }
 	})
-	
+
 	observeEvent(input$validate_images, { # si on observe un click sur bouton valider les images
 	  # Bloc suivant permet de mettre a jour la liste d'images quand on decoche cases
 	  selected <- reactiveVal(NULL)# Crée une reactiveVal pour stocker les images sélectionnées
@@ -273,7 +273,7 @@ shinyServer(function(input, output, session){
 	    # Sélectionne les noms des images pour lesquelles les cases à cocher sont cochées
 	    selected(names(selected_images())[unlist(input_list)])
 	  })
-	  
+
 	  is_validated(TRUE)
 	  # Affiche une boîte de dialogue modale contenant les images sélectionnées
 	  showModal(modalDialog(
@@ -290,20 +290,20 @@ shinyServer(function(input, output, session){
 	    easyClose = TRUE
 	  ))
 	})
-	
-	
+
+
 	output$validate_button_ui <- renderUI({
 	  if(input$ImagesQuestion == "FALSE")
 	    return(NULL)
-	  
+
 	  #if (!is_validated()) { # utiliser ça si on veut enlever le bouton une fois que c'est validé
 	  actionButton("validate_images", "Valider les images")
 	  #}
 	})
-	
-	
+
+
 	observe({
-	  img_list <- selected_images()# Recuperation des images importees jusque la 
+	  img_list <- selected_images()# Recuperation des images importees jusque la
 	  lapply(names(img_list), function(name) {# Boucle for pour chaque image
 	    observeEvent(input[[paste0("delete_", name, "_btn")]], {
 	      images <- selected_images()
