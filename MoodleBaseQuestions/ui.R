@@ -142,44 +142,82 @@ tabItem(tabName = "Convertir",
                             
 # ################ Importation des images
  
+###### images test
 
- #### NV images
 
+#### NV images
 fluidRow(
-    uiOutput("FileBox"),
+  uiOutput("FileBox")
 ),
-  linebreaks(2),
-  fluidRow(
-    infoBox("", "Utilisez-vous des images ?",
-            radioButtons("ImagesQuestion", label = "", choices = list("Non" = FALSE, "Oui" = TRUE), inline = TRUE, selected = FALSE),
-            icon = icon("images"),
-            fill = TRUE,
-            color = "blue",
-            width = 12
-    )
-  ),
-  fluidRow(
-    # titlePanel("Sélecteur d'image(s)"),
-    tags$head(tags$style(HTML("
-      .image-preview {
-        width: 50px;
-        height: 50px;
-        object-fit: cover;
-        margin-right: 10px;
-      }
-    "))),
-  #sidebarLayout(
-  #  sidebarPanel(
-    fileInput("images", label = "Selectionnez les images utilisées dans votre fichier de questions.", multiple = TRUE, accept = c('image/png', 'image/jpeg', 'image/jpg')),
-    hr(),
-    #),
-    #mainPanel(
-    h4("Images sélectionnées :"),
-    uiOutput("selected_images_bilan"),
-    uiOutput("validate_button_ui")
-    #)
-  #)
-  ),
+linebreaks(2),
+fluidRow(
+  infoBox(
+    "", 
+    "Utilisez-vous des images ?",
+    radioButtons(
+      "ImagesQuestion", 
+      label = "", 
+      choices = list("Non" = FALSE, "Oui" = TRUE), 
+      inline = TRUE, 
+      selected = FALSE
+    ),
+    icon = icon("images"),
+    fill = TRUE,
+    color = "blue",
+    width = 12
+  )
+),
+fluidRow(
+  uiOutput("image_selector_ui")
+),
+
+
+#  #### NV images
+# 
+# fluidRow(
+#     uiOutput("FileBox"),
+# ),
+#   linebreaks(2),
+# fluidRow(
+#   infoBox(
+#     "", 
+#     "Utilisez-vous des images ?",
+#     radioButtons(
+#       "ImagesQuestion", 
+#       label = "", 
+#       choices = list("Non" = FALSE, "Oui" = TRUE), 
+#       inline = TRUE, 
+#       selected = FALSE
+#     ),
+#     icon = icon("images"),
+#     fill = TRUE,
+#     color = "blue",
+#     width = 12
+#   )
+# ),
+# 
+#   fluidRow(
+#     # titlePanel("Sélecteur d'image(s)"),
+#     tags$head(tags$style(HTML("
+#       .image-preview {
+#         width: 50px;
+#         height: 50px;
+#         object-fit: cover;
+#         margin-right: 10px;
+#       }
+#     "))),
+#   #sidebarLayout(
+#   #  sidebarPanel(
+#     fileInput("images", label = "Selectionnez les images utilisées dans votre fichier de questions.", multiple = TRUE, accept = c('image/png', 'image/jpeg', 'image/jpg')),
+#     hr(),
+#     #),
+#     #mainPanel(
+#     h4("Images sélectionnées :"),
+#     uiOutput("selected_images_bilan"),
+#     uiOutput("validate_button_ui")
+#     #)
+#   #)
+#   ),
 
 
 #### ANCIEN images
