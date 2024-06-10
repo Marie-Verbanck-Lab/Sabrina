@@ -149,8 +149,25 @@ tabItem(tabName = "Convertir",
 fluidRow(
   uiOutput("FileBox")
 ),
+
 linebreaks(2),
 fluidRow(
+  tags$head(tags$style(HTML("
+      .image-preview {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        margin-right: 10px;
+      }
+      .image-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .image-label {
+        margin-left: 10px;
+      }
+    "))),
   infoBox(
     "", 
     "Utilisez-vous des images ?",
