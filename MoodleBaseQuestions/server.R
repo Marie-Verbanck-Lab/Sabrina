@@ -197,25 +197,22 @@ shinyServer(function(input, output, session){
 #######" test images
 	
 	
-	#### NV images
 	output$image_selector_ui <- renderUI({
 	  if (input$ImagesQuestion == FALSE)
 	    return(NULL)
 	  
 	  fluidRow(
-	    tags$head(tags$style(HTML("
-      .image-preview {
-        width: 50px;
-        height: 50px;
-        object-fit: cover;
-        margin-right: 10px;
-      }
-    "))),
-	    fileInput("images", label = "Sélectionnez les images utilisées dans votre fichier de questions.", multiple = TRUE, accept = c('image/png', 'image/jpeg', 'image/jpg')),
-	    hr(),
-	    h4("Images sélectionnées :"),
-	    uiOutput("selected_images_bilan"),
-	    uiOutput("validate_button_ui")
+	    box(
+	      title = "Sélecteur d'Images",
+	      status = "primary",
+	      solidHeader = TRUE,
+	      width = 12,
+	      fileInput("images", label = "Sélectionnez les images utilisées dans votre fichier de questions", multiple = TRUE, accept = c('image/png', 'image/jpeg', 'image/jpg')),
+	      hr(),
+	      h4("Images sélectionnées :"),
+	      uiOutput("selected_images_bilan"),
+	      uiOutput("validate_button_ui")
+	    )
 	  )
 	})
 	
@@ -254,10 +251,10 @@ shinyServer(function(input, output, session){
 	  tagList(
 	    lapply(names(img_list), function(name) {
 	      tags$div(
-	        style = "display: flex; align-items: center;",
+	        class = "image-container",
 	        checkboxInput(inputId = paste0("select_", name), label = NULL, value = TRUE),
 	        tags$img(src = img_list[[name]]$data, class = "image-preview"),
-	        tags$span(h5(name), style = "margin-left: 10px;")
+	        tags$span(name, class = "image-label")
 	      )
 	    })
 	  )
@@ -290,7 +287,7 @@ shinyServer(function(input, output, session){
 	  if(input$ImagesQuestion == FALSE)
 	    return(NULL)
 	  
-	  actionButton("validate_images", "Valider les images")
+	  actionButton("validate_images", "Valider les images", class = "btn-primary")
 	})
 	
 	observe({
