@@ -461,7 +461,6 @@ shinyServer(function(input, output, session){
   
   
   
-  
   # Ce code génère une boîte de dialogue qui permet à l'utilisateur de sélectionner les conversions automatiques qu'il souhaite activer pour les images, les formules mathématiques et les codes SMILES, si l'option "ImagesQuestion" est activée dans l'application R Shiny.
   
   output$ImageInfo <- renderUI({
