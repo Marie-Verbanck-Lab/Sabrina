@@ -22,7 +22,8 @@ mytheme <- create_theme(
   adminlte_color(
     purple = "#8A1538",
     aqua = "#8A1538",
-    light_blue = "#005c93"
+    light_blue = "#005c93",
+    blue= "#005c93"
   ),
   adminlte_sidebar(
     width = "400px",
@@ -46,16 +47,16 @@ shinyUI(
   
 dashboardPage(skin = "purple",
               dashboardHeader(
-                title = "SARP moodle",
+                title = "SARP.moodle",
                 tags$li(a(href = 'https://biostm.u-paris.fr/',
-                          img(src = "UniversiteParisCite_Pharmacie.jpeg", height = "70px", width = "200px"),
+                          img(src = "UniversiteParisCite_Pharmacie.jpeg", height = "70px", width = "250px"),
                           img(src = 'logo-BioSTM.png', height = "80px", width = "80px"),
                           style = "padding-top:10px; padding-bottom:10px;"),
-                          class = "dropdown"),
+                        class = "dropdown"),
                 dropdownMenuOutput("messageMenu")
               ),
-                ####################################################################
-                ############################# Sidebar ##############################
+####################################################################
+############################# Sidebar ##############################
                 
 # Créer les onglets
 dashboardSidebar(
@@ -64,17 +65,17 @@ dashboardSidebar(
   sidebarMenu(
     id = "tabs",
     menuItem("Convertir son fichier de questions",
-              tabName = "Convertir", 
-              icon = icon("gears")
+             tabName = "Convertir", 
+             icon = icon("gears")
     ),
     menuItem("Récupérer son fichier de questions",
-              tabName = "Base", 
-              icon = icon("graduation-cap")
+             tabName = "Base", 
+             icon = icon("graduation-cap")
                              
     ),
     menuItem("Aide et ressources",
-              tabName = "Aide", 
-              icon = icon("info")
+             tabName = "Aide", 
+             icon = icon("info")
     )
 # Insérer les logos
   ),
@@ -93,7 +94,7 @@ dashboardSidebar(
                 
 dashboardBody(
   use_theme(mytheme),
-#######################################################################################################################
+######################################################################################################################
 ##########################################  Onglet 2: Récupérer son fichier de qst  ###################################
                   
   tabItems(
@@ -111,18 +112,18 @@ dashboardBody(
 #######################################################################################################################
 ##########################################  Onglet 1: Convertir son fichier de qst  ###################################  
                             
-            ################ Telechargement du fichier resultat
+################ Telechargement du fichier resultat
                             
-            fluidRow(
-              uiOutput("downloadButton")
-            ),
-            fluidRow(
-              uiOutput("WARNINGSbox")
-            )
+              fluidRow(
+                uiOutput("downloadButton")
+              ),
+              fluidRow(
+                uiOutput("WARNINGSbox")
+              )
     ),
     tabItem(tabName = "Convertir",
                             
-            ################ Charte graphique
+################ Charte graphique
             fluidRow(
               box(
                 title = "Charte graphique des couleurs",
@@ -137,38 +138,39 @@ dashboardBody(
                 <li><span style='color: green;'><b>Vert :</b></span> fournit un retour de l’application</li>
                 <li><span style='color: red;'><b>Rouge :</b></span> prévient d’une erreur</li>
                 </ul>
-              ")
-             )
-          ),
+                     ")
+              )
+            ),
                             
-          # ################ Importation des images
+################ Importation des images
                             
-          ###### images test
-                            
-                            
-          #### NV images
-          fluidRow(
-            uiOutput("FileBox")
-          ),
-                            
-          linebreaks(2),
-          fluidRow(
+#### NV images
+            fluidRow(
+              uiOutput("FileBox")
+            ),
+linebreaks(2),
+            fluidRow(
             tags$head(tags$style(HTML("
             .image-preview {
             width: 50px;
             height: 50px;
             object-fit: cover;
             margin-right: 10px;
-          }
-          .image-container {
+                              }
+            .image-container {
             display: flex;
             align-items: center;
             margin-bottom: 10px;
-          }
-          .image-label {
+            }
+            .image-label {
             margin-left: 10px;
-          }
-        "))),
+            }
+            .image-selector-container {
+            width: 100%; /* Définissez la largeur souhaitée */
+            max-width: 400px; /* Ajustez la largeur en fonction des autres boîtes */
+            margin: 0 auto; /* Centrez la boîte horizontalement */
+            }
+            "))),
             infoBox(
               "", 
               "Utilisez-vous des images ?",
@@ -186,138 +188,80 @@ dashboardBody(
             )
             ),
             fluidRow(
-              uiOutput("image_selector_ui")
+              uiOutput("image_selector_ui"),
+              div(class = "image-selector-container", uiOutput("image_selector_ui"))
             ),
                             
                             
-#  #### NV images
-# 
-# fluidRow(
-#     uiOutput("FileBox"),
-#   linebreaks(2),
-# fluidRow(
-#   infoBox(
-#     "", 
-#     "Utilisez-vous des images ?",
-#     radioButtons(
-#       "ImagesQuestion", 
-#       label = "", 
-#       choices = list("Non" = FALSE, "Oui" = TRUE), 
-#       inline = TRUE, 
-#       selected = FALSE
-#     ),
-#     icon = icon("images"),
-#     fill = TRUE,
-#     color = "blue",
-#     width = 12
-# ),
-# 
-#   fluidRow(
-#     # titlePanel("Sélecteur d'image(s)"),
-#     tags$head(tags$style(HTML("
-#       .image-preview {
-#         width: 50px;
-#         height: 50px;
-#         object-fit: cover;
-#         margin-right: 10px;
-#       }
-#     "))),
-#   #sidebarLayout(
-#   #  sidebarPanel(
-#     fileInput("images", label = "Selectionnez les images utilisées dans votre fichier de questions.", multiple = TRUE, accept = c('image/png', 'image/jpeg', 'image/jpg')),
-#     hr(),
-#     #),
-#     #mainPanel(
-#     h4("Images sélectionnées :"),
-#     uiOutput("selected_images_bilan"),
-#     uiOutput("validate_button_ui")
-#     #)
-#   #)
-#   ),
-                            
-                            
-#### ANCIEN images
-# fluidRow(
-#   uiOutput("FileBox"),
-#         ),
-# linebreaks(2),
-# fluidRow(
-#   infoBox("", "Utilisez-vous des images ?", 
-#           radioButtons("ImagesQuestion", label = "", choices = list("Non" = FALSE, "Oui" = TRUE), inline = TRUE, selected = FALSE),
-#           icon = icon("images"), 
-#           fill = TRUE, 
-#           color = "blue", 
-#           width = 12
-#           )
-#         ),
             fluidRow(
               uiOutput("ImageBox"),
               uiOutput("ImageInfo")
             ),
                             
-            #### Boutton convertir Tout l'ensemble de ce qu'on a importer                            
+#### Boutton convertir Tout l'ensemble de ce qu'on a importer                            
             linebreaks(3),
             fluidRow(
               column(12, align = "center", 
-                      div(
-                        style = "margin-top: 20px;",
-                        actionButton("convertButton", "Convertir", icon = icon("refresh"), style = "color: white;", class = "btn-lg btn-primary")
-                      )
+                     div(
+                       style = "margin-top: 20px;",
+                       actionButton("convertButton", "Convertir", icon = icon("refresh"), style = "color: white;", class = "btn-lg btn-primary")
+                    )
               )
                               
             )
+                            
+                    
     ),
                     
 #######################################################################################################################
 ##########################################  Onglet 3: Aide et ressources  #############################################
                     
     tabItem(tabName = "Aide",
-                            
+            
             fluidRow(	
               infoBox("Structurer le fichier de questions", "Vous pouvez télécharger le fichier ci-joint, qui est un fichier de base. Je vous demande de le compléter avec vos propres questions, et de l'utiliser pour la conversion en XML.",
                       icon = icon("stapler"),
                       color = "purple", 
                       width = 12
               ),
-              #Pas tt à fait fonctionnel
-              #mainPanel(
-              # Votre contenu principal ici
+#Pas tt à fait fonctionnel
+#mainPanel(
+# Votre contenu principal ici
               infoBox("Gabarit", 
                       downloadButton("downloadTemplate", "Télécharger le fichier CSV"),
                       icon = icon("stapler"),
                       color = "purple", 
                       width = 12
               ),
-              #),
+#),
               infoBox("intégrer le xml sur moodle",
-                      HTML("
-                      1.Connectez-vous à votre site Moodle en tant qu'administrateur ou enseignant disposant des droits nécessaires pour créer un cours ou une activité.<br/><br/>
-                      2.Accédez à la section du cours où vous souhaitez intégrer le fichier XML. Si vous créez un nouveau cours, créez d'abord le cours lui-même.<br/><br/>
-                      3.Cliquez sur le bouton 'ajouter une bande de questions' dans la section où vous souhaitez intégrer le fichier XML. Cela ouvrira la page 'importer le fichier sur moodle'."
-                      ), 
-                      icon = icon("m"),
-                      color = "purple", 
-                      width = 12
+              HTML("
+              1.Connectez-vous à votre site Moodle en tant qu'administrateur ou enseignant disposant des droits nécessaires pour créer un cours ou une activité.<br/><br/>
+              2.Accédez à la section du cours où vous souhaitez intégrer le fichier XML. Si vous créez un nouveau cours, créez d'abord le cours lui-même.<br/><br/>
+              3.Cliquez sur le bouton 'ajouter une bande de questions' dans la section où vous souhaitez intégrer le fichier XML. Cela ouvrira la page 'importer le fichier sur moodle'."
+              ), 
+              icon = icon("m"),
+              color = "purple", 
+              width = 12
               ),
-                              
               align = "center"
-            ),
-                            ########### Boite mail
-                            
-            fluidRow(
-              infoBox(title = "Information",
-                      uiOutput("email"),
-                      icon = icon("envelope"),
-                      fill = TRUE,
-                      color = "purple",
-                      width = 12
               ),
-            ),   
+########### Boite mail
+                            
+              fluidRow(
+                infoBox(title = "Information",
+                        uiOutput("email"),
+                        icon = icon("envelope"),
+                        fill = TRUE,
+                        color = "purple",
+                        width = 12
+                ),
+              ),   
                             
                             
     )
-#################################################################################################################################			
-  )
+                    #################################################################################################################################			
+    )
 )
 )
 )
