@@ -151,14 +151,15 @@ shinyServer(function(input, output, session){
   
   #Ce code crée une boîte d'informations "infoBox" contenant un élément d'entrée de fichier "fileInput" avec un bouton de parcours permettant aux utilisateurs de sélectionner un fichier CSV, XLSX ou ODS. La boîte d'informations n'est rendue que si l'option "ImagesQuestion" est activée et si l'utilisateur a déjà téléchargé les images requises. La boîte d'informations est stylisée avec une icône Excel, une couleur de fond bleue et une largeur de 12.
   
+  
   output$FileBox <- renderUI({
     
     infoBox(title = "",
             fileInput("file", 
-                      label = "Importez votre fichier de questions préparé en suivant le gabarit (xlsx, csv, ods). Vous pouvez trouver des exemples de gabarits pour créer vos questions dans la rubrique 'aide et ressources'", 
+                      label = HTML('Importez votre fichier de questions préparé en suivant le gabarit (xlsx, csv, ods).<br><br><i>Vous pouvez trouver des exemples de gabarits pour créer vos questions dans la rubrique "aide et ressources".</i>'), 
                       buttonLabel = HTML(paste(icon("upload"), "Parcourir")),
-                      placeholder = "Aucun fichier importé pour l'instant ..."
-                      , width = "100%",
+                      placeholder = "Aucun fichier importé pour l'instant ...",
+                      width = "100%",
                       accept = c(".csv", ".ods", ".xlsx")
             ),
             icon = icon("file-excel"),
@@ -207,7 +208,7 @@ shinyServer(function(input, output, session){
         status = "primary",
         solidHeader = TRUE,
         width = 12,
-        fileInput("images", label = "Sélectionnez les images utilisées dans votre fichier de questions. Vous pouvez utiliser la touche 'Ctrl' pour la sélection multiple d'images, ou appuyer sur plusieurs fois sur 'parcourir'.", multiple = TRUE, accept = c('image/png', 'image/jpeg', 'image/jpg')),
+        fileInput("images", label = 'Sélectionnez les images utilisées dans votre fichier de questions. Vous pouvez utiliser la touche "Ctrl" pour sélectionner plusieurs images, ou appuyer sur plusieurs fois sur "parcourir".', multiple = TRUE, accept = c('image/png', 'image/jpeg', 'image/jpg')),
         hr(),
         h4("Images sélectionnées :"),
         uiOutput("selected_images_bilan"),
@@ -464,9 +465,12 @@ shinyServer(function(input, output, session){
   # Ce code génère une boîte de dialogue qui permet à l'utilisateur de sélectionner les conversions automatiques qu'il souhaite activer pour les images, les formules mathématiques et les codes SMILES, si l'option "ImagesQuestion" est activée dans l'application R Shiny.
   
   output$ImageInfo <- renderUI({
-    
     box(
-      title = "Paramètres avancés. Sélectionnez les paramètres pour la conversion de votre fichier de questions, en appuyant sur le bouton '+' tout a droite.",
+      title = "Paramètres avancés",
+      div(
+        HTML("<i>Sélectionnez les paramètres pour la conversion de votre fichier de questions.</i>"),
+        style = "margin-bottom: 10px;"
+      ),
       checkboxGroupInput(
         inputId = "conversion",
         label = "",
@@ -485,17 +489,19 @@ shinyServer(function(input, output, session){
         ), 
         inline = TRUE
       ),
-      textInput("color_time_advice", "Couleur des messages de temps conseillé sur Moodle", value = ""),
+      textInput("Sm.temps_couleur", "Couleur des messages de temps conseillé sur Moodle", value = ""),
       numericInput("rounding_tolerance", "Tolérance des arrondis", value = 0, min = 0),
       textInput("default_category", "Catégorie par défaut des questions sur Moodle si la catégorie n'est pas renseignée dans le fichier de questions", value = ""),
       solidHeader = TRUE,
       status = "primary",
       color = "blue",
       width = 12,
-      collapsible = T,
-      collapsed = T
+      collapsible = TRUE,
+      collapsed = TRUE
     )
   })
+  
+  
   observeEvent(input$questionFile, {
     req(input$questionFile)
     file_name <- tools::file_path_sans_ext(input$questionFile$name) # Extraire le nom du fichier sans l'extension
