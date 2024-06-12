@@ -12,7 +12,7 @@ library(fresh)
 library(base64enc)
 #####################################################################################
 
-# library(rsconnect) ; setwd("~/Documents/ShinyMoodle/") ; rsconnect::setAccountInfo(name='verbam01', token='83EE1187C6F7C3597C9DCB26703A8516', secret='3rN95pQ5s3/24ELui7eEeV/yM1zqP2k4X6kLZ9Dc') ; deployApp(account = "verbam01", appName = "MoodleBaseQuestions", appDir = "MoodleBaseQuestions")
+#library(rsconnect) ; rsconnect::setAccountInfo(name='verbam01', token='83EE1187C6F7C3597C9DCB26703A8516', secret='3rN95pQ5s3/24ELui7eEeV/yM1zqP2k4X6kLZ9Dc') ; deployApp(account = "verbam01", appName = "MoodleBaseQuestions", appDir = "MoodleBaseQuestions")
 
 
 #####################################
