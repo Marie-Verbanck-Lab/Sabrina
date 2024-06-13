@@ -12,8 +12,10 @@ library(fresh)
 library(base64enc)
 #####################################################################################
 
-#library(rsconnect) ; rsconnect::setAccountInfo(name='verbam01', token='83EE1187C6F7C3597C9DCB26703A8516', secret='3rN95pQ5s3/24ELui7eEeV/yM1zqP2k4X6kLZ9Dc') ; deployApp(account = "verbam01", appName = "MoodleBaseQuestions", appDir = "MoodleBaseQuestions")
+# library(rsconnect) ; rsconnect::setAccountInfo(name='verbam01', token='83EE1187C6F7C3597C9DCB26703A8516', secret='3rN95pQ5s3/24ELui7eEeV/yM1zqP2k4X6kLZ9Dc') ; deployApp(account = "verbam01", appName = "MoodleBaseQuestions", appDir = "MoodleBaseQuestions")
 
+# devtools::install_github("Marie-Verbanck-Lab/Sabrina/SARP.moodle") 
+# library(rsconnect) ; rsconnect::setAccountInfo(name=‘verbam01’, token=‘83EE1187C6F7C3597C9DCB26703A8516’, secret=‘3rN95pQ5s3/24ELui7eEeV/yM1zqP2k4X6kLZ9Dc’) ; rsconnect::deployApp(account = “verbam01", appDir = “MoodleBaseQuestions”)
 
 #####################################
 linebreaks <- function(n){HTML(strrep(br(), n))}
@@ -188,7 +190,6 @@ linebreaks(2),
             )
             ),
             fluidRow(
-              uiOutput("image_selector_ui"),
               div(class = "image-selector-container", uiOutput("image_selector_ui"))
             ),
                             
