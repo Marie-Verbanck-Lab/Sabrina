@@ -25,25 +25,25 @@ shinyServer(function(input, output, session){
   
   values <- reactiveValues()
   
-  FilePath <- reactive({
-    input$file$datapath
-  })
+    FilePath <- reactive({
+      input$file$datapath
+    })
   
   
-  output$email <- renderUI({
-    tagList(a(
-      h5("Contacter Emmanuel Curis pour vos demandes au sujet de SARP.moodle."), 
-      href = "mailto:emmanuel.curis@u-paris.fr")
-    )
-  })
+    output$email <- renderUI({
+      tagList(a(
+        h5("Contacter Emmanuel Curis pour vos demandes au sujet de SARP.moodle."), 
+        href = "mailto:emmanuel.curis@u-paris.fr")
+      )
+    })
   
   
-  # Ce code utilise la fonction `observeEvent()` pour détecter le déclenchement de l'événement "Start" et mettre à jour l'onglet "Conversion" en utilisant la fonction `updateTabItems()`.
-  observeEvent(input$convertButton, {
-    if (!is.null(FilePath())) {
-      updateTabItems(session, "tabs", "Base")
-    }
-  })
+# Ce code utilise la fonction `observeEvent()` pour détecter le déclenchement de l'événement "Start" et mettre à jour l'onglet "Conversion" en utilisant la fonction `updateTabItems()`.
+    observeEvent(input$convertButton, {
+      if (!is.null(FilePath())) {
+        updateTabItems(session, "tabs", "Base")
+      }
+    })
   
   # observeEvent(values[["xml"]], {
   #   cat(! is.null(values[["xml"]]))
@@ -54,148 +54,150 @@ shinyServer(function(input, output, session){
   #   }
   # })
   
-  output$downloadSolution <- downloadHandler(
-    filename = function() {
-      as.character(paste0("BaseQuestionsMoodle_", Sys.Date(), ".xml"))
-    },
+    output$downloadSolution <- downloadHandler(
+      filename = function() {
+        as.character(paste0("BaseQuestionsMoodle_", Sys.Date(), ".xml"))
+      },
     content = function(file) {
       # return(getXML(file))
       values[["log"]] <- capture.output(xml <- getXML(file))
       # values[["xml"]] <- xml
-      if(! is.null(xml))
-        return(xml)
-      else
-        return(NULL)
+        if(! is.null(xml))
+          return(xml)
+        else
+          return(NULL)
     }
-  )
+    )
   
   
   #Cette fonction "getXML" prend un nom de fichier en entrée et effectue des opérations en fonction de la valeur des options "ImagesQuestion" et "conversion" de l'entrée utilisateur, avant de renvoyer le nom du fichier en sortie. La fonction convertit les fichiers CSV, XLSX et ODS en fichier XML en utilisant les fonctions csv.moodle(), xlsx.moodle() et ods.moodle() respectivement. Si l'option "ImagesQuestion" est activée, la fonction copie les fichiers d'images spécifiés dans le répertoire de destination avant de convertir le fichier en XML.
   
   
-  getXML <- function(){
+    getXML <- function(){
     
-    extension <- tools::file_ext(input$file$datapath)
-    file <- "temp.xml"
+      extension <- tools::file_ext(input$file$datapath)
+        file <- "temp.xml"
     
-    if(input$ImagesQuestion == TRUE){
-      FileRep <- gsub("0\\.[a-zA-Z]+$", "", input$file$datapath)
-      system(paste0("cp ", input$Images[, 4], " ", FileRep, input$Images[, 1], collapse = ";"))
+          if(input$ImagesQuestion == TRUE){
+            FileRep <- gsub("0\\.[a-zA-Z]+$", "", input$file$datapath)
+              system(paste0("cp ", input$Images[, 4], " ", FileRep, input$Images[, 1], collapse = ";"))
       
-      if(extension == "csv"){
-        msgErr <- try(conv <-
-                        csv.moodle(
-                          fichier.csv = input$file$datapath, 
-                          fichier.xml = file,
-                          sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
-                          dossier.images = FileRep
-                        )
-        )
-      } else if(extension == "xlsx"){
-        msgErr <- try(conv <-
-                        xlsx.moodle(
-                          fichier.xlsx = input$file$datapath, 
-                          fichier.xml = file,
-                          sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
-                          dossier.images = FileRep
-                        )
-        )
-      } else if(extension == "ods"){
-        msgErr <- try(conv <-
+                if(extension == "csv"){
+                  msgErr <- try(conv <-
+                    csv.moodle(
+                      fichier.csv = input$file$datapath, 
+                      fichier.xml = file,
+                      sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
+                      dossier.images = FileRep
+                    )
+                  )
+                } else if(extension == "xlsx"){
+                    msgErr <- try(conv <-
+                      xlsx.moodle(
+                        fichier.xlsx = input$file$datapath, 
+                        fichier.xml = file,
+                        sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
+                        dossier.images = FileRep
+                      )
+                    )
+                  } else if(extension == "ods"){
+                      msgErr <- try(conv <-
                         ods.moodle(
                           fichier.csv = input$file$datapath, 
                           fichier.xml = file,
                           sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
                           dossier.images = FileRep
                         )
-        )
-      }
-    } else {
-      cat(paste("########################", extension, "######################\n\n\n"))
+                      )
+                    }
+          } else {
+              cat(paste("########################", extension, "######################\n\n\n"))
       
-      if(extension == "csv"){
-        msgErr <- try(conv <-
-                        csv.moodle(
-                          fichier.csv = input$file$datapath, 
-                          fichier.xml = file
-                        )
-        )
-      } else if(extension == "xlsx"){
-        msgErr <- try(conv <-
-                        xlsx.moodle(
-                          fichier.xlsx = input$file$datapath, 
-                          fichier.xml = file
-                        )
-        )
-      } else if(extension == "ods"){
-        msgErr <- try(conv <-
+                if(extension == "csv"){
+                  msgErr <- try(conv <-
+                    csv.moodle(
+                      fichier.csv = input$file$datapath, 
+                      fichier.xml = file
+                    )
+                  )
+                } else if(extension == "xlsx"){
+                    msgErr <- try(conv <-
+                      xlsx.moodle(
+                        fichier.xlsx = input$file$datapath, 
+                        fichier.xml = file
+                      )
+                    )
+                  } else if(extension == "ods"){
+                      msgErr <- try(conv <-
                         ods.moodle(
                           fichier.ods = input$file$datapath, 
                           fichier.xml = file
                         )
-        )
-      }
+                      )
+                    }
+              }
+              if (class(msgErr) %in% "try-error") {
+                shinyCatch({ stop(msgErr) }, prefix = '')
+                return(msgErr)
+              } else {
+                  return(conv)
+                }
     }
-    if (class(msgErr) %in% "try-error") {
-      shinyCatch({ stop(msgErr) }, prefix = '')
-      return(msgErr)
-    } else {
-      return(conv)
-    }
-  }
   
-  output$WARNINGS <- renderPrint({
-    textOutput("text")
-    # getXML(as.character(paste0("BaseQuestionsMoodle_", Sys.Date(), ".xml")))
-  })
+    output$WARNINGS <- renderPrint({
+      textOutput("text")
+      # getXML(as.character(paste0("BaseQuestionsMoodle_", Sys.Date(), ".xml")))
+    })
   
-  #Ce code crée une boîte d'informations "infoBox" contenant un élément d'entrée de fichier "fileInput" avec un bouton de parcours permettant aux utilisateurs de sélectionner un fichier CSV, XLSX ou ODS. La boîte d'informations n'est rendue que si l'option "ImagesQuestion" est activée et si l'utilisateur a déjà téléchargé les images requises. La boîte d'informations est stylisée avec une icône Excel, une couleur de fond bleue et une largeur de 12.
+#Ce code crée une boîte d'informations "infoBox" contenant un élément d'entrée de fichier "fileInput" avec un bouton de parcours permettant aux utilisateurs de sélectionner un fichier CSV, XLSX ou ODS. La boîte d'informations n'est rendue que si l'option "ImagesQuestion" est activée et si l'utilisateur a déjà téléchargé les images requises. La boîte d'informations est stylisée avec une icône Excel, une couleur de fond bleue et une largeur de 12.
   
   
-  output$FileBox <- renderUI({
+    output$FileBox <- renderUI({
     
-    infoBox(title = "",
-            fileInput("file", 
-                      label = HTML('Importez votre fichier de questions préparé en suivant le gabarit (xlsx, csv, ods).<br><br><i>Vous pouvez trouver des exemples de gabarits pour créer vos questions dans la rubrique "aide et ressources".</i>'), 
-                      buttonLabel = HTML(paste(icon("upload"), "Parcourir")),
-                      placeholder = "Aucun fichier importé pour l'instant ...",
-                      width = "100%",
-                      accept = c(".csv", ".ods", ".xlsx")
-            ),
+      infoBox(title = "",
+        fileInput("file", 
+          label = HTML('Importez votre fichier de questions préparé en suivant le gabarit (xlsx, csv, ods).<br><br><i>Vous pouvez trouver des exemples de gabarits pour créer vos questions dans la rubrique "aide et ressources".</i>'), 
+            buttonLabel = HTML(paste(icon("upload"), "Parcourir")),
+            placeholder = "Aucun fichier importé pour l'instant ...",
+            width = "100%",
+            accept = c(".csv", ".ods", ".xlsx")
+                      
+        ),
             icon = icon("file-excel"),
             fill = TRUE, 
             color = "blue", 
             width = 12
-    )
-  })
+      )
+    })
+  
   
   #################  Code pour afficher un apercu du gabarit mais ne fonctionne pas  ############################
-  output$preview <- DT::renderDataTable({
-    req(input$file)  # S'assurer qu'un fichier est sélectionné
+    output$preview <- DT::renderDataTable({
+      req(input$file)  # S'assurer qu'un fichier est sélectionné
     
     # Chemin vers le fichier téléchargé
-    filepath <- input$file$datapath
+        filepath <- input$file$datapath
     
     # Vérification du type de fichier
-    if (grepl("\\.csv$", input$file$name, ignore.case = TRUE)) {
-      data <- read.csv(filepath)
-    } else if (grepl("\\.xlsx$|\\.xls$", input$file$name, ignore.case = TRUE)) {
-      data <- readxl::read_excel(filepath)
-    } else if (grepl("\\.ods$", input$file$name, ignore.case = TRUE)) {
-      data <- readxl::read_ods(filepath)
-    } else {
-      return(NULL)  # Fichier non pris en charge
-    }
+          if (grepl("\\.csv$", input$file$name, ignore.case = TRUE)) {
+            data <- read.csv(filepath)
+          } else if (grepl("\\.xlsx$|\\.xls$", input$file$name, ignore.case = TRUE)) {
+              data <- readxl::read_excel(filepath)
+            } else if (grepl("\\.ods$", input$file$name, ignore.case = TRUE)) {
+                data <- readxl::read_ods(filepath)
+              } else {
+                  return(NULL)  # Fichier non pris en charge
+                }
     
-    # Afficher l'aperçu des données
-    DT::datatable(head(data, 10))
-  })
+                    # Afficher l'aperçu des données
+                    DT::datatable(head(data, 10))
+    })
   
   ######################################################################################################################
   
-  #Ce code crée une boîte contenant un élément d'entrée de fichier "fileInput" permettant aux utilisateurs de sélectionner des images en format PNG, JPEG ou JPG, qui seront utilisées pour créer une base de questions. La boîte n'est rendue que si l'option "ImagesQuestion" est activée et elle est stylisée avec un titre, un fond solide de couleur primaire et une largeur de 12.
+#Ce code crée une boîte contenant un élément d'entrée de fichier "fileInput" permettant aux utilisateurs de sélectionner des images en format PNG, JPEG ou JPG, qui seront utilisées pour créer une base de questions. La boîte n'est rendue que si l'option "ImagesQuestion" est activée et elle est stylisée avec un titre, un fond solide de couleur primaire et une largeur de 12.
   
-  #######" test images
+#######" test images
   
   
   output$image_selector_ui <- renderUI({
