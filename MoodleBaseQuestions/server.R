@@ -163,10 +163,10 @@ shinyServer(function(input, output, session){
             accept = c(".csv", ".ods", ".xlsx")
                       
         ),
-            icon = icon("file-excel"),
-            fill = TRUE, 
-            color = "blue", 
-            width = 12
+        icon = icon("file-excel"),
+        fill = TRUE, 
+        color = "blue", 
+        width = 12
       )
     })
   
@@ -183,11 +183,11 @@ shinyServer(function(input, output, session){
             data <- read.csv(filepath)
           } else if (grepl("\\.xlsx$|\\.xls$", input$file$name, ignore.case = TRUE)) {
               data <- readxl::read_excel(filepath)
-            } else if (grepl("\\.ods$", input$file$name, ignore.case = TRUE)) {
-                data <- readxl::read_ods(filepath)
-              } else {
-                  return(NULL)  # Fichier non pris en charge
-                }
+          } else if (grepl("\\.ods$", input$file$name, ignore.case = TRUE)) {
+              data <- readxl::read_ods(filepath)
+          } else {
+            return(NULL)  # Fichier non pris en charge
+          }
     
                     # Afficher l'aperçu des données
                     DT::datatable(head(data, 10))
