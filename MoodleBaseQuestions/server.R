@@ -224,31 +224,30 @@ shinyServer(function(input, output, session){
   
   observeEvent(input$images, {
     images <- selected_images()
-    new_images <- lapply(seq_along(input$images$name), function(i) {
-      list(
-        name = input$images$name[i],
-        datapath = input$images$datapath[i],
-        data = base64enc::dataURI(file = input$images$datapath[i], mime = input$images$type[i])
-      )
-    })
-    names(new_images) <- input$images$name
-    duplicate_names <- names(selected_images())[names(selected_images()) %in% input$images$name]
-    if (length(duplicate_names) > 0) {
-      showModal(modalDialog(
-        title = "Attention",
-        paste("Les images suivantes ont été sélectionnées plusieurs fois :", paste(duplicate_names, collapse = ", ")),
-        footer = tagList(modalButton("Fermer"))
-      ))
-    } else {
-      images <- c(images, new_images)
-      selected_images(images)
-    }
+      new_images <- lapply(seq_along(input$images$name), function(i) {
+        list(
+          name = input$images$name[i],
+          datapath = input$images$datapath[i],
+          data = base64enc::dataURI(file = input$images$datapath[i], mime = input$images$type[i])
+        )
+      })
+      names(new_images) <- input$images$name
+      duplicate_names <- names(selected_images())[names(selected_images()) %in% input$images$name]
+        if (length(duplicate_names) > 0) {
+          showModal(modalDialog(
+            title = "Attention",
+            paste("Les images suivantes ont été sélectionnées plusieurs fois :", paste(duplicate_names, collapse = ", ")),
+            footer = tagList(modalButton("Fermer"))
+          ))
+        } else {
+          images <- c(images, new_images)
+          selected_images(images)
+        }
   })
   
   output$selected_images_bilan <- renderUI({
     if(input$ImagesQuestion == FALSE)
       return(NULL)
-    
     img_list <- selected_images()
     
     tagList(
@@ -271,19 +270,19 @@ shinyServer(function(input, output, session){
     })
     
     is_validated(TRUE)
-    showModal(modalDialog(
-      title = "Images validées",
-      renderText({
-        selected_count <- length(selected())
-        if (selected_count == 1) {
-          paste("Vous avez importé l'image suivante :", selected())
-        } else {
-          paste("Vous avez importé les", selected_count, "images suivantes :", paste(selected(), collapse = ", "))
-        }
-      }),
-      footer = tagList(modalButton("Fermer")),
-      easyClose = TRUE
-    ))
+      showModal(modalDialog(
+        title = "Images validées",
+        renderText({
+          selected_count <- length(selected())
+          if (selected_count == 1) {
+            paste("Vous avez importé l'image suivante :", selected())
+          } else {
+            paste("Vous avez importé les", selected_count, "images suivantes :", paste(selected(), collapse = ", "))
+          }
+        }),
+        footer = tagList(modalButton("Fermer")),
+        easyClose = TRUE
+      ))
   })
   
   output$validate_button_ui <- renderUI({
@@ -468,37 +467,37 @@ shinyServer(function(input, output, session){
   output$ImageInfo <- renderUI({
     box(
       title = "Paramètres avancés",
-      div(
-        HTML("<i>Sélectionnez les paramètres pour la conversion de votre fichier de questions.</i>"),
-        style = "margin-bottom: 10px;"
-      ),
-      checkboxGroupInput(
-        inputId = "conversion",
-        label = "",
-        selected = c('Image', 'Latex', 'Smiles', 'Time'),
-        choiceNames = list(
-          "Images", 
-          "Formules mathématiques",
-          "Codes SMILES",
-          "Afficher le temps conseillé"
+        div(
+          HTML("<i>Sélectionnez les paramètres pour la conversion de votre fichier de questions.</i>"),
+          style = "margin-bottom: 10px;"
         ),
-        choiceValues = list(
-          "Image",
-          "Latex",
-          "Smiles",
-          "Time"
-        ), 
-        inline = TRUE
-      ),
-      textInput("Sm.temps_couleur", "Couleur des messages de temps conseillé sur Moodle", value = ""),
-      numericInput("rounding_tolerance", "Tolérance des arrondis", value = 0, min = 0),
-      textInput("default_category", "Catégorie par défaut des questions sur Moodle si la catégorie n'est pas renseignée dans le fichier de questions", value = ""),
-      solidHeader = TRUE,
-      status = "primary",
-      color = "blue",
-      width = 12,
-      collapsible = TRUE,
-      collapsed = TRUE
+        checkboxGroupInput(
+          inputId = "conversion",
+          label = "",
+          selected = c('Image', 'Latex', 'Smiles', 'Time'),
+          choiceNames = list(
+            "Images", 
+            "Formules mathématiques",
+            "Codes SMILES",
+            "Afficher le temps conseillé"
+          ),
+          choiceValues = list(
+            "Image",
+            "Latex",
+            "Smiles",
+            "Time"
+          ), 
+          inline = TRUE
+        ),
+        textInput("Sm.temps_couleur", "Couleur des messages de temps conseillé sur Moodle", value = ""),
+        numericInput("rounding_tolerance", "Tolérance des arrondis", value = 0, min = 0),
+        textInput("default_category", "Catégorie par défaut des questions sur Moodle si la catégorie n'est pas renseignée dans le fichier de questions", value = ""),
+        solidHeader = TRUE,
+        status = "primary",
+        color = "blue",
+        width = 12,
+        collapsible = TRUE,
+        collapsed = TRUE
     )
   })
   
@@ -574,7 +573,7 @@ shinyServer(function(input, output, session){
         
         #https://daattali.com/shiny/shinyalert-demo/
         
-      } else {
+        } else {
         # creation d'un html à partir du xml
         system("imprime_Moodle temp.xml") # creation de temp.html
         # visualise temp.html
@@ -605,7 +604,7 @@ shinyServer(function(input, output, session){
         
         
         
-      }
+        }
     } 
   })
   
@@ -615,7 +614,7 @@ shinyServer(function(input, output, session){
     },
     content = function(file) {
       if(file.exists("temp.xml"))
-        file.copy("temp.xml", file)
+      file.copy("temp.xml", file)
     }
   )
   
