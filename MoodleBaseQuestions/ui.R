@@ -12,9 +12,8 @@ library(fresh)
 library(base64enc)
 #####################################################################################
 
-# library(rsconnect) ; rsconnect::setAccountInfo(name='verbam01', token='83EE1187C6F7C3597C9DCB26703A8516', secret='3rN95pQ5s3/24ELui7eEeV/yM1zqP2k4X6kLZ9Dc') ; deployApp(account = "verbam01", appName = "MoodleBaseQuestions", appDir = "MoodleBaseQuestions")
-
 # devtools::install_github("Marie-Verbanck-Lab/Sabrina/SARP.moodle") 
+# setwd("/home/sabrina/Documents/ShinyMoodle")
 # library(rsconnect) ; rsconnect::setAccountInfo(name=‘verbam01’, token=‘83EE1187C6F7C3597C9DCB26703A8516’, secret=‘3rN95pQ5s3/24ELui7eEeV/yM1zqP2k4X6kLZ9Dc’) ; rsconnect::deployApp(account = “verbam01", appDir = “MoodleBaseQuestions”)
 
 #####################################
@@ -96,6 +95,7 @@ shinyUI(
                 
   dashboardBody(
     use_theme(mytheme),
+    
 ######################################################################################################################
 ##########################################  Onglet 2: Récupérer son fichier de qst  ###################################
                   
@@ -113,7 +113,7 @@ shinyUI(
                             
 #######################################################################################################################
 ##########################################  Onglet 1: Convertir son fichier de qst  ###################################  
-                            
+                          
 ################ Telechargement du fichier resultat
                             
               fluidRow(
