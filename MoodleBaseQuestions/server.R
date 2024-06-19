@@ -32,8 +32,8 @@ shinyServer(function(input, output, session){
   
     output$email <- renderUI({
       tagList(a(
-        h5("Contacter Emmanuel Curis pour vos demandes au sujet de SARP.moodle."), 
-        href = "mailto:emmanuel.curis@u-paris.fr")
+        h5("Contacter les développeurs pour vos demandes au sujet de SARP.moodle."), 
+        href = "mailto:sarp.moodle@listes.u-paris.fr")
       )
     })
   
@@ -79,8 +79,8 @@ shinyServer(function(input, output, session){
         file <- "temp.xml"
     
           if(input$ImagesQuestion == TRUE){
-            FileRep <- gsub("0\\.[a-zA-Z]+$", "", input$file$datapath)
-              system(paste0("cp ", input$Images[, 4], " ", FileRep, input$Images[, 1], collapse = ";"))
+            FileRep <- gsub("0\\.[a-zA-Z]+$", "", input$file$datapath) # recupere le dossier du fichier de question
+              system(paste0("cp ", input$Images[, 4], " ", FileRep, input$Images[, 1], collapse = ";")) # copie les images en utilsant input$Images[, 4] qui est l'adresse dfe l'image dans le dossier FileRep en gardant le nom de l'image input$Images[, 1]
       
                 if(extension == "csv"){
                   msgErr <- try(conv <-
@@ -170,6 +170,19 @@ shinyServer(function(input, output, session){
       )
     })
   
+    
+    
+    output$convertButtonUI <- renderUI({
+      req(input$file)  # Cette ligne assure que le fichier est importé
+      fluidRow(
+        column(12, align = "center",
+               div(
+                 style = "margin-top: 20px;",
+                 actionButton("convertButton", "Convertir", icon = icon("refresh"), style = "color: white;", class = "btn-lg btn-primary")
+               )
+        )
+      )
+    })
   
   #################  Code pour afficher un apercu du gabarit mais ne fonctionne pas  ############################
     output$preview <- DT::renderDataTable({
@@ -184,46 +197,48 @@ shinyServer(function(input, output, session){
           } else if (grepl("\\.xlsx$|\\.xls$", input$file$name, ignore.case = TRUE)) {
               data <- readxl::read_excel(filepath)
           } else if (grepl("\\.ods$", input$file$name, ignore.case = TRUE)) {
-              data <- readxl::read_ods(filepath)
+            data <- readxl::read_ods(filepath)
           } else {
             return(NULL)  # Fichier non pris en charge
           }
-    
-                    # Afficher l'aperçu des données
-                    DT::datatable(head(data, 10))
+        
+        # Afficher l'aperçu des données
+        DT::datatable(head(data, 10))
     })
-  
-  ######################################################################################################################
-  
-#Ce code crée une boîte contenant un élément d'entrée de fichier "fileInput" permettant aux utilisateurs de sélectionner des images en format PNG, JPEG ou JPG, qui seront utilisées pour créer une base de questions. La boîte n'est rendue que si l'option "ImagesQuestion" est activée et elle est stylisée avec un titre, un fond solide de couleur primaire et une largeur de 12.
-  
-#######" test images
-  
-  
-  output$image_selector_ui <- renderUI({
-    if (input$ImagesQuestion == FALSE)
-      return(NULL)
     
-    fluidRow(
-      box(
-        title = "Sélecteur d'image(s)",
-        status = "primary",
-        solidHeader = TRUE,
-        width = 12,
-        fileInput("images", label = 'Sélectionnez les images utilisées dans votre fichier de questions. Vous pouvez utiliser la touche "Ctrl" pour sélectionner plusieurs images, ou appuyer sur plusieurs fois sur "parcourir".', multiple = TRUE, accept = c('image/png', 'image/jpeg', 'image/jpg')),
-        hr(),
-        h4("Images sélectionnées :"),
-        uiOutput("selected_images_bilan"),
-        uiOutput("validate_button_ui")
+    ######################################################################################################################
+    
+    #Ce code crée une boîte contenant un élément d'entrée de fichier "fileInput" permettant aux utilisateurs de sélectionner des images en format PNG, JPEG ou JPG, qui seront utilisées pour créer une base de questions. La boîte n'est rendue que si l'option "ImagesQuestion" est activée et elle est stylisée avec un titre, un fond solide de couleur primaire et une largeur de 12.
+    
+    #######" test images
+    
+    
+    output$image_selector_ui <- renderUI({
+      if (input$ImagesQuestion == FALSE)
+        return(NULL)
+      
+      fluidRow(
+        box(
+          title = "Sélecteur d'image(s)",
+          status = "primary",
+          solidHeader = TRUE,
+          width = 12,
+          fileInput("images", label = 'Sélectionnez les images utilisées dans votre fichier de questions. Vous pouvez utiliser la touche "Ctrl" pour sélectionner plusieurs images, ou appuyer sur plusieurs fois sur "Parcourir".', multiple = TRUE, accept = c('image/png', 'image/jpeg', 'image/jpg'), buttonLabel = HTML(paste(icon("upload"), "Parcourir")),
+                    placeholder = "Aucune image importée pour l'instant ...",
+          ),
+          hr(),
+          h4("Images sélectionnées :"),
+          uiOutput("selected_images_bilan"),
+          uiOutput("validate_button_ui")
+        )
       )
-    )
-  })
-  
-  selected_images <- reactiveVal(list())
-  is_validated <- reactiveVal(FALSE)
-  
-  observeEvent(input$images, {
-    images <- selected_images()
+    })
+    
+    selected_images <- reactiveVal(list())
+    is_validated <- reactiveVal(FALSE)
+    
+    observeEvent(input$images, {
+      images <- selected_images()
       new_images <- lapply(seq_along(input$images$name), function(i) {
         list(
           name = input$images$name[i],
@@ -245,6 +260,10 @@ shinyServer(function(input, output, session){
         }
   })
   
+  # seIm <- selected_images()
+  # seIm$datapath
+  # lapply(seIm, `[[`, 2)
+    
   output$selected_images_bilan <- renderUI({
     if(input$ImagesQuestion == FALSE)
       return(NULL)
@@ -289,7 +308,7 @@ shinyServer(function(input, output, session){
     if(input$ImagesQuestion == FALSE)
       return(NULL)
     
-    actionButton("validate_images", "Valider les images",style = "color: white;", class = "btn-primary")
+    actionButton("validate_images", "Vérifier les images sélectionnées",style = "color: white;", class = "btn-primary")
   })
   
   observe({
@@ -478,18 +497,16 @@ shinyServer(function(input, output, session){
           choiceNames = list(
             "Images", 
             "Formules mathématiques",
-            "Codes SMILES",
-            "Afficher le temps conseillé"
+            "Codes SMILES"
           ),
           choiceValues = list(
             "Image",
             "Latex",
-            "Smiles",
-            "Time"
+            "Smiles"
           ), 
           inline = TRUE
         ),
-        textInput("Sm.temps_couleur", "Couleur des messages de temps conseillé sur Moodle", value = ""),
+        textInput("Sm.temps_couleur", "Texte des messages de temps conseillé sur Moodle", value = "Temps conseillé pour répondre :"),
         numericInput("rounding_tolerance", "Tolérance des arrondis", value = 0, min = 0),
         textInput("default_category", "Catégorie par défaut des questions sur Moodle si la catégorie n'est pas renseignée dans le fichier de questions", value = ""),
         solidHeader = TRUE,
