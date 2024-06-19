@@ -50,7 +50,7 @@ shinyUI(
                 dashboardHeader(
                   title = "SARP.moodle",
                   tags$li(a(href = 'https://biostm.u-paris.fr/',
-                            img(src = "UniversiteParisCite_Pharmacie.jpeg", height = "70px", width = "250px"),
+                            img(src = "UniversiteParisCite_Pharmacie.jpeg", height = "79px", width = "250px"),
                             img(src = 'logo-BioSTM.png', height = "80px", width = "80px"),
                             style = "padding-top:10px; padding-bottom:10px;"),
                             class = "dropdown"),
@@ -80,60 +80,60 @@ shinyUI(
       )
 # Insérer les logos
     ),
-    linebreaks(25),
-    tags$div(
-      style = "padding: 100px;",
-      tags$img(src = "UniversiteParisCite_idex.jpeg", height = "90px", width = "90px"),
-      tags$img(src = "Logo_investir_lavenir.png", height = "90px", width = "90px")
-    )
-                  
-                  
+    linebreaks(18),
+tags$div(
+  style = "padding: 100px;",
+  tags$img(src = "UniversiteParisCite_idex.jpeg", height = "90px", width = "90px"),
+  tags$img(src = "Logo_investir_lavenir.png", height = "90px", width = "90px")
+)
+
+
   ),
-                
+
 #################################################################
 ############################# Body ##############################
-                
-  dashboardBody(
-    use_theme(mytheme),
-    
-######################################################################################################################
-##########################################  Onglet 2: Récupérer son fichier de qst  ###################################
-                  
-    tabItems(
-      tabItem(tabName = "Base",
-              fluidRow(
-                column(
-                  width = 12,
-                  align = "center",
-                  actionButton("retourButton", "Retour vers l'onglet de conversion", icon = icon("refresh"), style = "color: white;", class = "btn-lg btn-primary")
-                )
-                              
-              ),
-              linebreaks(3),
-                            
-#######################################################################################################################
-##########################################  Onglet 1: Convertir son fichier de qst  ###################################  
-                          
-################ Telechargement du fichier resultat
-                            
-              fluidRow(
-                uiOutput("downloadButton")
-              ),
-              fluidRow(
-                uiOutput("WARNINGSbox")
+
+dashboardBody(
+  use_theme(mytheme),
+  
+  ######################################################################################################################
+  ##########################################  Onglet 2: Récupérer son fichier de qst  ###################################
+  
+  tabItems(
+    tabItem(tabName = "Base",
+            fluidRow(
+              column(
+                width = 12,
+                align = "center",
+                actionButton("retourButton", "Retour vers l'onglet de conversion", icon = icon("refresh"), style = "color: white;", class = "btn-lg btn-primary")
               )
-      ),
-      tabItem(tabName = "Convertir",
-                            
-################ Charte graphique
-              fluidRow(
-                box(
-                  title = "Charte graphique des couleurs",
-                  solidHeader = TRUE,
-                  status = "info",
-                  width = 12,
-                  HTML("
-                  <p>Voici la charte Graphique des couleurs pour vous guider :</p>
+              
+            ),
+            linebreaks(3),
+            
+            #######################################################################################################################
+            ##########################################  Onglet 1: Convertir son fichier de qst  ###################################  
+            
+            ################ Telechargement du fichier resultat
+            
+            fluidRow(
+              uiOutput("downloadButton")
+            ),
+            fluidRow(
+              uiOutput("WARNINGSbox")
+            )
+    ),
+    tabItem(tabName = "Convertir",
+            
+            ################ Charte graphique
+            fluidRow(
+              box(
+                title = "Charte graphique des couleurs",
+                solidHeader = TRUE,
+                status = "info",
+                width = 12,
+                HTML("
+                  <p>Voici la charte graphique des couleurs pour vous guider :</p>
                   <ul>
                   <li><span style='color: #8A1538;'><b>Bordeaux :</b></span> fournit une information</li>
                   <li><span style='color: #005c93;'><b>Bleu :</b></span> nécessite une action de votre part</li>
@@ -141,18 +141,18 @@ shinyUI(
                   <li><span style='color: red;'><b>Rouge :</b></span> prévient d’une erreur</li>
                   </ul>
                   ")
-                )
-              ),
-                            
-################ Importation des images
-                            
-#### NV images
-              fluidRow(
-                uiOutput("FileBox")
-              ),
-              linebreaks(2),
-              fluidRow(
-                tags$head(tags$style(HTML("
+              )
+            ),
+            
+            ################ Importation des images
+            
+            #### NV images
+            fluidRow(
+              uiOutput("FileBox")
+            ),
+            linebreaks(2),
+            fluidRow(
+              tags$head(tags$style(HTML("
                 .image-preview {
                 width: 50px;
                 height: 50px;
@@ -173,69 +173,71 @@ shinyUI(
                 margin: 0 auto; /* Centrez la boîte horizontalement */
                 }
                 "))),
-                infoBox(
-                  "", 
-                  "Utilisez-vous des images ?",
-                  radioButtons(
-                    "ImagesQuestion", 
-                    label = "", 
-                    choices = list("Non" = FALSE, "Oui" = TRUE), 
-                    inline = TRUE, 
-                    selected = FALSE
-                  ),
-                  icon = icon("images"),
-                  fill = TRUE,
-                  color = "blue",
-                  width = 12
-                )
-              ),
-              fluidRow(
-                div(class = "image-selector-container", uiOutput("image_selector_ui"))
-              ),
-                            
-                            
-              fluidRow(
-                uiOutput("ImageBox"),
-                uiOutput("ImageInfo")
-              ),
-                            
-#### Boutton convertir Tout l'ensemble de ce qu'on a importer                            
-              linebreaks(3),
-              fluidRow(
-                column(12, align = "center", 
-                       div(
-                        style = "margin-top: 20px;",
-                        actionButton("convertButton", "Convertir", icon = icon("refresh"), style = "color: white;", class = "btn-lg btn-primary")
-                      )
-                )
-                              
+              infoBox(
+                "", 
+                "Utilisez-vous des images ?",
+                radioButtons(
+                  "ImagesQuestion", 
+                  label = "", 
+                  choices = list("Non" = FALSE, "Oui" = TRUE), 
+                  inline = TRUE, 
+                  selected = FALSE
+                ),
+                icon = icon("images"),
+                fill = TRUE,
+                color = "blue",
+                width = 12
               )
-                            
-                    
+            ),
+            #fluidRow(
+            #div(class = "image-selector-container", uiOutput("image_selector_ui"))
+            uiOutput("image_selector_ui"),
+            #),
+            
+            
+            fluidRow(
+              uiOutput("ImageBox"),
+              uiOutput("ImageInfo")
+            ),
+            
+            #### Boutton convertir Tout l'ensemble de ce qu'on a importer                            
+            linebreaks(3),
+            uiOutput("convertButtonUI")
+            # fluidRow(
+            #   column(12, align = "center", 
+            #          div(
+            #           style = "margin-top: 20px;",
+            #           actionButton("convertButton", "Convertir", icon = icon("refresh"), style = "color: white;", class = "btn-lg btn-primary")
+#         )
+#   )
+#                 
+# )
+
+
       ),
-                    
+
 #######################################################################################################################
 ##########################################  Onglet 3: Aide et ressources  #############################################
-                    
-      tabItem(tabName = "Aide",
-              
-              fluidRow(	
-                infoBox("Structurer le fichier de questions", "Vous pouvez télécharger le fichier ci-joint, qui est un fichier de base. Je vous demande de le compléter avec vos propres questions, et de l'utiliser pour la conversion en XML.",
-                        icon = icon("stapler"),
-                        color = "purple", 
-                        width = 12
-                ),
-#Pas tt à fait fonctionnel
-#mainPanel(
-# Votre contenu principal ici
-                infoBox("Gabarit", 
-                        downloadButton("downloadTemplate", "Télécharger le fichier CSV"),
-                        icon = icon("stapler"),
-                        color = "purple", 
-                        width = 12
-                ),
-#),
-                infoBox("intégrer le xml sur moodle",
+
+tabItem(tabName = "Aide",
+        
+        fluidRow(	
+          infoBox("Structurer le fichier de questions", "Vous pouvez télécharger le fichier ci-joint, qui est un fichier de base. Je vous demande de le compléter avec vos propres questions, et de l'utiliser pour la conversion en XML.",
+                  icon = icon("stapler"),
+                  color = "purple", 
+                  width = 12
+          ),
+          #Pas tt à fait fonctionnel
+          #mainPanel(
+          # Votre contenu principal ici
+          infoBox("Gabarit", 
+                  downloadButton("downloadTemplate", "Télécharger le fichier CSV"),
+                  icon = icon("stapler"),
+                  color = "purple", 
+                  width = 12
+          ),
+          #),
+          infoBox("intégrer le xml sur moodle",
                   HTML("
                   1.Connectez-vous à votre site Moodle en tant qu'administrateur ou enseignant disposant des droits nécessaires pour créer un cours ou une activité.<br/><br/>
                   2.Accédez à la section du cours où vous souhaitez intégrer le fichier XML. Si vous créez un nouveau cours, créez d'abord le cours lui-même.<br/><br/>
@@ -244,22 +246,22 @@ shinyUI(
                   icon = icon("m"),
                   color = "purple", 
                   width = 12
-                ),
-                align = "center"
-              ),
-########### Boite mail
-                            
-              fluidRow(
-                infoBox(title = "Information",
-                        uiOutput("email"),
-                        icon = icon("envelope"),
-                        fill = TRUE,
-                        color = "purple",
-                        width = 12
-                ),
-              ),   
-                            
-                            
+          ),
+          align = "center"
+        ),
+        ########### Boite mail
+        
+        fluidRow(
+          infoBox(title = "Information",
+                  uiOutput("email"),
+                  icon = icon("envelope"),
+                  fill = TRUE,
+                  color = "purple",
+                  width = 12
+          ),
+        ),   
+        
+        
       )
                     #################################################################################################################################			
     )
