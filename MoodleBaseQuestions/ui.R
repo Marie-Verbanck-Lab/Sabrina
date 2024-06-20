@@ -189,8 +189,8 @@ dashboardBody(
                 width = 12
               )
             ),
-            #fluidRow(
-            #div(class = "image-selector-container", uiOutput("image_selector_ui"))
+            #fluidRow( ca ne sert pas
+            #div(class = "image-selector-container", uiOutput("image_selector_ui")) ca ne sert pas
             uiOutput("image_selector_ui"),
             #),
             
@@ -222,7 +222,7 @@ dashboardBody(
 tabItem(tabName = "Aide",
         
         fluidRow(	
-          infoBox("Structurer le fichier de questions", "Vous pouvez télécharger le fichier ci-joint, qui est un fichier de base. Je vous demande de le compléter avec vos propres questions, et de l'utiliser pour la conversion en XML.",
+          infoBox("Structurer le fichier de questions", "Vous pouvez télécharger le fichier ci-joint, qui est un fichier de base. Complétez le pour vos propres questions, et utilisez le pour la conversion en XML.",
                   icon = icon("stapler"),
                   color = "purple", 
                   width = 12
