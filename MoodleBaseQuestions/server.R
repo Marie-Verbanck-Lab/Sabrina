@@ -80,8 +80,11 @@ shinyServer(function(input, output, session){
     
           if(input$ImagesQuestion == TRUE){
             FileRep <- gsub("0\\.[a-zA-Z]+$", "", input$file$datapath) # recupere le dossier du fichier de question
-              system(paste0("cp ", input$Images[, 4], " ", FileRep, input$Images[, 1], collapse = ";")) # copie les images en utilsant input$Images[, 4] qui est l'adresse dfe l'image dans le dossier FileRep en gardant le nom de l'image input$Images[, 1]
-      
+            # system(paste0("cp ", input$Images[, 4], " ", FileRep, input$Images[, 1], collapse = ";")) # copie les images en utilsant input$Images[, 4] qui est l'adresse dfe l'image dans le dossier FileRep en gardant le nom de l'image input$Images[, 1]
+            img_list <- selected_images()
+            if(length(img_list) != 0)
+            sapply(img_list, function(x) system(paste0("cp ", x$datapath, " ", FileRep, x$name[, 1])))
+            # petit exemple de copie d'une image ds les dossiers temporaires de shiny cp /tmp/Rtmp/93748hjkf/0.jpeg /tmp/Rtmp/98e3jfku6/iris.jpeg
                 if(extension == "csv"){
                   msgErr <- try(conv <-
                     csv.moodle(
