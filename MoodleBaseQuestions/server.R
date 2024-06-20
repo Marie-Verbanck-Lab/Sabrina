@@ -80,99 +80,98 @@ shinyServer(function(input, output, session){
     
           if(input$ImagesQuestion == TRUE){
             FileRep <- gsub("0\\.[a-zA-Z]+$", "", input$file$datapath) # recupere le dossier du fichier de question
-            # system(paste0("cp ", input$Images[, 4], " ", FileRep, input$Images[, 1], collapse = ";")) # copie les images en utilsant input$Images[, 4] qui est l'adresse dfe l'image dans le dossier FileRep en gardant le nom de l'image input$Images[, 1]
             img_list <- selected_images()
             if(length(img_list) != 0)
-            sapply(img_list, function(x) system(paste0("cp ", x$datapath, " ", FileRep, x$name[, 1])))
+              sapply(img_list, function(x) system(paste0("cp ", x$datapath, " ", FileRep, x$name)))
             # petit exemple de copie d'une image ds les dossiers temporaires de shiny cp /tmp/Rtmp/93748hjkf/0.jpeg /tmp/Rtmp/98e3jfku6/iris.jpeg
-                if(extension == "csv"){
-                  msgErr <- try(conv <-
-                    csv.moodle(
-                      fichier.csv = input$file$datapath, 
-                      fichier.xml = file,
-                      sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
-                      dossier.images = FileRep
-                    )
-                  )
-                } else if(extension == "xlsx"){
-                    msgErr <- try(conv <-
-                      xlsx.moodle(
-                        fichier.xlsx = input$file$datapath, 
-                        fichier.xml = file,
-                        sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
-                        dossier.images = FileRep
-                      )
-                    )
-                  } else if(extension == "ods"){
-                      msgErr <- try(conv <-
-                        ods.moodle(
-                          fichier.csv = input$file$datapath, 
-                          fichier.xml = file,
-                          sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
-                          dossier.images = FileRep
-                        )
-                      )
-                    }
-          } else {
-              cat(paste("########################", extension, "######################\n\n\n"))
-      
-                if(extension == "csv"){
-                  msgErr <- try(conv <-
-                    csv.moodle(
-                      fichier.csv = input$file$datapath, 
-                      fichier.xml = file
-                    )
-                  )
-                } else if(extension == "xlsx"){
-                    msgErr <- try(conv <-
-                      xlsx.moodle(
-                        fichier.xlsx = input$file$datapath, 
-                        fichier.xml = file
-                      )
-                    )
-                  } else if(extension == "ods"){
-                      msgErr <- try(conv <-
-                        ods.moodle(
-                          fichier.ods = input$file$datapath, 
-                          fichier.xml = file
-                        )
-                      )
-                    }
+              if(extension == "csv"){
+                msgErr <- try(conv <-
+                                csv.moodle(
+                                  fichier.csv = input$file$datapath, 
+                                  fichier.xml = file,
+                                  sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
+                                  dossier.images = FileRep
+                                )
+                )
+              } else if(extension == "xlsx"){
+                msgErr <- try(conv <-
+                                xlsx.moodle(
+                                  fichier.xlsx = input$file$datapath, 
+                                  fichier.xml = file,
+                                  sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
+                                  dossier.images = FileRep
+                                )
+                )
+              } else if(extension == "ods"){
+                msgErr <- try(conv <-
+                                ods.moodle(
+                                  fichier.csv = input$file$datapath, 
+                                  fichier.xml = file,
+                                  sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
+                                  dossier.images = FileRep
+                                )
+                )
               }
-              if (class(msgErr) %in% "try-error") {
-                shinyCatch({ stop(msgErr) }, prefix = '')
-                return(msgErr)
-              } else {
-                  return(conv)
-                }
+          } else {
+            cat(paste("########################", extension, "######################\n\n\n"))
+            
+            if(extension == "csv"){
+              msgErr <- try(conv <-
+                              csv.moodle(
+                                fichier.csv = input$file$datapath, 
+                                fichier.xml = file
+                              )
+              )
+            } else if(extension == "xlsx"){
+              msgErr <- try(conv <-
+                              xlsx.moodle(
+                                fichier.xlsx = input$file$datapath, 
+                                fichier.xml = file
+                              )
+              )
+            } else if(extension == "ods"){
+              msgErr <- try(conv <-
+                              ods.moodle(
+                                fichier.ods = input$file$datapath, 
+                                fichier.xml = file
+                              )
+              )
+            }
+          }
+        if (class(msgErr) %in% "try-error") {
+          shinyCatch({ stop(msgErr) }, prefix = '')
+          return(msgErr)
+        } else {
+          return(conv)
+        }
     }
-  
+    
     output$WARNINGS <- renderPrint({
       textOutput("text")
       # getXML(as.character(paste0("BaseQuestionsMoodle_", Sys.Date(), ".xml")))
     })
-  
-#Ce code crée une boîte d'informations "infoBox" contenant un élément d'entrée de fichier "fileInput" avec un bouton de parcours permettant aux utilisateurs de sélectionner un fichier CSV, XLSX ou ODS. La boîte d'informations n'est rendue que si l'option "ImagesQuestion" est activée et si l'utilisateur a déjà téléchargé les images requises. La boîte d'informations est stylisée avec une icône Excel, une couleur de fond bleue et une largeur de 12.
-  
-  
-    output$FileBox <- renderUI({
     
+    #Ce code crée une boîte d'informations "infoBox" contenant un élément d'entrée de fichier "fileInput" avec un bouton de parcours permettant aux utilisateurs de sélectionner un fichier CSV, XLSX ou ODS. La boîte d'informations n'est rendue que si l'option "ImagesQuestion" est activée et si l'utilisateur a déjà téléchargé les images requises. La boîte d'informations est stylisée avec une icône Excel, une couleur de fond bleue et une largeur de 12.
+    
+    
+    output$FileBox <- renderUI({
+      
       infoBox(title = "",
-        fileInput("file", 
-          label = HTML('Importez votre fichier de questions préparé en suivant le gabarit (xlsx, csv, ods).<br><br><i>Vous pouvez trouver des exemples de gabarits pour créer vos questions dans la rubrique "aide et ressources".</i>'), 
-            buttonLabel = HTML(paste(icon("upload"), "Parcourir")),
-            placeholder = "Aucun fichier importé pour l'instant ...",
-            width = "100%",
-            accept = c(".csv", ".ods", ".xlsx")
-                      
-        ),
-        icon = icon("file-excel"),
-        fill = TRUE, 
-        color = "blue", 
-        width = 12
+              fileInput("file", 
+                        label = HTML('Importez votre fichier de questions préparé en suivant le gabarit (xlsx, csv, ods).<br><br><i>Vous pouvez trouver des exemples de gabarits pour créer vos questions dans la rubrique "aide et ressources".</i>'), 
+                        buttonLabel = HTML(paste(icon("upload"), "Parcourir")),
+                        placeholder = "Aucun fichier importé pour l'instant ...",
+                        width = "100%",
+                        accept = c(".csv", ".ods", ".xlsx")
+                        
+              ),
+              icon = icon("file-excel"),
+              fill = TRUE, 
+              color = "blue", 
+              width = 12
       )
     })
-  
+    
     
     
     output$convertButtonUI <- renderUI({
@@ -186,27 +185,27 @@ shinyServer(function(input, output, session){
         )
       )
     })
-  
-  #################  Code pour afficher un apercu du gabarit mais ne fonctionne pas  ############################
+    
+    #################  Code pour afficher un apercu du gabarit mais ne fonctionne pas  ############################
     output$preview <- DT::renderDataTable({
       req(input$file)  # S'assurer qu'un fichier est sélectionné
-    
-    # Chemin vers le fichier téléchargé
-        filepath <- input$file$datapath
-    
-    # Vérification du type de fichier
-          if (grepl("\\.csv$", input$file$name, ignore.case = TRUE)) {
-            data <- read.csv(filepath)
-          } else if (grepl("\\.xlsx$|\\.xls$", input$file$name, ignore.case = TRUE)) {
-              data <- readxl::read_excel(filepath)
-          } else if (grepl("\\.ods$", input$file$name, ignore.case = TRUE)) {
-            data <- readxl::read_ods(filepath)
-          } else {
-            return(NULL)  # Fichier non pris en charge
-          }
-        
-        # Afficher l'aperçu des données
-        DT::datatable(head(data, 10))
+      
+      # Chemin vers le fichier téléchargé
+      filepath <- input$file$datapath
+      
+      # Vérification du type de fichier
+      if (grepl("\\.csv$", input$file$name, ignore.case = TRUE)) {
+        data <- read.csv(filepath)
+      } else if (grepl("\\.xlsx$|\\.xls$", input$file$name, ignore.case = TRUE)) {
+        data <- readxl::read_excel(filepath)
+      } else if (grepl("\\.ods$", input$file$name, ignore.case = TRUE)) {
+        data <- readxl::read_ods(filepath)
+      } else {
+        return(NULL)  # Fichier non pris en charge
+      }
+      
+      # Afficher l'aperçu des données
+      DT::datatable(head(data, 10))
     })
     
     ######################################################################################################################
@@ -263,6 +262,7 @@ shinyServer(function(input, output, session){
         }
   })
   
+    #Code pour voir où les images sont
   # seIm <- selected_images()
   # seIm$datapath
   # lapply(seIm, `[[`, 2)
@@ -509,7 +509,7 @@ shinyServer(function(input, output, session){
           ), 
           inline = TRUE
         ),
-        textInput("Sm.temps_couleur", "Texte des messages de temps conseillé sur Moodle", value = "Temps conseillé pour répondre :"),
+        textInput("Sm.temps_couleur", "Texte des messages de temps conseillé sur Moodle (%T sera remplacé par le temps)", value = "Temps conseillé pour répondre : %T"),
         numericInput("rounding_tolerance", "Tolérance des arrondis", value = 0, min = 0),
         textInput("default_category", "Catégorie par défaut des questions sur Moodle si la catégorie n'est pas renseignée dans le fichier de questions", value = ""),
         solidHeader = TRUE,
