@@ -115,7 +115,6 @@ dashboardBody(
             ##########################################  Onglet 1: Convertir son fichier de qst  ###################################  
             
             ################ Telechargement du fichier resultat
-            
             fluidRow(
               uiOutput("downloadButton")
             ),
@@ -144,12 +143,13 @@ dashboardBody(
               )
             ),
             
-            ################ Importation des images
             
-            #### NV images
             fluidRow(
-              uiOutput("FileBox")
+              uiOutput("FileBox"),
+              column(12, DTOutput("filePreview"))
             ),
+            ################ Importation des images
+            #### NV images
             linebreaks(2),
             fluidRow(
               tags$head(tags$style(HTML("
