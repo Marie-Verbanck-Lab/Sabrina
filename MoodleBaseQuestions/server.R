@@ -173,7 +173,6 @@ shinyServer(function(input, output, session){
     })
     
     
-    
     output$convertButtonUI <- renderUI({
       req(input$file)  # Cette ligne assure que le fichier est importé
       fluidRow(
@@ -182,6 +181,28 @@ shinyServer(function(input, output, session){
                  style = "margin-top: 20px;",
                  actionButton("convertButton", "Convertir", icon = icon("refresh"), style = "color: white;", class = "btn-lg btn-primary")
                )
+        )
+      )
+    })
+    
+    output$filePreview <- renderDataTable({
+      req(input$file)
+      file <- input$file
+      ext <- tools::file_ext(file$datapath)
+      
+      df <- switch(ext,
+                   csv = read.csv(file$datapath),
+                   xlsx = read_excel(file$datapath),
+                   ods = read_ods(file$datapath),
+                   validate("Fichier invalide; Veuillez télécharger un fichier .csv, .xlsx, or .ods")
+      )
+      datatable(
+        head(df), 
+        options = list(
+          pageLength = 5,
+          language = list(
+            url = '//cdn.datatables.net/plug-ins/1.10.21/i18n/French.json'
+          )
         )
       )
     })
