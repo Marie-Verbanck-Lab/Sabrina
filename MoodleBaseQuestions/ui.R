@@ -10,13 +10,15 @@ library(readODS)
 library(SARP.moodle)
 library(fresh)
 library(base64enc)
+library(DT)
 #####################################################################################
 
 # devtools::install_github("Marie-Verbanck-Lab/Sabrina/SARP.moodle") 
 # setwd("/home/sabrina/Documents/ShinyMoodle")
-# library(rsconnect) ; rsconnect::setAccountInfo(name=‘verbam01’, token=‘83EE1187C6F7C3597C9DCB26703A8516’, secret=‘3rN95pQ5s3/24ELui7eEeV/yM1zqP2k4X6kLZ9Dc’) ; rsconnect::deployApp(account = “verbam01", appDir = “MoodleBaseQuestions”)
+# rsconnect::setAccountInfo(name="verbam01", token="83EE1187C6F7C3597C9DCB26703A8516", secret="3rN95pQ5s3/24ELui7eEeV/yM1zqP2k4X6kLZ9Dc") ; rsconnect::deployApp(account = "verbam01", appDir = "MoodleBaseQuestions")
 
 #####################################
+
 linebreaks <- function(n){HTML(strrep(br(), n))}
 #Permet de changer les couleurs 
 mytheme <- create_theme(
@@ -47,15 +49,15 @@ shinyUI(
 #####################################################################################
   
   dashboardPage(skin = "purple",
-                dashboardHeader(
-                  title = "SARP.moodle",
-                  tags$li(a(href = 'https://biostm.u-paris.fr/',
-                            img(src = "UniversiteParisCite_Pharmacie.jpeg", height = "79px", width = "250px"),
-                            img(src = 'logo-BioSTM.png', height = "80px", width = "80px"),
-                            style = "padding-top:10px; padding-bottom:10px;"),
-                            class = "dropdown"),
-                  dropdownMenuOutput("messageMenu")
-                ),
+    dashboardHeader(
+        title = "SARP.moodle",
+        tags$li(a(href = 'https://biostm.u-paris.fr/',
+            img(src = "UniversiteParisCite_Pharmacie.jpeg", height = "79px", width = "250px"),
+            img(src = 'logo-BioSTM.png', height = "80px", width = "80px"),
+            style = "padding-top:10px; padding-bottom:10px;"),
+            class = "dropdown"),
+        dropdownMenuOutput("messageMenu")
+    ),
 ####################################################################
 ############################# Sidebar ##############################
                 
@@ -66,28 +68,26 @@ shinyUI(
     sidebarMenu(
       id = "tabs",
       menuItem("Convertir son fichier de questions",
-               tabName = "Convertir", 
-               icon = icon("gears")
+        tabName = "Convertir", 
+        icon = icon("gears")
       ),
       menuItem("Récupérer son fichier de questions",
-               tabName = "Base", 
-               icon = icon("graduation-cap")
+        tabName = "Base", 
+        icon = icon("graduation-cap")
                              
       ),
       menuItem("Aide et ressources",
-               tabName = "Aide", 
-               icon = icon("info")
+        tabName = "Aide", 
+        icon = icon("info")
       )
 # Insérer les logos
     ),
     linebreaks(18),
-tags$div(
-  style = "padding: 100px;",
-  tags$img(src = "UniversiteParisCite_idex.jpeg", height = "90px", width = "90px"),
-  tags$img(src = "Logo_investir_lavenir.png", height = "90px", width = "90px")
-)
-
-
+    tags$div(
+      style = "padding: 100px;",
+      tags$img(src = "UniversiteParisCite_idex.jpeg", height = "90px", width = "90px"),
+      tags$img(src = "Logo_investir_lavenir.png", height = "90px", width = "90px")
+    )
   ),
 
 #################################################################
