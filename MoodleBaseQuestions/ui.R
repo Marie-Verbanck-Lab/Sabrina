@@ -11,6 +11,8 @@ library(SARP.moodle)
 library(fresh)
 library(base64enc)
 library(DT)
+library(shinyalert)
+
 #####################################################################################
 
 # devtools::install_github("Marie-Verbanck-Lab/Sabrina/SARP.moodle") 
@@ -40,6 +42,7 @@ mytheme <- create_theme(
     info_box_bg = "#F3F1F1"
     
   )
+
 )
 
 # Couleurs shiny https://rstudio.github.io/shinydashboard/appearance.html#statuses-and-colors
@@ -60,7 +63,7 @@ shinyUI(
     ),
 ####################################################################
 ############################# Sidebar ##############################
-                
+
   # Créer les onglets
   dashboardSidebar(
     collapsed = FALSE,
@@ -68,16 +71,16 @@ shinyUI(
     sidebarMenu(
       id = "tabs",
       menuItem("Convertir son fichier de questions",
-        tabName = "Convertir", 
+        tabName = "Convertir",
         icon = icon("gears")
       ),
       menuItem("Récupérer son fichier de questions",
-        tabName = "Base", 
+        tabName = "Base",
         icon = icon("graduation-cap")
-                             
+
       ),
       menuItem("Aide et ressources",
-        tabName = "Aide", 
+        tabName = "Aide",
         icon = icon("info")
       )
 # Insérer les logos
@@ -90,11 +93,14 @@ shinyUI(
     )
   ),
 
+
+
 #################################################################
 ############################# Body ##############################
 
 dashboardBody(
   use_theme(mytheme),
+  useShinyalert(),
   
   ######################################################################################################################
   ##########################################  Onglet 2: Récupérer son fichier de qst  ###################################
