@@ -184,20 +184,36 @@ shinyServer(function(input, output, session){
         )
       )
     })
-    
+   
     output$filePreview <- renderDataTable({
       req(input$file)
       file <- input$file
       ext <- tools::file_ext(file$datapath)
-      
+
       df <- switch(ext,
-                   csv = read.csv(file$datapath),
+                   csv = fread(file$datapath, data.table = FALSE),
                    xlsx = read_excel(file$datapath),
                    ods = read_ods(file$datapath),
                    validate("Fichier invalide; Veuillez télécharger un fichier .csv, .xlsx, or .ods")
       )
+
+      # Vérifier si la colonne "temps" existe
+      if(!"Temps" %in% colnames(df)) {
+      # Message alerte pour dire qu'il n'y a pas de colonne "temps" dans le fichier importé
+        shinyalert(
+          title = "Attention",
+          text = 'Le fichier de questions importé ne comporte pas de colonne "temps" pour associer un temps conseillé aux questions.',
+          type = "warning"
+        )
+      } else {
+        shinyalert(
+          title = "Succès",
+          text = 'Votre fichier de questions a bien été importé.',
+          type = "success"
+        )
+      }
       datatable(
-        head(df), 
+        head(df),
         options = list(
           pageLength = 5,
           language = list(
@@ -205,29 +221,44 @@ shinyServer(function(input, output, session){
           )
         )
       )
+
     })
     
-    #################  Code pour afficher un apercu du gabarit mais ne fonctionne pas  ############################
-    output$preview <- DT::renderDataTable({
-      req(input$file)  # S'assurer qu'un fichier est sélectionné
-      
-      # Chemin vers le fichier téléchargé
-      filepath <- input$file$datapath
-      
-      # Vérification du type de fichier
-      if (grepl("\\.csv$", input$file$name, ignore.case = TRUE)) {
-        data <- read.csv(filepath)
-      } else if (grepl("\\.xlsx$|\\.xls$", input$file$name, ignore.case = TRUE)) {
-        data <- readxl::read_excel(filepath)
-      } else if (grepl("\\.ods$", input$file$name, ignore.case = TRUE)) {
-        data <- readxl::read_ods(filepath)
-      } else {
-        return(NULL)  # Fichier non pris en charge
-      }
-      
-      # Afficher l'aperçu des données
-      DT::datatable(head(data, 10))
-    })
+    ####################################
+
+    # getPreview <- function(){
+    #   if {
+    #     return(df)
+    #   } else {
+    #     return(NULL)
+    #   }
+    # }
+    # 
+    # output$CheckTemps <- render ({
+    #   df <- getPreview()
+    #   colmnames(df)
+    # })
+    # #################  Code pour afficher un apercu du gabarit mais ne fonctionne pas  ############################
+    # output$preview <- DT::renderDataTable({
+    #   req(input$file)  # S'assurer qu'un fichier est sélectionné
+    #   
+    #   # Chemin vers le fichier téléchargé
+    #   filepath <- input$file$datapath
+    #   
+    #   # Vérification du type de fichier
+    #   if (grepl("\\.csv$", input$file$name, ignore.case = TRUE)) {
+    #     data <- read.csv(filepath)
+    #   } else if (grepl("\\.xlsx$|\\.xls$", input$file$name, ignore.case = TRUE)) {
+    #     data <- readxl::read_excel(filepath)
+    #   } else if (grepl("\\.ods$", input$file$name, ignore.case = TRUE)) {
+    #     data <- readxl::read_ods(filepath)
+    #   } else {
+    #     return(NULL)  # Fichier non pris en charge
+    #   }
+    #   
+    #   # Afficher l'aperçu des données
+    #   DT::datatable(head(data, 10))
+    # })
     
     ######################################################################################################################
     
@@ -582,6 +613,7 @@ shinyServer(function(input, output, session){
     mess <- a$message
     showNotification(mess)
   })
+
   
   #bouton retour
   observeEvent(input$retourButton, {
@@ -589,6 +621,10 @@ shinyServer(function(input, output, session){
   })
   
   #### Ce code crée un bouton de téléchargement qui permet à l'utilisateur de télécharger un fichier résultat si un chemin de fichier est fourni. Le bouton est affiché dans une boîte d'information avec une icône de téléchargement et une couleur maroon. Si aucun chemin de fichier n'est fourni, rien ne sera affiché.
+  
+  
+  output$inc <- renderUI(includeHTML("./foo.html"))
+  
   
   output$downloadButton <- renderUI({
     if(is.null(FilePath())){
