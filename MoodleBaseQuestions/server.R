@@ -12,6 +12,7 @@ library(readODS)
 library(spsComps)
 library(base64enc)
 library(shinyalert)
+library(colourpicker)
 # library(SARP.moodle, lib.loc = "/usr/lib64/R/library")
 library(SARP.moodle) #, lib.loc = "/home/sabrina/R/x86_64-mageia-linux-gnu-library/4.0/")
 
@@ -22,6 +23,7 @@ library(SARP.moodle) #, lib.loc = "/home/sabrina/R/x86_64-mageia-linux-gnu-libra
 FichierErreurs <- read.table("www/codes_erreur.2023-05-18_EC.txt", header = TRUE, sep = "\t", fill = TRUE)
 
 shinyServer(function(input, output, session){
+  
   
   values <- reactiveValues()
   
@@ -561,7 +563,8 @@ shinyServer(function(input, output, session){
           ), 
           inline = TRUE
         ),
-        textInput("Sm.temps_couleur", "Texte des messages de temps conseillé sur Moodle (%T sera remplacé par le temps)", value = "Temps conseillé pour répondre : %T"),
+        textInput("Sm.temps_masque", "Texte du message sur le temps conseillé pour répondre à la question (%T sera remplacé par le temps indiqué dans la colonne temps de votre fichier de questions). Par défaut :", value = "Temps conseillé pour répondre : %T"),
+      colourInput("temps_couleur", "Couleur du message sur le temps conseillé pour chaque question. Par défaut :", value = "#0000FF"),  # Ajout du sélecteur de couleurs
         numericInput("rounding_tolerance", "Tolérance des arrondis", value = 0, min = 0),
         textInput("default_category", "Catégorie par défaut des questions sur Moodle si la catégorie n'est pas renseignée dans le fichier de questions", value = ""),
         solidHeader = TRUE,
