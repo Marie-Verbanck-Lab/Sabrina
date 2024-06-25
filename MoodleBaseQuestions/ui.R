@@ -12,6 +12,7 @@ library(fresh)
 library(base64enc)
 library(DT)
 library(shinyalert)
+library(colourpicker)
 
 #####################################################################################
 
@@ -45,9 +46,11 @@ mytheme <- create_theme(
 
 )
 
+
+
+
 # Couleurs shiny https://rstudio.github.io/shinydashboard/appearance.html#statuses-and-colors
 shinyUI(
-  
   
 #####################################################################################
   
@@ -58,15 +61,38 @@ shinyUI(
             img(src = "UniversiteParisCite_Pharmacie.jpeg", height = "79px", width = "250px"),
             img(src = 'logo-BioSTM.png', height = "80px", width = "80px"),
             style = "padding-top:10px; padding-bottom:10px;"),
-            class = "dropdown"),
+            class = "dropdown",
+            # Code pour fixer le header
+            tags$style(HTML("
+      .main-header {
+        position: fixed;
+        width: 100%;
+        z-index: 1000;
+      }
+      .content-wrapper, .right-side {
+        margin-top: 100px; 
+      }
+    "))
+            ),
         dropdownMenuOutput("messageMenu")
+        
     ),
 ####################################################################
 ############################# Sidebar ##############################
 
-  # Créer les onglets
+
+  #Créer les onglets
   dashboardSidebar(
     collapsed = FALSE,
+  tags$style(HTML("
+      .main-sidebar {
+        position: fixed;
+        overflow: visible;
+      }
+      .content-wrapper, .right-side {
+        margin-left: 400px;
+      }
+    ")),
     linebreaks(3),
     sidebarMenu(
       id = "tabs",
@@ -92,8 +118,6 @@ shinyUI(
       tags$img(src = "Logo_investir_lavenir.png", height = "90px", width = "90px")
     )
   ),
-
-
 
 #################################################################
 ############################# Body ##############################
