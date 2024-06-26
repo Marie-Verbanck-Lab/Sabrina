@@ -80,7 +80,7 @@ shinyServer(function(input, output, session){
       extension <- tools::file_ext(input$file$datapath)
         file <- "temp.xml"
         #############################
-      options("Sm.temps_couleur" = input$a , "Sm.temps_masque" = paste(input$b,"#T") )
+      options("Sm.temps_couleur" = input$temps_couleur , "Sm.temps_masque" = paste(input$temps_masque) )
         #################################
           if(input$ImagesQuestion == TRUE){
             FileRep <- gsub("0\\.[a-zA-Z]+$", "", input$file$datapath) # recupere le dossier du fichier de question
@@ -565,12 +565,9 @@ shinyServer(function(input, output, session){
           ), 
           inline = TRUE
         ),
-      #(%T sera remplacé par le temps indiqué dans la colonne temps de votre fichier de questions) : NON
-        textInput("b", "Texte du message sur le temps conseillé pour répondre à la question. Par défaut :", value = "Temps conseillé pour répondre : ") ,
-      
-      
-      colourInput("a", "Couleur du message sur le temps conseillé pour chaque question. Par défaut :", value = "#0000FF"),  
-      
+      #(%T sera remplacé par le temps indiqué dans la colonne temps de votre fichier de questions) -> pour le moment on ne sait pas changer de place le temps
+        textInput("temps_masque", "Texte du message sur le temps conseillé pour répondre à la question. Par défaut :", value = "Temps conseillé pour répondre : #T"),
+      colourInput("temps_couleur", "Couleur du message sur le temps conseillé pour chaque question. Par défaut :", value = "#0000FF"),  
       # Ajout du sélecteur de couleurs
         numericInput("rounding_tolerance", "Tolérance des arrondis", value = 0, min = 0),
         textInput("default_category", "Catégorie par défaut des questions sur Moodle si la catégorie n'est pas renseignée dans le fichier de questions", value = ""),
