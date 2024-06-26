@@ -217,7 +217,7 @@ shinyServer(function(input, output, session){
         )
       }
       datatable(
-        head(df),
+        df,
         options = list(
           pageLength = 5,
           language = list(
@@ -566,7 +566,7 @@ shinyServer(function(input, output, session){
           inline = TRUE
         ),
       #(%T sera remplacé par le temps indiqué dans la colonne temps de votre fichier de questions) -> pour le moment on ne sait pas changer de place le temps
-        textInput("temps_masque", "Texte du message sur le temps conseillé pour répondre à la question. Par défaut :", value = "Temps conseillé pour répondre : #T"),
+        textInput("temps_masque", "Texte du message sur le temps conseillé pour répondre à la question. Par défaut :", value = "Temps conseillé pour répondre : <b>#T</b>"),
       colourInput("temps_couleur", "Couleur du message sur le temps conseillé pour chaque question. Par défaut :", value = "#0000FF"),  
       # Ajout du sélecteur de couleurs
         numericInput("rounding_tolerance", "Tolérance des arrondis", value = 0, min = 0),
