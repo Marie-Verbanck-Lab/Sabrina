@@ -366,10 +366,12 @@ shinyServer(function(input, output, session){
   output$validate_button_ui <- renderUI({
     if(input$ImagesQuestion == FALSE)
       return(NULL)
-    
+
     actionButton("validate_images", "Vérifier les images sélectionnées",style = "color: white;", class = "btn-primary")
   })
   
+  
+  ##########################
   observe({
     img_list <- selected_images()
     lapply(names(img_list), function(name) {
