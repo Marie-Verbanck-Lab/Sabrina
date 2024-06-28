@@ -81,6 +81,7 @@ shinyServer(function(input, output, session){
         file <- "temp.xml"
         #############################
       options("Sm.temps_couleur" = input$temps_couleur , "Sm.temps_masque" = paste(input$temps_masque) )
+                       
         #################################
           if(input$ImagesQuestion == TRUE){
             FileRep <- gsub("0\\.[a-zA-Z]+$", "", input$file$datapath) # recupere le dossier du fichier de question
