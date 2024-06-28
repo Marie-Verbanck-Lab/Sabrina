@@ -17,7 +17,7 @@ library(colourpicker)
 #####################################################################################
 
 # devtools::install_github("Marie-Verbanck-Lab/Sabrina/SARP.moodle") 
-# setwd("/home/sabrina/Documents/ShinyMoodle")
+# setwd("C:/Users/sabri/OneDrive/Bureau/BUT3/STAGEVerbanck/app shiny/ShinyMoodle")
 # rsconnect::setAccountInfo(name="verbam01", token="83EE1187C6F7C3597C9DCB26703A8516", secret="3rN95pQ5s3/24ELui7eEeV/yM1zqP2k4X6kLZ9Dc") ; rsconnect::deployApp(account = "verbam01", appDir = "MoodleBaseQuestions")
 
 #####################################
@@ -55,7 +55,7 @@ shinyUI(
     dashboardHeader(
         title = "SARP.moodle",
         tags$li(a(href = 'https://biostm.u-paris.fr/',
-            img(src = "UniversiteParisCite_Pharmacie.jpeg", height = "79px", width = "250px"),
+            img(src = "UniversiteParisCite_Pharmacie.jpg", height = "79px", width = "250px"),
             img(src = 'logo-BioSTM.png', height = "80px", width = "80px"),
             style = "padding-top:10px; padding-bottom:10px;"),
             class = "dropdown",
