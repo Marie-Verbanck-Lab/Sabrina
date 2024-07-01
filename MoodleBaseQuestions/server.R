@@ -80,7 +80,7 @@ shinyServer(function(input, output, session){
       extension <- tools::file_ext(input$file$datapath)
         file <- "temp.xml"
         #############################
-      options("Sm.temps_couleur" = input$temps_couleur , "Sm.temps_masque" = paste(input$temps_masque) )
+        options("Sm.temps_couleur" = input$temps_couleur , "Sm.temps_masque" = paste(input$temps_masque) )
                        
         #################################
           if(input$ImagesQuestion == TRUE){
@@ -95,7 +95,8 @@ shinyServer(function(input, output, session){
                                   fichier.csv = input$file$datapath, 
                                   fichier.xml = file,
                                   sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
-                                  dossier.images = FileRep
+                                  dossier.images = FileRep,
+                                  n.decimales = input$rounding_tolerance
                                 )
                 )
               } else if(extension == "xlsx"){
@@ -104,7 +105,8 @@ shinyServer(function(input, output, session){
                                   fichier.xlsx = input$file$datapath, 
                                   fichier.xml = file,
                                   sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
-                                  dossier.images = FileRep
+                                  dossier.images = FileRep,
+                                  n.decimales = input$rounding_tolerance
                                 )
                 )
               } else if(extension == "ods"){
@@ -113,7 +115,8 @@ shinyServer(function(input, output, session){
                                   fichier.csv = input$file$datapath, 
                                   fichier.xml = file,
                                   sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
-                                  dossier.images = FileRep
+                                  dossier.images = FileRep,
+                                  n.decimales = input$rounding_tolerance
                                 )
                 )
               }
@@ -124,21 +127,24 @@ shinyServer(function(input, output, session){
               msgErr <- try(conv <-
                               csv.moodle(
                                 fichier.csv = input$file$datapath, 
-                                fichier.xml = file
+                                fichier.xml = file,
+                                n.decimales = input$rounding_tolerance
                               )
               )
             } else if(extension == "xlsx"){
               msgErr <- try(conv <-
                               xlsx.moodle(
                                 fichier.xlsx = input$file$datapath, 
-                                fichier.xml = file
+                                fichier.xml = file,
+                                n.decimales = input$rounding_tolerance
                               )
               )
             } else if(extension == "ods"){
               msgErr <- try(conv <-
                               ods.moodle(
                                 fichier.ods = input$file$datapath, 
-                                fichier.xml = file
+                                fichier.xml = file,
+                                n.decimales = input$rounding_tolerance
                               )
               )
             }
@@ -633,9 +639,6 @@ shinyServer(function(input, output, session){
   #### Ce code crée un bouton de téléchargement qui permet à l'utilisateur de télécharger un fichier résultat si un chemin de fichier est fourni. Le bouton est affiché dans une boîte d'information avec une icône de téléchargement et une couleur maroon. Si aucun chemin de fichier n'est fourni, rien ne sera affiché.
   
   
-  output$inc <- renderUI(includeHTML("./foo.html"))
-  
-  
   output$downloadButton <- renderUI({
     if(is.null(FilePath())){
       return(NULL)
@@ -662,34 +665,28 @@ shinyServer(function(input, output, session){
         
         } else {
         # creation d'un html à partir du xml
-        system("imprime_Moodle temp.xml") # creation de temp.html
+          system("imprime_Moodle temp.xml") # creation de temp.html
+          system("mkdir .TMP/; mv temp.html .TMP/. ; mv img_* .TMP/.") # creation de temp.html
         # visualise temp.html
-        list(
-          infoBox("", "Vous pouvez télécharger votre fichier de questions prêt à l’importation sous Moodle.",
-                  downloadButton("downloadSolution", "Télécharger", style = "color: white;", class = "btn-lg btn-primary"),
-                  icon = icon("download"),
-                  fill = TRUE,
-                  color = "green",
-                  width = 12
-          ),
-          box(title = "Aperçu des questions importées.",
-              includeHTML("temp.html"),
-              solidHeader = TRUE,
-              status = "success",
-              width = 12,
-              collapsible = TRUE,
-              collapsed = FALSE,
-              
+          list(
+            infoBox("", "Vous pouvez télécharger votre fichier de questions prêt à l’importation sous Moodle.",
+                    downloadButton("downloadSolution", "Télécharger", style = "color: white;", class = "btn-lg btn-primary"),
+                    icon = icon("download"),
+                    fill = TRUE,
+                    color = "green",
+                    width = 12
+            ),
+            box(title = "Aperçu des questions importées.",
+                includeCSS("www/impression.css"),
+                shiny::includeHTML(".TMP/temp.html"),
+                solidHeader = TRUE,
+                status = "success",
+                width = 12,
+                collapsible = TRUE,
+                collapsed = FALSE,
+                
+            )
           )
-        )
-        ####### VISUALISATION
-        
-        # creation d'un html à partir du xml
-        # system("imprime_Moodle temp.xml") # creation de temp.html
-        # visualise temp.html
-        
-        
-        
         
         }
     } 
@@ -700,8 +697,10 @@ shinyServer(function(input, output, session){
       as.character(paste0("BaseQuestionsMoodle_", format(Sys.Date(), "%d-%m-%Y", locale = "French_France"), ".xml"))
     },
     content = function(file) {
-      if(file.exists("temp.xml"))
-      file.copy("temp.xml", file)
+      if(file.exists("temp.xml")){
+        file.copy("temp.xml", file)
+        system("rm -r .TMP")
+      }
     }
   )
   
