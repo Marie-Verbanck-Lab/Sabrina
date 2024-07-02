@@ -17,7 +17,7 @@ library(colourpicker)
 #####################################################################################
 
 # devtools::install_github("Marie-Verbanck-Lab/Sabrina/SARP.moodle") 
-# setwd("C:/Users/sabri/OneDrive/Bureau/BUT3/STAGEVerbanck/app shiny/ShinyMoodle")
+# setwd("/home/sabrina/Documents/ShinyMoodle")
 # rsconnect::setAccountInfo(name="verbam01", token="83EE1187C6F7C3597C9DCB26703A8516", secret="3rN95pQ5s3/24ELui7eEeV/yM1zqP2k4X6kLZ9Dc") ; rsconnect::deployApp(account = "verbam01", appDir = "MoodleBaseQuestions")
 
 #####################################
