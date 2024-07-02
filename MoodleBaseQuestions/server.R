@@ -80,8 +80,7 @@ shinyServer(function(input, output, session){
       extension <- tools::file_ext(input$file$datapath)
         file <- "temp.xml"
         #############################
-        options("Sm.temps_couleur" = input$temps_couleur , "Sm.temps_masque" = paste(input$temps_masque) )
-                       
+        options("Sm.temps_couleur" = input$temps_couleur , "Sm.temps_masque" = paste(input$temps_masque), "Sm.arrondi_couleur" = input$numerique_color  )
         #################################
           if(input$ImagesQuestion == TRUE){
             FileRep <- gsub("0\\.[a-zA-Z]+$", "", input$file$datapath) # recupere le dossier du fichier de question
@@ -96,7 +95,8 @@ shinyServer(function(input, output, session){
                                   fichier.xml = file,
                                   sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
                                   dossier.images = FileRep,
-                                  n.decimales = input$rounding_tolerance
+                                  n.decimales = input$decimales,
+                                  tolerance = input$tolerance_arrondis
                                 )
                 )
               } else if(extension == "xlsx"){
@@ -106,7 +106,8 @@ shinyServer(function(input, output, session){
                                   fichier.xml = file,
                                   sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
                                   dossier.images = FileRep,
-                                  n.decimales = input$rounding_tolerance
+                                  n.decimales = input$decimales,
+                                  tolerance = input$tolerance_arrondis
                                 )
                 )
               } else if(extension == "ods"){
@@ -116,7 +117,8 @@ shinyServer(function(input, output, session){
                                   fichier.xml = file,
                                   sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
                                   dossier.images = FileRep,
-                                  n.decimales = input$rounding_tolerance
+                                  n.decimales = input$decimales,
+                                  tolerance = input$tolerance_arrondis
                                 )
                 )
               }
@@ -128,7 +130,8 @@ shinyServer(function(input, output, session){
                               csv.moodle(
                                 fichier.csv = input$file$datapath, 
                                 fichier.xml = file,
-                                n.decimales = input$rounding_tolerance
+                                n.decimales = input$decimales,
+                                tolerance = input$tolerance_arrondis
                               )
               )
             } else if(extension == "xlsx"){
@@ -136,7 +139,8 @@ shinyServer(function(input, output, session){
                               xlsx.moodle(
                                 fichier.xlsx = input$file$datapath, 
                                 fichier.xml = file,
-                                n.decimales = input$rounding_tolerance
+                                n.decimales = input$decimales,
+                                tolerance = input$tolerance_arrondis
                               )
               )
             } else if(extension == "ods"){
@@ -144,7 +148,8 @@ shinyServer(function(input, output, session){
                               ods.moodle(
                                 fichier.ods = input$file$datapath, 
                                 fichier.xml = file,
-                                n.decimales = input$rounding_tolerance
+                                n.decimales = input$decimales,
+                                tolerance = input$tolerance_arrondis
                               )
               )
             }
@@ -212,13 +217,12 @@ shinyServer(function(input, output, session){
       if(!"Temps" %in% colnames(df)) {
       # Message alerte pour dire qu'il n'y a pas de colonne "temps" dans le fichier importé
         shinyalert(
-          title = "Attention",
+          title = "Conseil pédagogique",
           text = 'Le fichier de questions importé ne comporte pas de colonne "temps" pour associer un temps conseillé aux questions.',
           type = "warning"
         )
       } else {
         shinyalert(
-          title = "Succès",
           text = 'Votre fichier de questions a bien été importé.',
           type = "success"
         )
@@ -558,27 +562,28 @@ shinyServer(function(input, output, session){
           HTML("<i>Sélectionnez les paramètres pour la conversion de votre fichier de questions.</i>"),
           style = "margin-bottom: 10px;"
         ),
-        checkboxGroupInput(
-          inputId = "conversion",
-          label = "",
-          selected = c('Image', 'Latex', 'Smiles', 'Time'),
-          choiceNames = list(
-            "Images", 
-            "Formules mathématiques",
-            "Codes SMILES"
-          ),
-          choiceValues = list(
-            "Image",
-            "Latex",
-            "Smiles"
-          ), 
-          inline = TRUE
-        ),
+        # checkboxGroupInput(
+        #   inputId = "conversion",
+        #   label = "",
+        #   selected = c('Latex', 'Smiles'),
+        #   choiceNames = list(
+        #     "Formules mathématiques",
+        #     "Codes SMILES"
+        #   ),
+        #   choiceValues = list(
+        #     "Image",
+        #     "Latex",
+        #     "Smiles"
+        #   ), 
+          # inline = TRUE
+        # ),
       #(%T sera remplacé par le temps indiqué dans la colonne temps de votre fichier de questions) -> pour le moment on ne sait pas changer de place le temps
-        textInput("temps_masque", "Texte du message sur le temps conseillé pour répondre à la question. Par défaut :", value = "Temps conseillé pour répondre : <b>#T</b>"),
-      colourInput("temps_couleur", "Couleur du message sur le temps conseillé pour chaque question. Par défaut :", value = "#0000FF"),  
+        textInput("temps_masque", 'Si la colonne "temps" de votre fichier de questions est renseignée, le texte du message sur le temps conseillé pour répondre à la question est par défaut (où #T est le temps renseigné dans votre fichier) :', value = "Temps conseillé pour répondre : <b>#T</b>"),
+      colourInput("temps_couleur", 'Si la colonne "temps" de votre fichier de questions est renseignée, la couleur du message sur le temps conseillé pour chaque question est par défaut en bleu. Cliquez sur la zone bleue pour choisir une autre couleur.', value = "#0000FF"), 
+      colourInput("numerique_color", "Si votre fichier de questions contient des questions de type numérique, la couleur du message sur la précision est par défaut en orange. Cliquez sur la zone orange pour choisir une autre couleur.", value = "#FFA600"),
       # Ajout du sélecteur de couleurs
-        numericInput("rounding_tolerance", "Tolérance des arrondis", value = 0, min = 0),
+        # numericInput("decimales", "Tolérance des decimales", value = 0, min = 0),
+        # numericInput("tolerance_arrondis", "Tolérance des arrondis", value = 0, min = 0, step = 0.1),
         textInput("default_category", "Catégorie par défaut des questions sur Moodle si la catégorie n'est pas renseignée dans le fichier de questions", value = ""),
         solidHeader = TRUE,
         status = "primary",
