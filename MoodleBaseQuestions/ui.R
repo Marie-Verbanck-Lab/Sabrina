@@ -48,7 +48,6 @@ mytheme <- create_theme(
 
 
 
-
 # Couleurs shiny https://rstudio.github.io/shinydashboard/appearance.html#statuses-and-colors
 shinyUI(
   

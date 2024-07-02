@@ -71,7 +71,6 @@ shinyServer(function(input, output, session){
     }
     )
   
-  
   #Cette fonction "getXML" prend un nom de fichier en entrée et effectue des opérations en fonction de la valeur des options "ImagesQuestion" et "conversion" de l'entrée utilisateur, avant de renvoyer le nom du fichier en sortie. La fonction convertit les fichiers CSV, XLSX et ODS en fichier XML en utilisant les fonctions csv.moodle(), xlsx.moodle() et ods.moodle() respectivement. Si l'option "ImagesQuestion" est activée, la fonction copie les fichiers d'images spécifiés dans le répertoire de destination avant de convertir le fichier en XML.
   
   
@@ -223,6 +222,152 @@ shinyServer(function(input, output, session){
           )
         )
       )
+	    } else if(extension == "ods"){
+	      msgErr <- try(conv <-
+  	      ods.moodle(
+  	        fichier.csv = input$file$datapath, 
+  	        fichier.xml = file,
+  	        sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
+  	        dossier.images = FileRep
+  	      )
+	      )
+	    }
+	  } else {
+	    cat(paste("########################", extension, "######################\n\n\n"))
+	    
+	    if(extension == "csv"){
+	    msgErr <- try(conv <-
+	      csv.moodle(
+	        fichier.csv = input$file$datapath, 
+	        fichier.xml = file
+	        )
+	      )
+	    } else if(extension == "xlsx"){
+	      msgErr <- try(conv <-
+	        xlsx.moodle(
+	          fichier.xlsx = input$file$datapath, 
+	          fichier.xml = file
+	        )
+	      )
+	    } else if(extension == "ods"){
+	      msgErr <- try(conv <-
+	      ods.moodle(
+	        fichier.ods = input$file$datapath, 
+	        fichier.xml = file
+	        )
+	      )
+	    }
+	  }
+	  if (class(msgErr) %in% "try-error") {
+	    shinyCatch({ stop(msgErr) }, prefix = '')
+	    return(msgErr)
+	  } else {
+	    return(conv)
+	  }
+	}
+	
+	output$WARNINGS <- renderPrint({
+	  textOutput("text")
+		# getXML(as.character(paste0("BaseQuestionsMoodle_", Sys.Date(), ".xml")))
+	})
+	
+#Ce code crée une boîte d'informations "infoBox" contenant un élément d'entrée de fichier "fileInput" avec un bouton de parcours permettant aux utilisateurs de sélectionner un fichier CSV, XLSX ou ODS. La boîte d'informations n'est rendue que si l'option "ImagesQuestion" est activée et si l'utilisateur a déjà téléchargé les images requises. La boîte d'informations est stylisée avec une icône Excel, une couleur de fond bleue et une largeur de 12.
+
+	output$FileBox <- renderUI({
+		if(input$ImagesQuestion == TRUE & is.null(input$Images))
+			return(NULL)
+
+		infoBox(title = "",
+			fileInput("file", 
+			label = "Importez votre fichier de questions preparé en suivant le gabarit (xlsx, csv, ods). Vous pouvez trouver des exemples de gabarits pour créer vos questions dans l’aide", 
+			buttonLabel = HTML(paste(icon("upload"), "Parcourir")),
+							placeholder = "Aucun fichier importé pour l'instant ..."
+			, width = "100%",
+			accept = c(".csv", ".ods", ".xlsx")
+			),
+			icon = icon("file-excel"), 
+			fill = TRUE, 
+			color = "blue", 
+			width = 12
+  		)
+	})
+	
+	#################  Code pour afficher un apercu du gabarit mais ne fonctionne pas  ############################
+	output$preview <- DT::renderDataTable({
+	  req(input$file)  # S'assurer qu'un fichier est sélectionné
+	  
+	  # Chemin vers le fichier téléchargé
+	  filepath <- input$file$datapath
+	  
+	  # Vérification du type de fichier
+	  if (grepl("\\.csv$", input$file$name, ignore.case = TRUE)) {
+	    data <- read.csv(filepath)
+	  } else if (grepl("\\.xlsx$|\\.xls$", input$file$name, ignore.case = TRUE)) {
+	    data <- readxl::read_excel(filepath)
+	  } else if (grepl("\\.ods$", input$file$name, ignore.case = TRUE)) {
+	    data <- readxl::read_ods(filepath)
+	  } else {
+	    return(NULL)  # Fichier non pris en charge
+	  }
+	  
+	  # Afficher l'aperçu des données
+	  DT::datatable(head(data, 10))
+	})
+	
+	######################################################################################################################
+	
+#Ce code crée une boîte contenant un élément d'entrée de fichier "fileInput" permettant aux utilisateurs de sélectionner des images en format PNG, JPEG ou JPG, qui seront utilisées pour créer une base de questions. La boîte n'est rendue que si l'option "ImagesQuestion" est activée et elle est stylisée avec un titre, un fond solide de couleur primaire et une largeur de 12.
+	
+	output$ImageBox <- renderUI({
+		if(input$ImagesQuestion == FALSE)
+			return(NULL)
+		box(title = "Choisissez les images utilisées dans la base de questions.",
+			fileInput("Images", 
+				label = "", 
+				buttonLabel = HTML(paste(icon("upload"), "Cliquez ici pour sélectionner toutes les images")),
+							placeholder = "Aucune image importée pour l'instant ...",
+				multiple = TRUE,
+				accept = c("png", "jpeg", "jpg", "pdf") # les formats d'images favoris !
+			),
+			solidHeader = TRUE,
+  			status = "primary",
+  			width = 12
+  		)
+	})
+	
+	
+	
+# Ce code génère une boîte de dialogue qui permet à l'utilisateur de sélectionner les conversions automatiques qu'il souhaite activer pour les images, les formules mathématiques et les codes SMILES, si l'option "ImagesQuestion" est activée dans l'application R Shiny.
+	
+	output$ImageInfo <- renderUI({
+		if(input$ImagesQuestion == FALSE)
+			return(NULL)
+	  
+		box(title = "Autorisez-vous les conversions automatiques ?",
+			checkboxGroupInput(inputId = "conversion",
+				label = "",
+				selected = c( 'Image', 'Latex', 'Smiles' ),
+				choiceNames = list( "Images", 
+					"Formules mathématiques",
+					"Codes SMILES" ),
+				choiceValues = list("Image",
+					"Latex",
+					"Smiles"
+				), inline = TRUE
+			),
+			solidHeader = TRUE,
+  			status = "primary",
+  			width = 12
+  		)
+	})
+  
+###Ce code génère une boîte d'information qui contient les avertissements éventuels liés au traitement d'un fichier de base de questions.
+	
+###La fonction renderUI() est utilisée pour créer un objet HTML dynamique basé sur les valeurs des entrées de l'utilisateur. Dans ce cas, le contenu de la boîte d'information dépend de la valeur renvoyée par la fonction FilePath().
+	
+###Si la fonction renvoie une valeur nulle (c'est-à-dire que l'utilisateur n'a pas encore sélectionné de fichier), la fonction return(NULL) est appelée pour ne rien afficher. Si une valeur non nulle est renvoyée, une boîte d'information est créée à l'aide de la fonction box().
+
+###Le titre de la boîte d'information est "Détail du traitement de votre fichier de base de questions." et le contenu de la boîte est défini par verbatimTextOutput("WARNINGS"). Cela signifie que la sortie de la fonction renderPrint() qui est associée à l'ID "WARNINGS" sera affichée dans la boîte.
 
     })
     
@@ -713,5 +858,4 @@ shinyServer(function(input, output, session){
       file.copy("www/types_questions_Moodle.csv", file)
     }
   )
-  
 })

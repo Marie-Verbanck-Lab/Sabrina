@@ -1,16 +1,97 @@
+
+<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+# Interface graphique
+
+## Charte graphique
+
+Presenter toujours de la même façon : 
+
+1. Texte introductif d'abord 
+2. Bouton d'action ensuite 
+
+Charte couleur : 
+
+- **Couleur d'information** : actuellement designée par "purple" et pointant vers "#8A1538" = couleur UPC 
+- **Couleur action de l’utilisateur** : actuellement designée par "blue" / status "primary" 
+- **Couleur retour de l’application** : actuellement designée par "green"  
+
+
+## Fonctionnement de l'interface
+
+### Fichier de questions
+
+---
+
+**TO-DO**
+
+- Ajouter un petit apercu du fichier gabarit importé
+- Faire apparaître le bouton convertir uniquement lorsqu'un fichier est importé
+- Verification entre extension du fichier et la nature du fichier --> Voir df_moodle : pr vérifier les extensions.
+
+---
+
+### Images
+
+---
+
+**TO-DO**
+
+- Verifications
+  - Si on supprime une image on peut de nouveau l'importer ?
+  - Gestion des doublons
+  - Bien vérifier qu'une fois les images importées, elles sont correctement utilisées dans la conversion
+- "Images validées": doit aparaitre uniquement quand il y a des images d'importer
+- Bouton "Valider les images" à remplacer par "Vérifier les images importées" ?
+
+---
+
+### Onglet d'aide
+
+Il faut ajouter un onglet avec des tutos et gabarit à télécharger pour expliquer comment formater le fichier d'entrée.
+
+---
+
+**TO-DO**
+
+- Expliquer comment est structuré le fichier de questions 
+- Fournir des gabarits à télécharger / à préremplir en fonction des types de questions dont l'utilisateur a besoin
+- Expliquer comment intégrer le xml sur moodle
+- Faire une vidéo tuto
+
+
+---
+
+### Validation finale
+
+Travailler sur la validation par l'utilisateur des questions converties et créées par SARP.moodle. 
+SARP.moodle renvoie beaucoup d'informations dans la console (via la fonction cat), reste à trouver un moyen de les récupérer.
+
+---
+
+**TO-DO**
+
+- Explorer les possibilités du package shinyjs
+https://deanattali.com/shinyjs/overview
+- Récupérer suite à la conversion, les sorties consoles dans lesquelles SARP.moodle donne des indications
+- Renvoyer un tableau synthétique avec une synthèse des questions converties (nombre de questions par type de question et nombre de choix)
+- Visualiser les questions en convertissant le xml en html
+- Voir si la fonction sink() permet de récupérer les sorties affichage console
+
+---
+
+
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
-# Liste de fonctionnalités à ajouter (voir Virginie)
+# Code
 
-- Page d'acceuil + conversion
-- Bouton soumettre une fois pour tout importer
-- Images
-  - Bouton image reclickable 
-  - Afficher le nom des images importees
-  - cases à ticker pour valider
-- en entree un fichier excel 
-  (Voir texte modifie de Virginie)
-- Bien utiliser charte partout 
+---
+
+**TO-DO**
+
+- Revoir l'indentation des fichiers de codes
+- Structurer et commenter TOUS les blocs de codes
+
+---
 
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
@@ -31,23 +112,6 @@ Il serait pratique avoir une base de fichiers de questions "test" pour pouvoir f
 
 ---
 
-
-<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-
-# Interface Shiny
-
-Il serait nécessaire de prendre en main l'interface Shiny déjà réalisée et bien identifier chaque portion de code pour pouvoir la modifier par la suite.
-
----
-
-**TO-DO**
-
-- Convertir les scripts ui.R et serveur.R en app.R si c'est plus commode pour vous
-- Pour chaque bloc de code, ajouter un commentaire pour expliquer ce que fait le bloc de code
-
----
-
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
 
@@ -65,95 +129,6 @@ Si l'utilisateur met en forme ses questions dans Excel, y-a-t-il un moyen de ré
 library(openxlsx)
 wb <- loadWorkbook("Questions.xlsx")
 ```
-
-
----
-
-
-<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-# Renvoyer les erreurs/warnings
-
-Pour que l'utilisateur puisse modifier de façon autonome son fichier s'il est mal formaté.
-
----
-**TO-DO**
-
-- Exemples d'options qui peuvent être utiles lors du développement
-```{r, echo=TRUE, eval = FALSE}
-options(shiny.trace=TRUE)
-options(shiny.fullstacktrace=TRUE)
-```
-- Idée à partir d'un excel/ods, convertir en xml à partir du tableau et à partir du csv obtenu à partir du tableau pour faire apparaitre des différences/erreurs potentielles.
-- Créer une table de conversion des erreurs/warnings SARP.moodle et faire des phrases à renvoyer à l'utilisateur. Il faut au préalable récupérer les stop() et warnings() dans le code de SARP.moodle.
-- Pour Emmanuel : numéroter les erreurs pour les parser dans le fichier de conversion.
- 
----
-
-<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-
-# Validation à la fin
-
-Travailler sur la validation par l'utilisateur des questions converties et créées par SARP.moodle. 
-SARP.moodle renvoie beaucoup d'informations dans la console (via la fonction cat), reste à trouver un moyen de les récupérer.
-
----
-
-**TO-DO**
-
-- Explorer les possibilités du package shinyjs
-https://deanattali.com/shinyjs/overview
-- Récupérer suite à la conversion, les sorties consoles dans lesquelles SARP.moodle donne des indications
-- Renvoyer un tableau synthétique avec une synthèse des questions converties (nombre de questions par type de question et nombre de choix)
-- Visualiser les questions en convertissant le xml en html
-- Voir si la fonction sink() permet de récupérer les sorties affichage console
----
-
-
-<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-
-# Mise en forme de l'interface
-
-Il faut compléter l'interface pour qu'elle rendre l'utilisateur le plus autonome possible.
-
----
-
-**TO-DO**
-
-- Modifier la page d'accueil de l'interface pour ajouter des informations.
-  - Fenêtre avec les informations de contact
-  - Fenêtre avec des explications du principe etc
-- https://github.com/dreamRs/fresh
-- Couleurs en Hexadécimal: 
-  - Rouge/Bordeau : 138/21/56 = #8A1538
-  - Corail : 255/92/57 = #FF5C39
-  - Bleu-Gris : 221/229/237 = #DDE5ED
-  - Bleu : 91/194/231 = #5BC2E7
-  - Beige : 241/241/222 = #F1DEDE
-  - Gris : 85/72/72 = #554848
-                           
-
----
-
-<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-
-# Onglet d'expllications
-
-Il faut ajouter un onglet avec des tutos et gabarit à télécharger pour expliquer comment formater le fichier d'entrée.
-
----
-
-**TO-DO**
-
-- Expliquer comment est structuré le fichier de questions 
-- Fournir des gabarits à télécharger / à préremplir en fonction des types de questions dont l'utilisateur a besoin
-- Expliquer comment intégrer le xml sur moodle
-- Faire une vidéo tuto
-
-
 ---
 
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->

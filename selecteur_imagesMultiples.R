@@ -49,6 +49,7 @@ server <- function(input, output, session) {
     #   )
     # }
     names(new_images) <- input$images$name # renommer les elements de la liste avec les noms des images
+
     # Vérification des doublons
     duplicate_names <- names(selected_images())[names(selected_images()) %in% input$images$name]
     if (length(duplicate_names) > 0) {
@@ -93,14 +94,15 @@ server <- function(input, output, session) {
   observeEvent(input$validate_images, { # si on observe un click sur bouton valider les images
     # Bloc suivant permet de mettre a jour la liste d'images quand on decoche cases
     selected <- reactiveVal(NULL)# Crée une reactiveVal pour stocker les images sélectionnées
+
     observe({
       # Liste des valeurs de toutes les cases à cocher correspondant à chaque image sélectionnée
       input_list <- lapply(names(selected_images()), function(name) input[[paste0("select_", name)]])
       # Sélectionne les noms des images pour lesquelles les cases à cocher sont cochées
       selected(names(selected_images())[unlist(input_list)])
     })
-    
-    is_validated(TRUE)
+   is_validated(TRUE)
+
     # Affiche une boîte de dialogue modale contenant les images sélectionnées
     showModal(modalDialog(
       title = "Images validées",
@@ -127,6 +129,7 @@ server <- function(input, output, session) {
   observe({
     img_list <- selected_images()# Recuperation des images importees jusque la 
     lapply(names(img_list), function(name) {# Boucle for pour chaque image
+
       observeEvent(input[[paste0("delete_", name, "_btn")]], {
         images <- selected_images()
         images[[name]] <- NULL
