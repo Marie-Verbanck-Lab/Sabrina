@@ -582,7 +582,7 @@ shinyServer(function(input, output, session){
 			#(%T sera remplacé par le temps indiqué dans la colonne temps de votre fichier de questions) -> pour le moment on ne sait pas changer de place le temps
 			textInput("temps_masque", 'Si la colonne "temps" de votre fichier de questions est renseignée, le texte du message sur le temps conseillé pour répondre à la question est par défaut (où #T est le temps renseigné dans votre fichier) :', value = "Temps conseillé pour répondre : <b>#T</b>"),
 			colourInput("temps_couleur", 'Si la colonne "temps" de votre fichier de questions est renseignée, la couleur du message sur le temps conseillé pour chaque question est par défaut en bleu. Cliquez sur la zone bleue pour choisir une autre couleur.', value = "#0000FF"), 
-			colourInput("numerique_color", "Si votre fichier de questions contient des questions de type numérique, la couleur du message sur la précision est par défaut en orange. Cliquez sur la zone orange pour choisir une autre couleur.", value = "red"), # "#FFA600"),
+			colourInput("numerique_color", "Si votre fichier de questions contient des questions de type numérique, la couleur du message sur la précision est par défaut en orange. Cliquez sur la zone orange pour choisir une autre couleur.", value = "orange"),
 			# Ajout du sélecteur de couleurs
 				# numericInput("decimales", "Tolérance des decimales", value = 0, min = 0),
 				# numericInput("tolerance_arrondis", "Tolérance des arrondis", value = 0, min = 0, step = 0.1),
