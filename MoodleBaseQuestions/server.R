@@ -353,33 +353,34 @@ shinyServer(function(input, output, session){
 		)
 	})
 	
-	observeEvent(input$validate_images, {
-		selected <- reactiveVal(NULL)
-		observe({
-			input_list <- lapply(names(selected_images()), function(name) input[[paste0("select_", name)]])
-			selected(names(selected_images())[unlist(input_list)])
-		})
-		
-		is_validated(TRUE)
-			showModal(modalDialog(
-				title = "Images validées",
-				renderText({
-					selected_count <- length(selected())
-					if (selected_count == 1) {
-						paste("Vous avez importé l'image suivante :", selected())
-					} else {
-						paste("Vous avez importé les", selected_count, "images suivantes :", paste(selected(), collapse = ", "))
-					}
-				}),
-				footer = tagList(modalButton("Fermer")),
-				easyClose = TRUE
-			))
-	})
-	
-	output$validate_button_ui <- renderUI({
-		if(input$ImagesQuestion == FALSE)
-			return(NULL)
+	  
+	 observeEvent(input$validate_images, {
+	 	selected <- reactiveVal(NULL)
+	 	observe({
+	 		input_list <- lapply(names(selected_images()), function(name) input[[paste0("select_", name)]])
+	 		selected(names(selected_images())[unlist(input_list)])
+	 	})
 
+	 	is_validated(TRUE)
+	 		showModal(modalDialog(
+	 			title = "Images validées",
+	 			renderText({
+	 				selected_count <- length(selected())
+	 				if (selected_count == 1) {
+	 					paste("Vous avez importé l'image suivante :", selected())
+	 				} else {
+	 					paste("Vous avez importé les", selected_count, "images suivantes :", paste(selected(), collapse = ", "))
+	 				}
+	 			}),
+	 			footer = tagList(modalButton("Fermer")),
+	 			easyClose = TRUE
+	 		))
+	 })
+	
+	 output$validate_button_ui <- renderUI({
+	 	if(input$ImagesQuestion == FALSE)
+			return(NULL)
+	
 		actionButton("validate_images", "Vérifier les images sélectionnées",style = "color: white;", class = "btn-primary")
 	})
 	
