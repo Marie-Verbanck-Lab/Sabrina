@@ -77,7 +77,6 @@ shinyServer(function(input, output, session){
 		
 		observe({
 		    options("Sm.temps_couleur" = as.character(input$temps_couleur), "Sm.temps_masque" = paste(input$temps_masque), "Sm.arrondi_couleur" = input$numerique_color)
-		    cat(paste("########################", input$temps_couleur , "######################\n\n\n"))
 		})
 	
 		getXML <- function(){
@@ -283,7 +282,6 @@ shinyServer(function(input, output, session){
 		
 		#######" test images
 		
-		
 		output$image_selector_ui <- renderUI({
 			if (input$ImagesQuestion == FALSE)
 				return(NULL)
@@ -305,37 +303,34 @@ shinyServer(function(input, output, session){
 			)
 		})
 		
-		selected_images <- reactiveVal(list())
-		is_validated <- reactiveVal(FALSE)
-		
-		observeEvent(input$images, {
-			images <- selected_images()
-			new_images <- lapply(seq_along(input$images$name), function(i) {
-				list(
-					name = input$images$name[i],
-					datapath = input$images$datapath[i],
-					data = base64enc::dataURI(file = input$images$datapath[i], mime = input$images$type[i])
-				)
-			})
-			names(new_images) <- input$images$name
-			duplicate_names <- names(selected_images())[names(selected_images()) %in% input$images$name]
-				if (length(duplicate_names) > 0) {
-					showModal(modalDialog(
-						title = "Attention",
-						paste("Les images suivantes ont été sélectionnées plusieurs fois :", paste(duplicate_names, collapse = ", ")),
-						footer = tagList(modalButton("Fermer"))
-					))
-				} else {
-					images <- c(images, new_images)
-					selected_images(images)
-				}
+	selected_images <- reactiveVal(list()) # Initialisation de la liste d'images
+	is_validated <- reactiveVal(FALSE)
+	
+	# Importation de nouvelles images
+	observeEvent(input$images, {
+	    images <- selected_images() # On recupere la liste d'images importées
+	    new_images <- lapply(seq_along(input$images$name), function(i) {
+	        list(
+	            name = input$images$name[i],
+	            datapath = input$images$datapath[i],
+	            data = base64enc::dataURI(file = input$images$datapath[i], mime = input$images$type[i])
+	        )
+	    })
+	    names(new_images) <- input$images$name
+	    duplicate_names <- names(selected_images())[names(selected_images()) %in% input$images$name]
+	    if (length(duplicate_names) > 0) {
+	        showModal(modalDialog(
+	            title = "Attention",
+	            paste("Les images suivantes ont été sélectionnées plusieurs fois :", paste(duplicate_names, collapse = ", ")),
+	            footer = tagList(modalButton("Fermer"))
+	        ))
+	    } else {
+	        images <- c(images, new_images)
+	        selected_images(images)
+	    }
 	})
 	
-		#Code pour voir où les images sont
-	# seIm <- selected_images()
-	# seIm$datapath
-	# lapply(seIm, `[[`, 2)
-		
+	# Affichage des vignettes + cases à cocher d'images
 	output$selected_images_bilan <- renderUI({
 		if(input$ImagesQuestion == FALSE)
 			return(NULL)
@@ -353,14 +348,17 @@ shinyServer(function(input, output, session){
 		)
 	})
 	
-	  
-	 observeEvent(input$validate_images, {
-	 	selected <- reactiveVal(NULL)
+	# Afficher les images selectionnées
+	observeEvent(input$validate_images, { # Si input$validate_images est cliqué, ça execute le code entre accolades
+		selected <- reactiveVal(NULL)
+		img_list <- selected_images()
 	 	observe({
-	 		input_list <- lapply(names(selected_images()), function(name) input[[paste0("select_", name)]])
-	 		selected(names(selected_images())[unlist(input_list)])
+	 		input_list <- lapply(names(img_list), function(name) input[[paste0("select_", name)]]) # input_list ne contient que les images selectionnees.
+	 		selected(names(img_list)[unlist(input_list)])
+	 		img_list_updated <- img_list[unlist(input_list)]
+	 		if(length(img_list_updated) != length(img_list))
+	 		    selected_images(img_list_updated)
 	 	})
-
 	 	is_validated(TRUE)
 	 		showModal(modalDialog(
 	 			title = "Images validées",
@@ -385,17 +383,17 @@ shinyServer(function(input, output, session){
 	})
 	
 	
-	##########################
-	observe({
-		img_list <- selected_images()
-		lapply(names(img_list), function(name) {
-			observeEvent(input[[paste0("delete_", name, "_btn")]], {
-				images <- selected_images()
-				images[[name]] <- NULL
-				selected_images(images)
-			})
-		})
-	})
+	# observe({
+	# 	img_list <- selected_images()
+	# 	lapply(names(img_list), function(name) {
+	# 		observeEvent(input[[paste0("delete_", name, "_btn")]], {
+	# 			images <- selected_images()
+	# 			images[[name]] <- NULL
+	# 			# images <- images[-which(names(images) == name)]
+	# 			selected_images(images)
+	# 		})
+	# 	})
+	# })
 	
 	output$has_images <- reactive({
 		length(selected_images()) > 0
