@@ -17,7 +17,8 @@ library(SARP.moodle) #, lib.loc = "/home/sabrina/R/x86_64-mageia-linux-gnu-libra
 #input=list(file = list(datapath = "/Users/travail/ResilioSync/Desktop/Sabrina-main/ErreurBaseQuestionsMoodle_2021-11-19 2.csv"))
 
 #####################################
-HTMLconvert <- FALSE # Booleen pour verifier si on peut faire la conversion avec le programme d'Emmanuel 
+HTMLconvert <- TRUE # Booleen pour vérifier si on peut faire la conversion avec le programme d'Emmanuel 
+                    # cf. lignes 698-701 pour mise en œuvre 
 #####################################
 
 ############################################################################################################
@@ -76,28 +77,31 @@ shinyServer(function(input, output, session){
 	#Cette fonction "getXML" prend un nom de fichier en entrée et effectue des opérations en fonction de la valeur des options "ImagesQuestion" et "conversion" de l'entrée utilisateur, avant de renvoyer le nom du fichier en sortie. La fonction convertit les fichiers CSV, XLSX et ODS en fichier XML en utilisant les fonctions csv.moodle(), xlsx.moodle() et ods.moodle() respectivement. Si l'option "ImagesQuestion" est activée, la fonction copie les fichiers d'images spécifiés dans le répertoire de destination avant de convertir le fichier en XML.
 		
 		observe({
-		    options("Sm.temps_couleur" = as.character(input$temps_couleur), "Sm.temps_masque" = paste(input$temps_masque), "Sm.arrondi_couleur" = input$numerique_color)
+		    options( "Sm.temps_couleur"   = as.character( input$temps_couleur ),
+		             "Sm.temps_masque"    = paste( input$temps_masque ),
+		             "Sm.arrondi_couleur" = input$numerique_color )
 		})
 	
 		getXML <- function(){
 		
 			extension <- tools::file_ext(input$file$datapath)
 				file <- "temp.xml"
-				if(input$ImagesQuestion == TRUE){
+				if( input$ImagesQuestion == TRUE ) {
 					FileRep <- gsub("0\\.[a-zA-Z]+$", "", input$file$datapath) # recupere le dossier du fichier de question
 					img_list <- selected_images()
 					if(length(img_list) != 0)
-						sapply(img_list, function(x) system(paste0("cp ", x$datapath, " ", FileRep, x$name)))
+						sapply( img_list,
+						        function(x) system(paste0("cp ", x$datapath, " ", FileRep, x$name)))
 				        # petit exemple de copie d'une image ds les dossiers temporaires de shiny cp /tmp/Rtmp/93748hjkf/0.jpeg /tmp/Rtmp/98e3jfku6/iris.jpeg
 							if(extension == "csv"){
 								msgErr <- try(conv <-
 																csv.moodle(
 																	fichier.csv = input$file$datapath, 
 																	fichier.xml = file,
-																	sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
-																	dossier.images = FileRep,
-																	n.decimales = input$decimales,
-																	tolerance = input$tolerance_arrondis
+																	sep.images = c('@@', '@@'), # On a répondu Oui pour la présence d'images => séparateur recherché
+																	dossier.images = FileRep #,
+																	#n.decimales = input$decimales,
+																	#tolerance = input$tolerance_arrondis
 																)
 								)
 							} else if(extension == "xlsx"){
@@ -105,10 +109,10 @@ shinyServer(function(input, output, session){
 																xlsx.moodle(
 																	fichier.xlsx = input$file$datapath, 
 																	fichier.xml = file,
-																	sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
-																	dossier.images = FileRep,
-																	n.decimales = input$decimales,
-																	tolerance = input$tolerance_arrondis
+																	sep.images = c('@@', '@@'), # On a répondu Oui pour la présence d'images => séparateur recherché
+																	dossier.images = FileRep #,
+																	#n.decimales = input$decimales,
+																	#tolerance = input$tolerance_arrondis
 																)
 								)
 							} else if(extension == "ods"){
@@ -116,14 +120,15 @@ shinyServer(function(input, output, session){
 																ods.moodle(
 																	fichier.csv = input$file$datapath, 
 																	fichier.xml = file,
-																	sep.images = if ("Image" %in% input$conversion) c('@@', '@@') else NULL,
-																	dossier.images = FileRep,
-																	n.decimales = input$decimales,
-																	tolerance = input$tolerance_arrondis
+																	sep.images = c('@@', '@@'), # On a répondu Oui pour la présence d'images => séparateur recherché
+																	dossier.images = FileRep #,
+																	#n.decimales = input$decimales,
+																	#tolerance = input$tolerance_arrondis
 																)
 								)
 							}
 					} else {
+					  # ImageQuestion = FALSE => pas d'image à convertir
 						cat(paste("########################", extension, "######################\n\n\n"))
 						
 						if(extension == "csv"){
@@ -131,8 +136,9 @@ shinyServer(function(input, output, session){
 															csv.moodle(
 																fichier.csv = input$file$datapath, 
 																fichier.xml = file,
-																n.decimales = input$decimales,
-																tolerance = input$tolerance_arrondis
+																sep.images = NULL #,  # On ne cherche pas à repérer des images dans les questions
+																#n.decimales = input$decimales,
+																#tolerance = input$tolerance_arrondis
 															)
 							)
 						} else if(extension == "xlsx"){
@@ -140,8 +146,9 @@ shinyServer(function(input, output, session){
 															xlsx.moodle(
 																fichier.xlsx = input$file$datapath, 
 																fichier.xml = file,
-																n.decimales = input$decimales,
-																tolerance = input$tolerance_arrondis
+																sep.images = NULL #,  # On ne cherche pas à repérer des images dans les questions
+																#n.decimales = input$decimales,
+																#tolerance = input$tolerance_arrondis
 															)
 							)
 						} else if(extension == "ods"){
@@ -149,8 +156,9 @@ shinyServer(function(input, output, session){
 															ods.moodle(
 																fichier.ods = input$file$datapath, 
 																fichier.xml = file,
-																n.decimales = input$decimales,
-																tolerance = input$tolerance_arrondis
+																sep.images = NULL#,  # On ne cherche pas à repérer des images dans les questions
+																# n.decimales = input$decimales,
+																# tolerance = input$tolerance_arrondis
 															)
 							)
 						}
@@ -670,8 +678,10 @@ shinyServer(function(input, output, session){
 				if(HTMLconvert){
 					system("imprime_Moodle temp.xml") # creation de temp.html
 					system("mkdir .TMP/; mv temp.html .TMP/.") # creation de temp.html
-					if(file.exists("img_*"))
-						system("mv img_* .TMP/.") # creation de temp.html
+					if( file.exists( "img_00000.jpg" ) ) # Si l'image 0000 existe, il peut y en avoir d'autre : on les déplace
+					  # Attention, file.exists( "img_*" ) rendra FALSE car aucun fichier appelé img_* dans le dossier...
+						system( "mv img_* .TMP/." ) # copie des images associées au temp.html
+					  system( "mv -f img_* www/." ) # copie des images dans le dossier système de Shiny pour qu'elles s'affichent dans l'aperçu
 				}
 			}
 					# visualise temp.html
@@ -684,8 +694,11 @@ shinyServer(function(input, output, session){
 					width = 12
 				),
 				box(title = "Aperçu des questions importées.",
-				    ifelse(HTMLconvert, shiny::includeCSS("www/impression.css"), "Programme de conversion XML -> HTML pas installé"),
-					ifelse(HTMLconvert, shiny::includeHTML(".TMP/temp.html"), ""),
+				    "toto",
+				    # Remplacé le ifelse() par un vrai if pour gérer correctement la valeur de HTMLconvert [T/F, cf. ligne 20]
+				    # (le ifelse convertit en une chaîne de caractères, donc l'affichage devient faux)
+				    if( HTMLconvert ) shiny::includeCSS("www/impression.css") else "Programme de conversion XML -> HTML pas installé",
+				    if( HTMLconvert ) shiny::includeHTML(".TMP/temp.html"),
 					solidHeader = TRUE,
 					status = "success",
 					width = 12,
