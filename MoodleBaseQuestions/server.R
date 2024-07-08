@@ -17,7 +17,7 @@ library(SARP.moodle) #, lib.loc = "/home/sabrina/R/x86_64-mageia-linux-gnu-libra
 #input=list(file = list(datapath = "/Users/travail/ResilioSync/Desktop/Sabrina-main/ErreurBaseQuestionsMoodle_2021-11-19 2.csv"))
 
 #####################################
-HTMLconvert <- TRUE # Booleen pour vérifier si on peut faire la conversion avec le programme d'Emmanuel 
+HTMLconvert <- F # Booleen pour vérifier si on peut faire la conversion avec le programme d'Emmanuel 
                     # cf. lignes 698-701 pour mise en œuvre 
 #####################################
 
@@ -645,9 +645,10 @@ shinyServer(function(input, output, session){
 	})
 
 	
-	#bouton retour
+	# bouton retour
 	observeEvent(input$retourButton, {
 		updateTabItems(session, "tabs", "Convertir")
+	    session$reload()
 	})
 	
 	#### Ce code crée un bouton de téléchargement qui permet à l'utilisateur de télécharger un fichier résultat si un chemin de fichier est fourni. Le bouton est affiché dans une boîte d'information avec une icône de téléchargement et une couleur maroon. Si aucun chemin de fichier n'est fourni, rien ne sera affiché.
