@@ -356,21 +356,20 @@ shinyServer(function(input, output, session){
 				HTML("<i>Sélectionnez les paramètres pour la conversion de votre fichier de questions.</i>"),
 				style = "margin-bottom: 10px;"
 			),
-				# checkboxGroupInput(
-			#	 inputId = "conversion",
-			#	 label = "",
-			#	 selected = c('Latex', 'Smiles'),
-			#	 choiceNames = list(
-			#		 "Formules mathématiques",
-			#		 "Codes SMILES"
-			#	 ),
-			#	 choiceValues = list(
-			#		 "Image",
-			#		 "Latex",
-			#		 "Smiles"
-			#	 ), 
-				# inline = TRUE
-			# ),
+			checkboxGroupInput(
+			 inputId = "conversion",
+			 label = "",
+			 selected = c('Latex', 'Smiles'),
+			 choiceNames = list(
+			   HTML('<div>Formules mathématiques<br/><span style="font-style: italic; font-size: small;color: #8A1538;">NB : les équations sont repérées par SARP.moodle grâce aux balises @$$@</span></div>'),
+			   HTML('<div>Codes SMILES<br/><span style="font-style: italic; font-size: small;color: #8A1538;">NB : les codes SMILES sont repérés par SARP.moodle grâce aux balises @{}@</span></div>')
+			 ),
+			 choiceValues = list(
+				 "Latex",
+				 "Smiles"
+			 ),
+			inline = FALSE #(si FALSE) -> Permet de mettre les cases à cocher l'une sous l'autre
+			),
 			#(%T sera remplacé par le temps indiqué dans la colonne temps de votre fichier de questions) -> pour le moment on ne sait pas changer de place le temps
 			textInput("temps_masque", 'Si la colonne "temps" de votre fichier de questions est renseignée, le texte du message sur le temps conseillé pour répondre à la question est par défaut (où #T est le temps renseigné dans votre fichier) :', value = "Temps conseillé pour répondre : <b>#T</b>"),
 			colourInput("temps_couleur", 'Si la colonne "temps" de votre fichier de questions est renseignée, la couleur du message sur le temps conseillé pour chaque question est par défaut en bleu. Cliquez sur la zone bleue pour choisir une autre couleur.', value = "#0000FF"), 
