@@ -432,6 +432,7 @@ shinyServer(function(input, output, session){
 	# bouton retour
 	observeEvent(input$retourButton, {
 		updateTabItems(session, "tabs", "Convertir")
+	  system("rm -rf .TMP ; rm -f www/img_* ; rm -f temp.*")
 		session$reload()
 	})
 	
@@ -462,10 +463,12 @@ shinyServer(function(input, output, session){
 				if(HTMLconvert){
 					system("imprime_Moodle temp.xml") # creation de temp.html
 					system("mkdir .TMP/; mv temp.html .TMP/.") # creation de temp.html
-					if( file.exists( "img_00000.jpg" ) ) # Si l'image 0000 existe, il peut y en avoir d'autre : on les déplace
+					if( file.exists( "img_00000.jpg" ) | file.exists( "img_00000.png" )) {
+					  # Si l'image 0000 existe, il peut y en avoir d'autre : on les déplace
 					  # Attention, file.exists( "img_*" ) rendra FALSE car aucun fichier appelé img_* dans le dossier...
-						system( "mv img_* .TMP/." ) # copie des images associées au temp.html
+						system( "cp img_* .TMP/." ) # copie des images associées au temp.html
 					  system( "mv -f img_* www/." ) # copie des images dans le dossier système de Shiny pour qu'elles s'affichent dans l'aperçu
+					}
 				}
 			}
 					# visualise temp.html
