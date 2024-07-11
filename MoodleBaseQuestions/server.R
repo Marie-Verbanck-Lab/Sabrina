@@ -112,6 +112,8 @@ shinyServer(function(input, output, session){
 						# tolerance = input$tolerance_arrondis
 					)
 				)
+				#tableau=table(conv[[1]]$Type.final__)# idée pour récupérer uniquement le tableau qui décompte le type de question
+
 			} else if(extension == "ods"){
 				msgErr <- try(
 					conv <- ods.moodle(
@@ -404,21 +406,35 @@ shinyServer(function(input, output, session){
 	
 	###La boîte d'information est ensuite personnalisée avec les paramètres solidHeader = TRUE pour avoir une en-tête pleine et status = "warning" pour avoir une couleur de fond jaune qui attire l'attention de l'utilisateur. Le paramètre width = 12 spécifie la largeur de la boîte en nombre de colonnes sur la page.
 	
-	output$WARNINGSbox <- renderUI({
+	  output$WARNINGSbox <- renderUI({
 		if(is.null(FilePath()))
 			return(NULL)
-		else
-			box(title = "Détail du traitement de votre fichier de base de questions.", 
+		else {
+		  list(
+			box(title = "Résumé du nombre des questions en fonction de leur type  de votre fichier de base de questions.", 
 				# verbatimTextOutput("WARNINGS"),
 				#verbatimTextOutput(getXML()),
-				verbatimTextOutput("console"),
+				verbatimTextOutput("console2"), #affiche le fichier mais on veut le tableau
 				solidHeader = TRUE,
 				status = "success",
 				width = 12,
 				collapsible = TRUE,
-				collapsed = T,
-			)
-	})
+				collapsed = TRUE,
+			),
+	    box(title = "Détail du traitement de votre fichier de base de questions.", 
+	        # verbatimTextOutput("WARNINGS"),
+	        #verbatimTextOutput(getXML()),
+	        verbatimTextOutput("console"),
+	        solidHeader = TRUE,
+	        status = "success",
+	        width = 12,
+	        collapsible = TRUE,
+	        collapsed = TRUE,
+	    )
+		  )
+		}
+	  })
+
 	
 	### Ce code utilise une fonction observeEvent pour détecter le changement de l'élément d'entrée input$FileBox. Lorsque cela se produit, il utilise une fonction tryCatch pour capturer les avertissements éventuels générés par le code qui traite le fichier téléchargé. Si un avertissement est capturé, la variable mess contient le message d'avertissement, qui est ensuite affiché à l'utilisateur à l'aide de la fonction showNotification. En résumé, ce code affiche une notification à l'utilisateur en cas d'avertissement lors du traitement du fichier téléchargé.
 	
@@ -428,6 +444,7 @@ shinyServer(function(input, output, session){
 		showNotification(mess)
 	})
 
+	
 	
 	# bouton retour
 	observeEvent(input$retourButton, {
@@ -481,7 +498,7 @@ shinyServer(function(input, output, session){
 					width = 12
 				),
 				box(title = "Aperçu des questions importées.",
-					"toto",
+					"Cet aperçu n'affiche pas les questions de type glisser-déposer...",
 					# Remplacé le ifelse() par un vrai if pour gérer correctement la valeur de HTMLconvert [T/F, cf. ligne 20]
 					# (le ifelse convertit en une chaîne de caractères, donc l'affichage devient faux)
 					if( HTMLconvert ) shiny::includeCSS("www/impression.css") else "Programme de conversion XML -> HTML pas installé",
@@ -490,7 +507,7 @@ shinyServer(function(input, output, session){
 					status = "success",
 					width = 12,
 					collapsible = TRUE,
-					collapsed = FALSE,
+					collapsed = TRUE,
 				)
 			)
 		} 
@@ -513,7 +530,12 @@ shinyServer(function(input, output, session){
 		# You could also use grep("Warning", values[["log"]]) to get warning messages and use shinyBS package
 		# to create alert message
 	})
-	
+	#à supprimer quand le tableau s'affichera
+	output$console2 <- renderPrint({
+	  return(print(values[["log"]]))
+	  # You could also use grep("Warning", values[["log"]]) to get warning messages and use shinyBS package
+	  # to create alert message
+	})
 	
 	output$downloadTemplate <- downloadHandler(
 		filename = function() {
