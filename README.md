@@ -1,3 +1,54 @@
+# Retroplanning Sabrina - Objectifs
+
+## Semaine du 15-19 juillet
+
+Objectifs de la semaine :
+
+- Affichage du résumé des questions converties
+- Remodelage de l'onglet d'aide
+- Banque de fichiers à convertir avec tous types d'erreurs / répertorier les erreurs
+- Plan du rapport de stage
+
+## Semaine du 22-26 juillet
+
+Objectifs de la semaine :
+
+- Remodelage de l'onglet d'aide
+- Banque de fichiers à convertir
+- Première ébauche du rapport de stage
+
+## Semaine du 29 juillet - 2 août
+
+Objectifs de la semaine :
+
+- Remodelage de l'onglet d'aide
+- Banque de fichiers à convertir
+- **Vendredi 2 août : Rapport de stage à m'envoyer à relire**
+
+## Semaine du 5-9 août
+
+Objectifs de la semaine :
+
+- Remodelage de l'onglet d'aide
+- Banque de fichiers à convertir
+- Rapport fini le vendredi 9 août
+
+## Remodelage de l'onglet d'aide
+
+Onglet avec des tutos et gabarit(s) à télécharger pour expliquer comment formater le fichier d'entrée
+
+- Expliquer comment est structuré le fichier de questions
+- Fournir des gabarits à télécharger / à préremplir en fonction des types de questions dont l'utilisateur a besoin
+- Expliquer comment intégrer le xml sur moodle
+- Faire une vidéo tuto ?
+
+## Banque de fichiers à convertir
+
+Créer une banque de fichiers à convertir
+
+- Tester toutes les extensions systématiquement
+- Tester tous les types de questions 
+- Tester plusieurs types d'erreurs / répertorier les erreurs (au niveau de shiny, SARP.moodle, et imprime_Moodle) dans un tableau
 
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 # Interface graphique
