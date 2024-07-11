@@ -42,7 +42,7 @@ Onglet avec des tutos et gabarit(s) à télécharger pour expliquer comment form
 - Expliquer comment intégrer le xml sur moodle
 - Faire une vidéo tuto ?
 
-> [Voir conseils de Virginie]([http://a.com](https://github.com/Marie-Verbanck-Lab/Sabrina/tree/main/Aide_SARP.moodle))
+> [Voir conseils de Virginie](https://github.com/Marie-Verbanck-Lab/Sabrina/tree/main/Aide_SARP.moodle)
 
 ## Banque de fichiers à convertir
 
