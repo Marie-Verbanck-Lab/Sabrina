@@ -17,7 +17,7 @@ library(SARP.moodle) #, lib.loc = "/home/sabrina/R/x86_64-mageia-linux-gnu-libra
 #input=list(file = list(datapath = "/Users/travail/ResilioSync/Desktop/Sabrina-main/ErreurBaseQuestionsMoodle_2021-11-19 2.csv"))
 
 #####################################
-HTMLconvert <- TRUE # Booleen pour vérifier si on peut faire la conversion avec le programme d'Emmanuel 
+HTMLconvert <- FALSE # Booleen pour vérifier si on peut faire la conversion avec le programme d'Emmanuel 
 					# cf. lignes 698-701 pour mise en œuvre 
 #####################################
 
@@ -84,12 +84,16 @@ shinyServer(function(input, output, session){
 		extension <- tools::file_ext(input$file$datapath)
 		file <- "temp.xml"
 		if( input$ImagesQuestion == TRUE ) {
-			FileRep <- gsub("0\\.[a-zA-Z]+$", "", input$file$datapath) # recupere le dossier du fichier de question
+			# FileRep <- gsub("0\\.[a-zA-Z]+$", "", input$file$datapath) # recupere le dossier du fichier de question
+		  FileRep <- dirname(input$file$datapath)#Test images
+			#print(input$file$datapath)#Affichage à détruire
 			img_list <- selected_images()
-			if(length(img_list) != 0)
-				sapply(img_list, function(x) system(paste0("cp ", x$datapath, " ", FileRep, x$name)))
+			if(length(img_list) != 0){
+				#sapply(img_list, function(x) system(paste0("cp ", x$datapath, " ", FileRep, x$name)))
+			  #print(img_list)
+			  sapply(img_list, function(x) file.copy(from = x$datapath, to = FileRep, overwrite = TRUE))
 				# petit exemple de copie d'une image ds les dossiers temporaires de shiny cp /tmp/Rtmp/93748hjkf/0.jpeg /tmp/Rtmp/98e3jfku6/iris.jpeg
-				
+			}	
 			if(extension == "csv"){
 				msgErr <- try(
 					conv <- csv.moodle(
@@ -102,7 +106,7 @@ shinyServer(function(input, output, session){
 					)
 				)
 			} else if(extension == "xlsx"){
-				msgErr <- try(
+				msgErr <- try({# à supprimer l'acolade
 					conv <- xlsx.moodle(
 						fichier.xlsx = input$file$datapath, 
 						fichier.xml = file,
@@ -111,9 +115,15 @@ shinyServer(function(input, output, session){
 						# n.decimales = input$decimales,
 						# tolerance = input$tolerance_arrondis
 					)
+					print("appel réussite")# problème ne fonctionne que si image
+					########### 
+					print("essai affichage du tableau")
+					tableau=table(conv[[1]]$Type.final__)# idée pour récupérer uniquement le tableau qui décompte le type de question
+					print(tableau)
+					####################
+				}
 				)
-				#tableau=table(conv[[1]]$Type.final__)# idée pour récupérer uniquement le tableau qui décompte le type de question
-
+				
 			} else if(extension == "ods"){
 				msgErr <- try(
 					conv <- ods.moodle(
@@ -479,11 +489,11 @@ shinyServer(function(input, output, session){
 				# creation d'un html à partir du xml
 				if(HTMLconvert){
 					system("imprime_Moodle temp.xml") # creation de temp.html
-					system("mkdir .TMP/; mv temp.html .TMP/.") # creation de temp.html
+					system("mkdir .TMP/; mv temp.html .TMP/.") # creation de temp.html, ne fonctionne pas sous windows
 					if( file.exists( "img_00000.jpg" ) | file.exists( "img_00000.png" )) {
 					  # Si l'image 0000 existe, il peut y en avoir d'autre : on les déplace
 					  # Attention, file.exists( "img_*" ) rendra FALSE car aucun fichier appelé img_* dans le dossier...
-						system( "cp img_* .TMP/." ) # copie des images associées au temp.html
+						system( "cp img_* .TMP/." ) # copie des images associées au temp.html attention cp fonctionne pas sous windows
 					  system( "mv -f img_* www/." ) # copie des images dans le dossier système de Shiny pour qu'elles s'affichent dans l'aperçu
 					}
 				}
