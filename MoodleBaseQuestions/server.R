@@ -421,7 +421,7 @@ shinyServer(function(input, output, session){
 			box(title = "Résumé du nombre des questions en fonction de leur type  de votre fichier de base de questions.", 
 				# verbatimTextOutput("WARNINGS"),
 				#verbatimTextOutput(getXML()),
-				verbatimTextOutput("console2"), #affiche le fichier mais on veut le tableau
+				verbatimTextOutput("console_Résumé"), #affiche le fichier mais on veut le tableau
 				solidHeader = TRUE,
 				status = "success",
 				width = 12,
@@ -537,12 +537,11 @@ shinyServer(function(input, output, session){
 		# You could also use grep("Warning", values[["log"]]) to get warning messages and use shinyBS package
 		# to create alert message
 	})
-	#à supprimer quand le tableau s'affichera
 	
-	output$console2 <- renderPrint({
-	  return(print(values[["log"]]))
-	  # You could also use grep("Warning", values[["log"]]) to get warning messages and use shinyBS package
-	  # to create alert message
+	output$console_Résumé <- renderPrint({
+	  # Affichez les 3 dernières lignes du log
+	  fin_console <- tail(values[["log"]], 3)
+	  return(print(fin_console))
 	})
 	
 	
@@ -554,4 +553,45 @@ shinyServer(function(input, output, session){
 			file.copy("www/types_questions_Moodle.csv", file)
 		}
 	)
+	
+	####Pas fonctionnel pour le moment pour afficher plusieurs fichier à télécharger
+	# Télécharger le deuxième fichier
+	# output$downloadTemplate2 <- downloadHandler(
+	#   filename = function() {
+	#     "Fichier_QCU.xlsx"
+	#   },
+	#   content = function(file) {
+	#     file.copy("www/Fichier_QCU.xlsx", file)
+	#   }
+	# )
+	# 
+	# # Télécharger le troisième fichier
+	# output$downloadTemplate3 <- downloadHandler(
+	#   filename = function() {
+	#     "Fichier_QCM.xlsx"
+	#   },
+	#   content = function(file) {
+	#     file.copy("www/Fichier_QCM.xlsx", file)
+	#   }
+	# )
+	# 
+	# # Télécharger le quatrième fichier
+	# output$downloadTemplate2 <- downloadHandler(
+	#   filename = function() {
+	#     "Fichier_image.xlsx"
+	#   },
+	#   content = function(file) {
+	#     file.copy("www/Fichier_image.xlsx", file)
+	#   }
+	# )
+	# 
+	# # Télécharger le cinquième fichier
+	# output$downloadTemplate3 <- downloadHandler(
+	#   filename = function() {
+	#     "Fichier_SMILES.xlsx"
+	#   },
+	#   content = function(file) {
+	#     file.copy("www/Fichier_SMILES.xlsx", file)
+	#   }
+	# )
 })
