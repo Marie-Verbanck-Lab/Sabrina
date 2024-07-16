@@ -222,7 +222,7 @@ shinyUI(
 				##########################################  Onglet 3: Aide et ressources  #############################################
 				tabItem(tabName = "Aide",
 					fluidRow(	
-			  			infoBox("Structurer le fichier de questions", "Vous pouvez télécharger le fichier ci-joint, qui est un fichier de base. Complétez le pour vos propres questions, et utilisez le pour la conversion en XML.",
+			  			infoBox("Structurer le fichier de questions", "Vous pouvez télécharger l'un des fichiers ci-joint, qui sont des fichiers de base selon le type de questions que vous souhaîtez créer. Complétez le fichier que vous avez télécharger pour vos propres questions, et utilisez le pour la conversion en XML.",
 						icon = icon("stapler"),
 						color = "purple", 
 						width = 12
@@ -230,8 +230,12 @@ shinyUI(
 				  		#Pas tt à fait fonctionnel
 				  		#mainPanel(
 				  		# Votre contenu principal ici
-				  		infoBox("Gabarit", 
-							downloadButton("downloadTemplate", "Télécharger le fichier CSV"),
+				  		infoBox("Fichiers", 
+							downloadButton("downloadTemplate", "Télécharger le fichier xlsx de votre choix"),
+							#downloadButton("downloadTemplate2", "Télécharger le fichier QCU contenant un exemple"), non fonctionnel pour afficher les autres types de fichier dans l'aide
+							#downloadButton("downloadTemplate3", "Télécharger le fichier QCM contenant un exemple"), non fonctionnel pour afficher les autres types de fichier dans l'aide
+							#downloadButton("downloadTemplate4", "Télécharger le fichier image contenant un exemple"), non fonctionnel pour afficher les autres types de fichier dans l'aide
+							#downloadButton("downloadTemplate5", "Télécharger le fichier SMILES contenant un exemple"), non fonctionnel pour afficher les autres types de fichier dans l'aide
 							icon = icon("stapler"),
 							color = "purple", 
 							width = 12
