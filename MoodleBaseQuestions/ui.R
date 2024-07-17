@@ -218,26 +218,33 @@ shinyUI(
 					# 	)
 					# )
 				),
+				
+				
+				################################################
+				###############################################
+				
+				
+				
 				#######################################################################################################################
 				##########################################  Onglet 3: Aide et ressources  #############################################
 				tabItem(tabName = "Aide",
-					fluidRow(	
+					fluidRow(
 			  			infoBox("Structurer le fichier de questions", "Vous pouvez télécharger l'un des fichiers ci-joint, qui sont des fichiers de base selon le type de questions que vous souhaîtez créer. Complétez le fichier que vous avez télécharger pour vos propres questions, et utilisez le pour la conversion en XML.",
 						icon = icon("stapler"),
-						color = "purple", 
+						color = "purple",
 						width = 12
 				  		),
 				  		#Pas tt à fait fonctionnel
 				  		#mainPanel(
 				  		# Votre contenu principal ici
-				  		infoBox("Fichiers", 
+				  		infoBox("Fichiers",
 							downloadButton("downloadTemplate", "Télécharger le fichier xlsx de votre choix"),
-							#downloadButton("downloadTemplate2", "Télécharger le fichier QCU contenant un exemple"), non fonctionnel pour afficher les autres types de fichier dans l'aide
-							#downloadButton("downloadTemplate3", "Télécharger le fichier QCM contenant un exemple"), non fonctionnel pour afficher les autres types de fichier dans l'aide
-							#downloadButton("downloadTemplate4", "Télécharger le fichier image contenant un exemple"), non fonctionnel pour afficher les autres types de fichier dans l'aide
-							#downloadButton("downloadTemplate5", "Télécharger le fichier SMILES contenant un exemple"), non fonctionnel pour afficher les autres types de fichier dans l'aide
+							#downloadButton("downloadTemplate2", "Télécharger le fichier QCU contenant un exemple"), #pas fonctionnel pour le moment
+							#downloadButton("downloadTemplate3", "Télécharger le fichier QCM contenant un exemple"), #pas fonctionnel pour le moment
+							#downloadButton("downloadTemplate4", "Télécharger le fichier image contenant un exemple"), #pas fonctionnel pour le moment
+							#downloadButton("downloadTemplate5", "Télécharger le fichier SMILES contenant un exemple"), #pas fonctionnel pour le moment
 							icon = icon("stapler"),
-							color = "purple", 
+							color = "purple",
 							width = 12
 				  		),
 						infoBox("intégrer le xml sur moodle",
@@ -245,9 +252,9 @@ shinyUI(
 								1.Connectez-vous à votre site Moodle en tant qu'administrateur ou enseignant disposant des droits nécessaires pour créer un cours ou une activité.<br/><br/>
 								2.Accédez à la section du cours où vous souhaitez intégrer le fichier XML. Si vous créez un nouveau cours, créez d'abord le cours lui-même.<br/><br/>
 								3.Cliquez sur le bouton 'ajouter une bande de questions' dans la section où vous souhaitez intégrer le fichier XML. Cela ouvrira la page 'importer le fichier sur moodle'."
-							), 
+							),
 							icon = icon("m"),
-							color = "purple", 
+							color = "purple",
 							width = 12
 						),
 						align = "center"
