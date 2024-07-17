@@ -555,7 +555,7 @@ shinyServer(function(input, output, session){
 	)
 	
 	####Pas fonctionnel pour le moment pour afficher plusieurs fichier à télécharger
-	# Télécharger le deuxième fichier
+	#Télécharger le deuxième fichier
 	# output$downloadTemplate2 <- downloadHandler(
 	#   filename = function() {
 	#     "Fichier_QCU.xlsx"
@@ -576,7 +576,7 @@ shinyServer(function(input, output, session){
 	# )
 	# 
 	# # Télécharger le quatrième fichier
-	# output$downloadTemplate2 <- downloadHandler(
+	# output$downloadTemplate4 <- downloadHandler(
 	#   filename = function() {
 	#     "Fichier_image.xlsx"
 	#   },
@@ -584,9 +584,9 @@ shinyServer(function(input, output, session){
 	#     file.copy("www/Fichier_image.xlsx", file)
 	#   }
 	# )
-	# 
-	# # Télécharger le cinquième fichier
-	# output$downloadTemplate3 <- downloadHandler(
+
+	# Télécharger le cinquième fichier
+	# output$downloadTemplate5 <- downloadHandler(
 	#   filename = function() {
 	#     "Fichier_SMILES.xlsx"
 	#   },
