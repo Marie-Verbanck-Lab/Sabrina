@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+<!-- Fichier généré avec SARP.moodle -->
+<question type="category">
+  <category>
+    <text><![CDATA[$course$/Sab/Numérique]]></text>
+  </category>
+</question>
+
+<question type="numerical">
+ <name format="html">
+  <text><![CDATA[Num01]]></text>
+ </name>
+ <questiontext format="html">
+  <text><![CDATA[Une expérience a conduit à l'échantillon ci-dessous <br/> 17,25 16,65 15,05 16,55<br/> Quelle est la moyenne de cet échantillon ?<br /><span style="color: #FFA600;"><i>Vous donnerez la r&eacute;ponse  avec 3&nbsp;chiffres apr&egrave;s la virgule.</i></span><br /><span style="color: #0000FF;">Temps conseillé pour répondre : <b><span style="white-space: nowrap;">2&nbsp;min</span></b></span>]]></text>
+ </questiontext>
+ <defaultgrade>1.5</defaultgrade>
+  <answer fraction="100" format="moodle_auto_format">
+    <text>16.375</text>
+    <tolerance>0.0011</tolerance>
+  </answer>
+</question>
+
+<question type="numerical">
+ <name format="html">
+  <text><![CDATA[Num02]]></text>
+ </name>
+ <questiontext format="html">
+  <text><![CDATA[Une expérience a conduit à l'échantillon ci-dessous <br/> 17,25 16,65 15,05 16,55<br/> Quelle est la moyenne de cet échantillon ?<br /><span style="color: #FFA600;"><i>Vous donnerez la r&eacute;ponse  avec 3&nbsp;chiffres apr&egrave;s la virgule.</i></span><br /><span style="color: #0000FF;">Temps conseillé pour répondre : <b><span style="white-space: nowrap;">2&nbsp;min</span></b></span>]]></text>
+ </questiontext>
+ <defaultgrade>1.5</defaultgrade>
+  <answer fraction="100" format="moodle_auto_format">
+    <text>16.375</text>
+    <tolerance>0.0011</tolerance>
+  </answer>
+</question>
+
+<question type="numerical">
+ <name format="html">
+  <text><![CDATA[Num01]]></text>
+ </name>
+ <questiontext format="html">
+  <text><![CDATA[Une expérience a conduit à l'échantillon ci-dessous <br/> 17,25 16,65 15,05 16,55<br/> Quelle est la moyenne de cet échantillon ?<br /><span style="color: #FFA600;"><i>Vous donnerez la r&eacute;ponse  avec 2&nbsp;chiffres apr&egrave;s la virgule.</i></span><br /><span style="color: #0000FF;">Temps conseillé pour répondre : <b><span style="white-space: nowrap;">2&nbsp;min</span></b></span>]]></text>
+ </questiontext>
+ <defaultgrade>1.5</defaultgrade>
+  <answer fraction="100" format="moodle_auto_format">
+    <text>16.38</text>
+    <tolerance>0.011</tolerance>
+  </answer>
+</question>
+
+<question type="numerical">
+ <name format="html">
+  <text><![CDATA[Num01]]></text>
+ </name>
+ <questiontext format="html">
+  <text><![CDATA[Une expérience a conduit à l'échantillon ci-dessous <br/> 17,25 16,65 15,05 16,55<br/> Quelle est la moyenne de cet échantillon ?<br /><span style="color: #FFA600;"><i>Vous donnerez la r&eacute;ponse  avec 1 chiffre apr&egrave;s la virgule.</i></span><br /><span style="color: #0000FF;">Temps conseillé pour répondre : <b><span style="white-space: nowrap;">2&nbsp;min</span></b></span>]]></text>
+ </questiontext>
+ <defaultgrade>1.5</defaultgrade>
+  <answer fraction="100" format="moodle_auto_format">
+    <text>16.4</text>
+    <tolerance>0.11</tolerance>
+  </answer>
+</question>
+
+<question type="numerical">
+ <name format="html">
+  <text><![CDATA[Num01]]></text>
+ </name>
+ <questiontext format="html">
+  <text><![CDATA[Une expérience a conduit à l'échantillon ci-dessous <br/> 17,25 16,65 15,05 16,55<br/> Quelle est la moyenne de cet échantillon ?<br /><span style="color: #FFA600;"><i>Vous donnerez la r&eacute;ponse  avec 1 chiffre apr&egrave;s la virgule.</i></span><br /><span style="color: #0000FF;">Temps conseillé pour répondre : <b><span style="white-space: nowrap;">2&nbsp;min</span></b></span>]]></text>
+ </questiontext>
+ <defaultgrade>1.5</defaultgrade>
+  <answer fraction="100" format="moodle_auto_format">
+    <text>16.4</text>
+    <tolerance>0.11</tolerance>
+  </answer>
+</question>
+
+</quiz>
