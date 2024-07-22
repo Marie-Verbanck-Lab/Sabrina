@@ -17,7 +17,7 @@ library(SARP.moodle) #, lib.loc = "/home/sabrina/R/x86_64-mageia-linux-gnu-libra
 #input=list(file = list(datapath = "/Users/travail/ResilioSync/Desktop/Sabrina-main/ErreurBaseQuestionsMoodle_2021-11-19 2.csv"))
 
 #####################################
-HTMLconvert <- TRUE # Booleen pour vérifier si on peut faire la conversion avec le programme d'Emmanuel 
+HTMLconvert <- FALSE # Booleen pour vérifier si on peut faire la conversion avec le programme d'Emmanuel 
 					# cf. lignes 698-701 pour mise en œuvre 
 #####################################
 
@@ -555,43 +555,43 @@ shinyServer(function(input, output, session){
 	)
 	
 	####Pas fonctionnel pour le moment pour afficher plusieurs fichier à télécharger
-	#Télécharger le deuxième fichier
-	# output$downloadTemplate2 <- downloadHandler(
-	#   filename = function() {
-	#     "Fichier_QCU.xlsx"
-	#   },
-	#   content = function(file) {
-	#     file.copy("www/Fichier_QCU.xlsx", file)
-	#   }
-	# )
+	# Télécharger le deuxième fichier
+	output$downloadTemplate2 <- downloadHandler(
+	  filename = function() {
+	    "Fichier_QCU.xlsx"
+	  },
+	  content = function(file) {
+	    file.copy("www/Fichier_QCU.xlsx", file)
+	  }
+	)
 	# 
 	# # Télécharger le troisième fichier
-	# output$downloadTemplate3 <- downloadHandler(
-	#   filename = function() {
-	#     "Fichier_QCM.xlsx"
-	#   },
-	#   content = function(file) {
-	#     file.copy("www/Fichier_QCM.xlsx", file)
-	#   }
-	# )
+	output$downloadTemplate3 <- downloadHandler(
+	  filename = function() {
+	    "Fichier_QCM.xlsx"
+	  },
+	  content = function(file) {
+	    file.copy("www/Fichier_QCM.xlsx", file)
+	  }
+	)
 	# 
 	# # Télécharger le quatrième fichier
-	# output$downloadTemplate4 <- downloadHandler(
-	#   filename = function() {
-	#     "Fichier_image.xlsx"
-	#   },
-	#   content = function(file) {
-	#     file.copy("www/Fichier_image.xlsx", file)
-	#   }
-	# )
+	output$downloadTemplate4 <- downloadHandler(
+	  filename = function() {
+	    "Fichier_image.xlsx"
+	  },
+	  content = function(file) {
+	    file.copy("www/Fichier_image.xlsx", file)
+	  }
+	)
 
 	# Télécharger le cinquième fichier
-	# output$downloadTemplate5 <- downloadHandler(
-	#   filename = function() {
-	#     "Fichier_SMILES.xlsx"
-	#   },
-	#   content = function(file) {
-	#     file.copy("www/Fichier_SMILES.xlsx", file)
-	#   }
-	# )
+	output$downloadTemplate5 <- downloadHandler(
+	  filename = function() {
+	    "Fichier_SMILES.xlsx"
+	  },
+	  content = function(file) {
+	    file.copy("www/Fichier_SMILES.xlsx", file)
+	  }
+	)
 })
