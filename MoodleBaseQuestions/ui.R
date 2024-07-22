@@ -237,12 +237,12 @@ shinyUI(
 				  		#Pas tt à fait fonctionnel
 				  		#mainPanel(
 				  		# Votre contenu principal ici
-				  		infoBox("Fichiers",
+				  		box("Fichiers",
 							downloadButton("downloadTemplate", "Télécharger le fichier xlsx de votre choix"),
-							#downloadButton("downloadTemplate2", "Télécharger le fichier QCU contenant un exemple"), #pas fonctionnel pour le moment
-							#downloadButton("downloadTemplate3", "Télécharger le fichier QCM contenant un exemple"), #pas fonctionnel pour le moment
-							#downloadButton("downloadTemplate4", "Télécharger le fichier image contenant un exemple"), #pas fonctionnel pour le moment
-							#downloadButton("downloadTemplate5", "Télécharger le fichier SMILES contenant un exemple"), #pas fonctionnel pour le moment
+							downloadButton("downloadTemplate2", "Télécharger le fichier QCU contenant un exemple"), #pas fonctionnel pour le moment
+							downloadButton("downloadTemplate3", "Télécharger le fichier QCM contenant un exemple"), #pas fonctionnel pour le moment
+							downloadButton("downloadTemplate4", "Télécharger le fichier image contenant un exemple"), #pas fonctionnel pour le moment
+							downloadButton("downloadTemplate5", "Télécharger le fichier SMILES contenant un exemple"), #pas fonctionnel pour le moment
 							icon = icon("stapler"),
 							color = "purple",
 							width = 12
