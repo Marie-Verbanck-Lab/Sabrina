@@ -228,6 +228,16 @@ shinyUI(
 				#######################################################################################################################
 				##########################################  Onglet 3: Aide et ressources  #############################################
 				tabItem(tabName = "Aide",
+				  # Ajout du contenu du fichier HTML onglet aide ressources
+				  fluidRow(
+				    column(
+				      width = 12,
+				      tags$div(
+				        style = "max-width: 1200px; margin: auto;",
+				        includeHTML("www/ideesFilConducteurAide.html")
+				      )
+				    )
+				  ),
 					fluidRow(
 			  			infoBox("Structurer le fichier de questions", "Vous pouvez télécharger l'un des fichiers ci-joint, qui sont des fichiers de base selon le type de questions que vous souhaîtez créer. Complétez le fichier que vous avez télécharger pour vos propres questions, et utilisez le pour la conversion en XML.",
 						icon = icon("stapler"),
@@ -237,7 +247,7 @@ shinyUI(
 				  		#Pas tt à fait fonctionnel
 				  		#mainPanel(
 				  		# Votre contenu principal ici
-				  		box("Fichiers",
+				  		box("",
 							downloadButton("downloadTemplate", "Télécharger le fichier xlsx de votre choix"),
 							downloadButton("downloadTemplate2", "Télécharger le fichier QCU contenant un exemple"), #pas fonctionnel pour le moment
 							downloadButton("downloadTemplate3", "Télécharger le fichier QCM contenant un exemple"), #pas fonctionnel pour le moment
