@@ -17,7 +17,7 @@ library(SARP.moodle) #, lib.loc = "/home/sabrina/R/x86_64-mageia-linux-gnu-libra
 #input=list(file = list(datapath = "/Users/travail/ResilioSync/Desktop/Sabrina-main/ErreurBaseQuestionsMoodle_2021-11-19 2.csv"))
 
 #####################################
-HTMLconvert <- FALSE # Booleen pour vérifier si on peut faire la conversion avec le programme d'Emmanuel 
+HTMLconvert <- TRUE # Booleen pour vérifier si on peut faire la conversion avec le programme d'Emmanuel 
 					# cf. lignes 698-701 pour mise en œuvre 
 #####################################
 
